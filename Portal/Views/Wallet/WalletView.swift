@@ -12,6 +12,12 @@ struct WalletView: View {
     @State private var showPortfolio = false
     @State private var showCoinDetails = false
     
+    @State private var curentItem: WalletItemViewModel = CoinMock() {
+        didSet {
+            showCoinDetails.toggle()
+        }
+    }
+    
     private var viewModels: [WalletItemViewModel]
     
     init(wallet: [WalletItemViewModel] = WalletMock) {
@@ -27,11 +33,12 @@ struct WalletView: View {
             }
             
             List(0 ..< viewModels.count) { index in
-                WalletItemView(viewModel: self.viewModels[index]).onTapGesture {
-                    self.showCoinDetails.toggle()
-                }.sheet(isPresented: self.$showCoinDetails) {
-                    CoinDetailsView(showModal: self.$showCoinDetails)
+                WalletItemView(viewModel: self.viewModels[index])
+                    .onTapGesture {
+                        self.curentItem = self.viewModels[index]
                 }
+            }.sheet(isPresented: self.$showCoinDetails) {
+                CoinDetailsView(showModal: self.$showCoinDetails, model: self.$curentItem)
             }
         }
     }

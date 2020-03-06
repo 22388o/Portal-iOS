@@ -10,10 +10,11 @@ import SwiftUI
 
 struct CoinDetailsView: View {
     @Binding var showModal: Bool
+    @Binding var model: WalletItemViewModel
     
     var body: some View {
         VStack {
-            Text("Coin Details")
+            Text("\(model.symbol) Details")
                 .padding()
             Button("Dismiss") {
                 self.showModal.toggle()
@@ -24,6 +25,6 @@ struct CoinDetailsView: View {
 
 struct CoinDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        CoinDetailsView(showModal: .constant(true))
+        CoinDetailsView(showModal: .constant(true), model: .constant(CoinMock()))
     }
 }
