@@ -26,26 +26,34 @@ struct WalletItemView: View {
     }
     
     var body: some View {
-        HStack(alignment: .top) {
-            Image("first").frame(width: 60, height: 60, alignment: .center)
+        HStack(alignment: .center) {
+            Image("first")
+                .padding([.leading])
+            
             VStack(spacing: 6) {
                 HStack() {
                     Text(symbol).font(.headline)
                     HStack() { EmptyView() }.frame(minWidth: 0, maxWidth: .infinity)
                     Text(amount).font(.headline)
                 }
+                
                 HStack() {
                     Text(name).font(.subheadline)
                     HStack() { EmptyView() }.frame(minWidth: 0, maxWidth: .infinity)
                     Text(totalValue).font(.subheadline)
                 }
+                
                 HStack() {
                     Text(price).font(.subheadline)
                     HStack() { EmptyView() }.frame(minWidth: 0, maxWidth: .infinity)
                     Text(change).font(.subheadline)
                 }
             }
-        }.padding([.trailing], 4)
+            .padding()
+        }
+        .padding([.trailing], 4)
+        .background(Color.black.opacity(0.1))
+        .cornerRadius(16)
     }
 }
 

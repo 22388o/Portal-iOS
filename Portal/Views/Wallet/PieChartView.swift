@@ -11,6 +11,9 @@ import SwiftUI
 struct PieChartView: View {
     var body: some View {
         Text("Pie Chart")
+            .font(.title)
+            .fontWeight(.thin)
+            .foregroundColor(Color.red)
     }
 }
 
