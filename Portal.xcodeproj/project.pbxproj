@@ -23,6 +23,7 @@
 		7582D3E12412569F008ECAB0 /* WalletItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3E02412569F008ECAB0 /* WalletItemViewModel.swift */; };
 		7582D3E824125CE5008ECAB0 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3E724125CE5008ECAB0 /* PieChartView.swift */; };
 		7582D3EA241261A0008ECAB0 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3E9241261A0008ECAB0 /* PortfolioView.swift */; };
+		7582D3F124126B60008ECAB0 /* CoinDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3F024126B5F008ECAB0 /* CoinDetailsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		7582D3E02412569F008ECAB0 /* WalletItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletItemViewModel.swift; sourceTree = "<group>"; };
 		7582D3E724125CE5008ECAB0 /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
 		7582D3E9241261A0008ECAB0 /* PortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
+		7582D3F024126B5F008ECAB0 /* CoinDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +182,7 @@
 				7582D3E724125CE5008ECAB0 /* PieChartView.swift */,
 				7582D3D824123240008ECAB0 /* WalletView.swift */,
 				7582D3E2241256D9008ECAB0 /* WalletItemView */,
+				7582D3F024126B5F008ECAB0 /* CoinDetailsView.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				7582D3DF24125641008ECAB0 /* MockData.swift in Sources */,
 				7582D3EA241261A0008ECAB0 /* PortfolioView.swift in Sources */,
 				7582D3AC24123184008ECAB0 /* MainView.swift in Sources */,
+				7582D3F124126B60008ECAB0 /* CoinDetailsView.swift in Sources */,
 				7582D3A724123184008ECAB0 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,36 +10,35 @@ import SwiftUI
 
 struct WalletView: View {
     @State private var showPortfolio = false
+    @State private var showCoinDetails = false
     
-    let viewModels: [WalletItemViewModel] = [
-        BTC(),
-        ETH(),
-        CoinMock(),
-        BTC(),
-        ETH()
-    ]
+    private var viewModels: [WalletItemViewModel]
+    
+    init(wallet: [WalletItemViewModel] = WalletMock) {
+        viewModels = wallet
+    }
     
     var body: some View {
         VStack(spacing: 20) {
-            PieChartView()
-                .padding(.all, 80)
-                .onTapGesture {
-                    self.showPortfolio.toggle()
+            PieChartView().padding(.all, 100).onTapGesture {
+                self.showPortfolio.toggle()
+            }.sheet(isPresented: $showPortfolio) {
+                PortfolioView(showModal: self.$showPortfolio)
             }
             
             List(0 ..< viewModels.count) { index in
                 WalletItemView(viewModel: self.viewModels[index]).onTapGesture {
-                    self.showPortfolio.toggle()
+                    self.showCoinDetails.toggle()
+                }.sheet(isPresented: self.$showCoinDetails) {
+                    CoinDetailsView(showModal: self.$showCoinDetails)
                 }
             }
-        }.sheet(isPresented: $showPortfolio) {
-            PortfolioView(showModal: self.$showPortfolio)
         }
     }
 }
 
 struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletView()
+        WalletView(wallet: WalletMock)
     }
 }

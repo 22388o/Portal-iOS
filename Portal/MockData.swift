@@ -27,3 +27,5 @@ struct ETH: WalletItemViewModel {
 }
 
 struct CoinMock: WalletItemViewModel {}
+
+let WalletMock: [WalletItemViewModel] = [BTC(), ETH(), CoinMock(), BTC(), ETH()]
