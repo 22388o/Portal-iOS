@@ -18,6 +18,9 @@
 		7582D3CA24123185008ECAB0 /* PortalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3C924123185008ECAB0 /* PortalUITests.swift */; };
 		7582D3D924123240008ECAB0 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3D824123240008ECAB0 /* WalletView.swift */; };
 		7582D3DB2412325D008ECAB0 /* AtomicBridgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3DA2412325D008ECAB0 /* AtomicBridgeView.swift */; };
+		7582D3DD241255A5008ECAB0 /* WalletItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3DC241255A5008ECAB0 /* WalletItemView.swift */; };
+		7582D3DF24125641008ECAB0 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3DE24125641008ECAB0 /* MockData.swift */; };
+		7582D3E12412569F008ECAB0 /* WalletItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3E02412569F008ECAB0 /* WalletItemViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		7582D3CB24123185008ECAB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7582D3D824123240008ECAB0 /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
 		7582D3DA2412325D008ECAB0 /* AtomicBridgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicBridgeView.swift; sourceTree = "<group>"; };
+		7582D3DC241255A5008ECAB0 /* WalletItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletItemView.swift; sourceTree = "<group>"; };
+		7582D3DE24125641008ECAB0 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
+		7582D3E02412569F008ECAB0 /* WalletItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletItemViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,7 @@
 			children = (
 				7582D3A424123184008ECAB0 /* AppDelegate.swift */,
 				7582D3A624123184008ECAB0 /* SceneDelegate.swift */,
+				7582D3DE24125641008ECAB0 /* MockData.swift */,
 				7582D3D724123225008ECAB0 /* Views */,
 				7582D3AD24123185008ECAB0 /* Assets.xcassets */,
 				7582D3B224123185008ECAB0 /* LaunchScreen.storyboard */,
@@ -147,10 +154,28 @@
 			isa = PBXGroup;
 			children = (
 				7582D3AB24123184008ECAB0 /* MainView.swift */,
-				7582D3D824123240008ECAB0 /* WalletView.swift */,
+				7582D3E32412571F008ECAB0 /* Wallet */,
 				7582D3DA2412325D008ECAB0 /* AtomicBridgeView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		7582D3E2241256D9008ECAB0 /* WalletItemView */ = {
+			isa = PBXGroup;
+			children = (
+				7582D3DC241255A5008ECAB0 /* WalletItemView.swift */,
+				7582D3E02412569F008ECAB0 /* WalletItemViewModel.swift */,
+			);
+			path = WalletItemView;
+			sourceTree = "<group>";
+		};
+		7582D3E32412571F008ECAB0 /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				7582D3D824123240008ECAB0 /* WalletView.swift */,
+				7582D3E2241256D9008ECAB0 /* WalletItemView */,
+			);
+			path = Wallet;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,10 +309,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7582D3DD241255A5008ECAB0 /* WalletItemView.swift in Sources */,
 				7582D3A524123184008ECAB0 /* AppDelegate.swift in Sources */,
 				7582D3D924123240008ECAB0 /* WalletView.swift in Sources */,
+				7582D3E12412569F008ECAB0 /* WalletItemViewModel.swift in Sources */,
 				7582D3DB2412325D008ECAB0 /* AtomicBridgeView.swift in Sources */,
 				7582D3AA24123184008ECAB0 /* Portal.xcdatamodeld in Sources */,
+				7582D3DF24125641008ECAB0 /* MockData.swift in Sources */,
 				7582D3AC24123184008ECAB0 /* MainView.swift in Sources */,
 				7582D3A724123184008ECAB0 /* SceneDelegate.swift in Sources */,
 			);
