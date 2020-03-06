@@ -8,12 +8,12 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct MainView: View {
     @State private var selection = 0
  
     var body: some View {
         TabView(selection: $selection){
-            Text("First View")
+            WalletView()
                 .font(.title)
                 .tabItem {
                     VStack {
@@ -22,7 +22,7 @@ struct ContentView: View {
                     }
                 }
                 .tag(0)
-            Text("Second View")
+            AtomicBridgeView()
                 .font(.title)
                 .tabItem {
                     VStack {
@@ -37,6 +37,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainView()
     }
 }

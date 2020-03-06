@@ -10,12 +10,14 @@
 		7582D3A524123184008ECAB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3A424123184008ECAB0 /* AppDelegate.swift */; };
 		7582D3A724123184008ECAB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3A624123184008ECAB0 /* SceneDelegate.swift */; };
 		7582D3AA24123184008ECAB0 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3A824123184008ECAB0 /* Portal.xcdatamodeld */; };
-		7582D3AC24123184008ECAB0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3AB24123184008ECAB0 /* ContentView.swift */; };
+		7582D3AC24123184008ECAB0 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3AB24123184008ECAB0 /* MainView.swift */; };
 		7582D3AE24123185008ECAB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7582D3AD24123185008ECAB0 /* Assets.xcassets */; };
 		7582D3B124123185008ECAB0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7582D3B024123185008ECAB0 /* Preview Assets.xcassets */; };
 		7582D3B424123185008ECAB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7582D3B224123185008ECAB0 /* LaunchScreen.storyboard */; };
 		7582D3BF24123185008ECAB0 /* PortalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3BE24123185008ECAB0 /* PortalTests.swift */; };
 		7582D3CA24123185008ECAB0 /* PortalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3C924123185008ECAB0 /* PortalUITests.swift */; };
+		7582D3D924123240008ECAB0 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3D824123240008ECAB0 /* WalletView.swift */; };
+		7582D3DB2412325D008ECAB0 /* AtomicBridgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3DA2412325D008ECAB0 /* AtomicBridgeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +42,7 @@
 		7582D3A424123184008ECAB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7582D3A624123184008ECAB0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7582D3A924123184008ECAB0 /* Portal.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Portal.xcdatamodel; sourceTree = "<group>"; };
-		7582D3AB24123184008ECAB0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7582D3AB24123184008ECAB0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		7582D3AD24123185008ECAB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7582D3B024123185008ECAB0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7582D3B324123185008ECAB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -51,6 +53,8 @@
 		7582D3C524123185008ECAB0 /* PortalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PortalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7582D3C924123185008ECAB0 /* PortalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalUITests.swift; sourceTree = "<group>"; };
 		7582D3CB24123185008ECAB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7582D3D824123240008ECAB0 /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
+		7582D3DA2412325D008ECAB0 /* AtomicBridgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicBridgeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +107,7 @@
 			children = (
 				7582D3A424123184008ECAB0 /* AppDelegate.swift */,
 				7582D3A624123184008ECAB0 /* SceneDelegate.swift */,
-				7582D3AB24123184008ECAB0 /* ContentView.swift */,
+				7582D3D724123225008ECAB0 /* Views */,
 				7582D3AD24123185008ECAB0 /* Assets.xcassets */,
 				7582D3B224123185008ECAB0 /* LaunchScreen.storyboard */,
 				7582D3B524123185008ECAB0 /* Info.plist */,
@@ -137,6 +141,16 @@
 				7582D3CB24123185008ECAB0 /* Info.plist */,
 			);
 			path = PortalUITests;
+			sourceTree = "<group>";
+		};
+		7582D3D724123225008ECAB0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7582D3AB24123184008ECAB0 /* MainView.swift */,
+				7582D3D824123240008ECAB0 /* WalletView.swift */,
+				7582D3DA2412325D008ECAB0 /* AtomicBridgeView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,8 +285,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				7582D3A524123184008ECAB0 /* AppDelegate.swift in Sources */,
+				7582D3D924123240008ECAB0 /* WalletView.swift in Sources */,
+				7582D3DB2412325D008ECAB0 /* AtomicBridgeView.swift in Sources */,
 				7582D3AA24123184008ECAB0 /* Portal.xcdatamodeld in Sources */,
-				7582D3AC24123184008ECAB0 /* ContentView.swift in Sources */,
+				7582D3AC24123184008ECAB0 /* MainView.swift in Sources */,
 				7582D3A724123184008ECAB0 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,7 +466,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal.ios.Portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -470,7 +486,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal.ios.Portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
