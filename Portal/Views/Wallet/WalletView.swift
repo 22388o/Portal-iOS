@@ -9,19 +9,31 @@
 import SwiftUI
 
 struct WalletView: View {
+    @State private var showPortfolio = false
+    
     let viewModels: [WalletItemViewModel] = [
         BTC(),
         ETH(),
-        CoinMock()
+        CoinMock(),
+        BTC(),
+        ETH()
     ]
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Wallet")
-                .bold()
-            List(0 ..< viewModels.count) { index in
-                WalletItemView(viewModel: self.viewModels[index])
+            PieChartView()
+                .padding(.all, 80)
+                .onTapGesture {
+                    self.showPortfolio.toggle()
             }
+            
+            List(0 ..< viewModels.count) { index in
+                WalletItemView(viewModel: self.viewModels[index]).onTapGesture {
+                    self.showPortfolio.toggle()
+                }
+            }
+        }.sheet(isPresented: $showPortfolio) {
+            PortfolioView(showModal: self.$showPortfolio)
         }
     }
 }
