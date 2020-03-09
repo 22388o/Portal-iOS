@@ -18,7 +18,7 @@ struct AssetAllocationView: View {
     var body: some View {
         ZStack {
             Text("$" + String(viewModel.totalPortfolioValue)).font(.body)
-            PieChartViewUIKitWrapper(viewModel: viewModel)
+            PieChartUIKitWrapper(viewModel: viewModel)
         }
     }
 }
@@ -26,6 +26,6 @@ struct AssetAllocationView: View {
 struct AssetAllocationView_Previews: PreviewProvider {
     static var previews: some View {
         AssetAllocationView()
-            .frame(width: UIScreen.main.bounds.width, height: 200)
+            .frame(height: 200)
     }
 }

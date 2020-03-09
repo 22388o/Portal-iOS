@@ -1,5 +1,5 @@
 //
-//  PieChartViewUIKitWrapper.swift
+//  PieChartUIKitWrapper.swift
 //  Portal
 //
 //  Created by Farid on 08.03.2020.
@@ -9,8 +9,8 @@
 import SwiftUI
 import Charts
 
-struct PieChartViewUIKitWrapper: UIViewRepresentable {
-    let viewModel: PieChartViewModel
+struct PieChartUIKitWrapper: UIViewRepresentable {
+    let viewModel: PieChartViewModelProtocol
 
     init(viewModel: AssetAllocationViewModel = AssetAllocationViewModel(assets: WalletMock)) {
         self.viewModel = viewModel
@@ -26,9 +26,9 @@ struct PieChartViewUIKitWrapper: UIViewRepresentable {
     func updateUIView(_ uiView: PieChartView, context: Context) {}
 }
 
-struct PieChartViewUIKitWrapper_Previews: PreviewProvider  {
+struct PieChartUIKitWrapper_Previews: PreviewProvider  {
     static var previews: some View {
-        PieChartViewUIKitWrapper()
+        PieChartUIKitWrapper()
             .frame(width: UIScreen.main.bounds.width, height: 200, alignment: .center)
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 import Charts
 
-struct AssetAllocationViewModel: PieChartViewModel {
+struct AssetAllocationViewModel: PieChartViewModelProtocol {
     var assets: [WalletItemViewModel]
     
     init(assets: [WalletItemViewModel]) {

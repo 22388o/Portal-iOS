@@ -13,7 +13,7 @@ import SwiftUI
 extension Charts.PieChartView {
     func applyStandardSettings() {
         holeRadiusPercent = 0.85
-//        rotationAngle = 25
+        rotationAngle = 25
         holeColor = nil
         transparentCircleRadiusPercent = 0
         legend.enabled = false

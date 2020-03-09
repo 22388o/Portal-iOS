@@ -1,5 +1,5 @@
 //
-//  PieChartViewModel.swift
+//  PieChartViewModelProtocol.swift
 //  Portal
 //
 //  Created by Farid on 09.03.2020.
@@ -10,12 +10,13 @@ import Foundation
 import SwiftUI
 import Charts
 
-protocol PieChartViewModel {
+protocol PieChartViewModelProtocol {
     var assets: [WalletItemViewModel] { get }
 }
 
-extension PieChartViewModel {
+extension PieChartViewModelProtocol {
     var totalValueCurrency: Currency { .usd }
+    
     var totalPortfolioValue: Double {
         assets.map{ $0.value(currency: totalValueCurrency) }.reduce(0){ $0 + $1 }
     }

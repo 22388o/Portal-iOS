@@ -16,9 +16,9 @@ struct CoinDetailsView: View {
         VStack {
             Text("\(model.symbol) Details")
                 .padding()
-            Button("Dismiss") {
-                self.showModal.toggle()
-            }
+//            Button("Dismiss") {
+//                self.showModal.toggle()
+//            }
         }
     }
 }

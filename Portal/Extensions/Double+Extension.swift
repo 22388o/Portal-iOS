@@ -9,6 +9,9 @@
 import Foundation
 
 extension Double {
+    func dollarFormatted() -> String {
+        StringFormatter.localizedValueString(value: self, symbol: "$")
+    }
     func btcFormatted() -> String {
         roundToDecimal(3).toString() + " BTC"
     }
