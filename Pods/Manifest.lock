@@ -1,0 +1,24 @@
+PODS:
+  - Charts (3.1.1):
+    - Charts/Core (= 3.1.1)
+  - Charts/Core (3.1.1)
+
+DEPENDENCIES:
+  - Charts (from `https://github.com/danielgindi/Charts.git`, commit `97587d04ed51f4e38e3057da51867d8805995a56`)
+
+EXTERNAL SOURCES:
+  Charts:
+    :commit: 97587d04ed51f4e38e3057da51867d8805995a56
+    :git: https://github.com/danielgindi/Charts.git
+
+CHECKOUT OPTIONS:
+  Charts:
+    :commit: 97587d04ed51f4e38e3057da51867d8805995a56
+    :git: https://github.com/danielgindi/Charts.git
+
+SPEC CHECKSUMS:
+  Charts: 930dc1cb13a164e9e16bc3578826f3a26f0872f8
+
+PODFILE CHECKSUM: 032ed0e2bbca1b8031cbac7067b14a797966f8ea
+
+COCOAPODS: 1.8.4
