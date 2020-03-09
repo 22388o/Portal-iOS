@@ -12,11 +12,34 @@ struct PortfolioView: View {
     @Binding var showModal: Bool
     
     var body: some View {
-        VStack {
-            Text("Portfolio")
-                .padding()
-            Button("Dismiss") {
-                self.showModal.toggle()
+        GeometryReader { geometry in
+            VStack {
+                Text("Total portfolio value")
+                    .padding()
+                HStack(spacing: 20) {
+                    Button(action: {
+                        
+                    }) { Text("Hour") }
+                    Button(action: {
+                        
+                    }) { Text("Day") }
+                    Button(action: {
+                        
+                    }) { Text("Week") }
+                    Button(action: {
+                        
+                    }) { Text("Month") }
+                    Button(action: {
+                        
+                    }) { Text("Year") }
+                    Button(action: {
+                        
+                    }) { Text("All time") }
+                }
+                Spacer()
+                Button("Dismiss") {
+                    self.showModal.toggle()
+                }
             }
         }
     }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 protocol WalletItemViewModel {
     var name: String { get }
@@ -15,6 +16,9 @@ protocol WalletItemViewModel {
     var totalValue: String { get }
     var price: String { get }
     var change: String { get }
+    var color: UIColor { get }
+    
+    func value(currency: Currency) -> Double
 }
 
 extension WalletItemViewModel {
@@ -24,4 +28,9 @@ extension WalletItemViewModel {
     var totalValue: String { "Total Value" }
     var price: String { "Price" }
     var change: String { "Change" }
+    var color: UIColor { UIColor.clear }
+    func value(currency: Currency) -> Double {
+        Double(totalValue) ?? 0.0
+        //balance * marketData.price(currency: currency)
+    }
 }

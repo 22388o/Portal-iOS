@@ -26,9 +26,13 @@ struct WalletView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            PieChartView().padding(.all, 100).onTapGesture {
+            AssetAllocationView()
+                .frame(width: UIScreen.main.bounds.width, height: 180.0)
+                .padding(.bottom, -20)
+                .onTapGesture {
                 self.showPortfolio.toggle()
-            }.sheet(isPresented: $showPortfolio) {
+            }
+            .sheet(isPresented: $showPortfolio) {
                 PortfolioView(showModal: self.$showPortfolio)
             }
             
@@ -37,7 +41,9 @@ struct WalletView: View {
                     .onTapGesture {
                         self.curentItem = self.viewModels[index]
                 }
-            }.sheet(isPresented: self.$showCoinDetails) {
+            }
+            .padding(.top, -10)
+            .sheet(isPresented: self.$showCoinDetails) {
                 CoinDetailsView(showModal: self.$showCoinDetails, model: self.$curentItem)
             }
         }
