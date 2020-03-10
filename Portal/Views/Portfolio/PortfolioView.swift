@@ -26,79 +26,36 @@ struct PortfolioView: View {
     
     var body: some View {
         VStack {
-            Text("Total portfolio value")
-                .font(.headline)
-                .padding()
+            
+            AssetMarketValueView()
+                        
             HStack(spacing: 20) {
-                Button(action: {
-                    
-                }) { Text("Hour") }
-                Button(action: {
-                    
-                }) { Text("Day") }
-                Button(action: {
-                    
-                }) { Text("Week") }
-                Button(action: {
-                    
-                }) { Text("Month") }
-                Button(action: {
-                    
-                }) { Text("Year") }
-                Button(action: {
-                    
-                }) { Text("All time") }
-            }
-            
-            Spacer()
-                .frame(height: 20)
-            
-            HStack {
-                VStack {
-                    Text(viewModel.totalValue).font(.largeTitle)
-                    Text("Change")
-                }
-            }
-            
-            LineChartUIKitWrapper()
-                .frame(height: 150)
-            
-            Spacer()
-                .frame(height: 50)
-            
-            VStack(spacing: 40) {
-                HStack(spacing: 80) {
-                    VStack(spacing: 10) {
-                        Text("High")
-                        Text("$0.0")
-                    }
-                    VStack(spacing: 10) {
-                        Text("Low")
-                        Text("$0.0")
-                    }
+                VStack(spacing: 10) {
+                    Text("Best performing")
+                    Text("BTC")
                 }
                 
-                HStack(spacing: 20) {
-                    VStack(spacing: 10) {
-                        Text("Best performing")
-                        Text("BTC")
-                    }
-                    VStack(spacing: 10) {
-                        Text("Worst performing")
-                        Text("ETH")
-                    }
+                VStack(spacing: 10) {
+                    Text("Worst performing")
+                    Text("ETH")
                 }
             }
+            .padding()
             
-            Spacer()
-                .frame(height: 60)
+            Divider()
+                .padding(2)
             
-            Text("Asset allocation")
-                .font(.headline)
+            VStack {
+                Text("Asset allocation")
+                    .font(.headline)
+                    .padding(2)
+                
+                AssetAllocationView(showTotalValue: false)
+                    .frame(height: 150)
+            }
             
-            AssetAllocationView(showTotalValue: false)
-                .frame(height: 150)
         }
+        .padding(6)
     }
 }
 

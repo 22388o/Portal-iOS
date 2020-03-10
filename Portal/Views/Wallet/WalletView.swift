@@ -44,7 +44,7 @@ struct WalletView: View {
             }
             .padding(.top, -10)
             .sheet(isPresented: self.$showCoinDetails) {
-                CoinDetailsView(showModal: self.$showCoinDetails, model: self.$curentItem)
+                CoinView(showModal: self.$showCoinDetails, model: self.$curentItem)
             }
         }
     }
