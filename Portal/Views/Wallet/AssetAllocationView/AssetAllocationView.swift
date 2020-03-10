@@ -10,14 +10,21 @@ import SwiftUI
 
 struct AssetAllocationView: View {
     let viewModel: AssetAllocationViewModel
+    let showTotalValue: Bool
     
-    init(viewModel: AssetAllocationViewModel = AssetAllocationViewModel(assets: WalletMock)) {
+    init(
+        viewModel: AssetAllocationViewModel = AssetAllocationViewModel(assets: WalletMock),
+        showTotalValue: Bool = true
+    ) {
         self.viewModel = viewModel
+        self.showTotalValue = showTotalValue
     }
     
     var body: some View {
         ZStack {
-            Text("$" + String(viewModel.totalPortfolioValue)).font(.body)
+            if showTotalValue {
+                Text("$" + String(viewModel.totalPortfolioValue)).font(.body)
+            }
             PieChartUIKitWrapper(viewModel: viewModel)
         }
     }

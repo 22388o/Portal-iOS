@@ -10,11 +10,15 @@ import Foundation
 import Charts
 
 protocol PortfolioViewModelProtocol {
+    var totalValue: String { get }
     var assets: [WalletItemViewModel] { get }
     var marketData: [String: CoinMarketData] { set get }
 }
 
 extension PortfolioViewModelProtocol {
+    var totalValue: String {
+        "$" + String(assets.map{ $0.value(currency: .usd) }.reduce(0){ $0 + $1 }) 
+    }
     var selectedTimeframe: Timeframe { .hour }
     var marketData: [String: CoinMarketData] { [String: CoinMarketData]() }
     
