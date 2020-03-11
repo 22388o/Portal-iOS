@@ -41,7 +41,7 @@ struct CoinView: View {
                         Button("Receive") { self.showReceiveView.toggle() }
                             .modifier(PButtonStyle())
                             .sheet(isPresented: self.$showReceiveView) {
-                                ReceiveCoinView()
+                                ReceiveCoinView(viewModel: self.model)
                             }
                         Spacer()
                     }
@@ -97,10 +97,11 @@ struct PButtonStyle: ViewModifier {
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding(8)
             .background(Color.purple)
-            .cornerRadius(8)
+            .cornerRadius(18)
+            .font(.custom("Avenir-Medium", size: 16))
             .foregroundColor(.white)
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 18)
                     .stroke(Color.purple, lineWidth: 1)
             )
     }
