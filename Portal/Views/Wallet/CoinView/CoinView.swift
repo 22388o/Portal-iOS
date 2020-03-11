@@ -35,13 +35,13 @@ struct CoinView: View {
                         Button("Send") { self.showSendView.toggle() }
                             .modifier(PButtonStyle())
                             .sheet(isPresented: self.$showSendView) {
-                                CoinView(model: self.$model)
+                                SendCoinView()
                             }
                         Spacer()
                         Button("Receive") { self.showReceiveView.toggle() }
                             .modifier(PButtonStyle())
                             .sheet(isPresented: self.$showReceiveView) {
-                                CoinView(model: self.$model)
+                                ReceiveCoinView()
                             }
                         Spacer()
                     }
@@ -51,7 +51,7 @@ struct CoinView: View {
                         Button("Send to exchange") { self.showSendToExchangeView.toggle() }
                             .modifier(PButtonStyle())
                             .sheet(isPresented: self.$showSendToExchangeView) {
-                                CoinView(model: self.$model)
+                                SendToExchangeView()
                             }
                         Spacer()
                     }
@@ -61,7 +61,7 @@ struct CoinView: View {
                         Button("Withdraw") { self.showWithdrawView.toggle() }
                             .modifier(PButtonStyle())
                             .sheet(isPresented: self.$showWithdrawView) {
-                                CoinView(model: self.$model)
+                                WithdrawCoinView()
                             }
                         Spacer()
                     }
