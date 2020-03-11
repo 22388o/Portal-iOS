@@ -26,10 +26,12 @@ struct PieChartUIKitWrapper: UIViewRepresentable {
     func updateUIView(_ uiView: PieChartView, context: Context) {}
 }
 
+#if DEBUG
 struct PieChartUIKitWrapper_Previews: PreviewProvider  {
     static var previews: some View {
         PieChartUIKitWrapper()
             .frame(width: UIScreen.main.bounds.width, height: 200, alignment: .center)
     }
 }
+#endif
 

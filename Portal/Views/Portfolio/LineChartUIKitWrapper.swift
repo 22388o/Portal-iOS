@@ -42,9 +42,11 @@ struct LineChartUIKitWrapper: UIViewRepresentable {
     func updateUIView(_ uiView: LineChartView, context: Context) {}
 }
 
+#if DEBUG
 struct LineChartUIKitWrapper_Previews: PreviewProvider {
     static var previews: some View {
         LineChartUIKitWrapper()
             .frame(width: UIScreen.main.bounds.width, height: 150)
     }
 }
+#endif

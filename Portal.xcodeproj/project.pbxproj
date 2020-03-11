@@ -245,7 +245,7 @@
 				7582D3D824123240008ECAB0 /* WalletView.swift */,
 				7582D3FD24162062008ECAB0 /* AssetAllocationView */,
 				7582D3E2241256D9008ECAB0 /* WalletItemView */,
-				7582D3F024126B5F008ECAB0 /* CoinView.swift */,
+				7582D4172418C618008ECAB0 /* CoinView */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -283,10 +283,9 @@
 		7582D3FD24162062008ECAB0 /* AssetAllocationView */ = {
 			isa = PBXGroup;
 			children = (
+				7582D4162418BAC5008ECAB0 /* ViewModels */,
 				7582D3FB24161EB5008ECAB0 /* AssetAllocationView.swift */,
-				7582D3FE241620A3008ECAB0 /* AssetAllocationViewModel.swift */,
 				7582D3F22414B0A1008ECAB0 /* PieChartUIKitWrapper.swift */,
-				7582D3F4241619CA008ECAB0 /* PieChartViewModel.swift */,
 			);
 			path = AssetAllocationView;
 			sourceTree = "<group>";
@@ -308,6 +307,23 @@
 				7582D40C24167A87008ECAB0 /* StringFormatter.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		7582D4162418BAC5008ECAB0 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				7582D3FE241620A3008ECAB0 /* AssetAllocationViewModel.swift */,
+				7582D3F4241619CA008ECAB0 /* PieChartViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		7582D4172418C618008ECAB0 /* CoinView */ = {
+			isa = PBXGroup;
+			children = (
+				7582D3F024126B5F008ECAB0 /* CoinView.swift */,
+			);
+			path = CoinView;
 			sourceTree = "<group>";
 		};
 		BD02C9DB3347F314E532AFFB /* Frameworks */ = {

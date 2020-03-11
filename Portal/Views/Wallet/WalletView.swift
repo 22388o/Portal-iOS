@@ -9,12 +9,12 @@
 import SwiftUI
 
 struct WalletView: View {
-    @State private var showPortfolio = false
-    @State private var showCoinDetails = false
+    @State private var showPortfolioView = false
+    @State private var showCoinView = false
     
     @State private var curentItem: WalletItemViewModel = CoinMock() {
         didSet {
-            showCoinDetails.toggle()
+            showCoinView.toggle()
         }
     }
     
@@ -30,10 +30,10 @@ struct WalletView: View {
                 .frame(width: UIScreen.main.bounds.width, height: 180.0)
                 .padding(.bottom, -20)
                 .onTapGesture {
-                self.showPortfolio.toggle()
+                self.showPortfolioView.toggle()
             }
-            .sheet(isPresented: $showPortfolio) {
-                PortfolioView(showModal: self.$showPortfolio)
+            .sheet(isPresented: $showPortfolioView) {
+                PortfolioView(showModal: self.$showPortfolioView)
             }
             
             List(0 ..< viewModels.count) { index in
@@ -43,15 +43,17 @@ struct WalletView: View {
                 }
             }
             .padding(.top, -10)
-            .sheet(isPresented: self.$showCoinDetails) {
-                CoinView(showModal: self.$showCoinDetails, model: self.$curentItem)
+            .sheet(isPresented: self.$showCoinView) {
+                CoinView(model: self.$curentItem)
             }
         }
     }
 }
 
+#if DEBUG
 struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
         WalletView(wallet: WalletMock)
     }
 }
+#endif

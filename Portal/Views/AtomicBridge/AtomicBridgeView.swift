@@ -14,8 +14,10 @@ struct AtomicBridgeView: View {
     }
 }
 
+#if DEBUG
 struct AtomicBridgeView_Previews: PreviewProvider {
     static var previews: some View {
         AtomicBridgeView()
     }
 }
+#endif

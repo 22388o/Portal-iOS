@@ -59,8 +59,10 @@ struct PortfolioView: View {
     }
 }
 
+#if DEBUG
 struct PortfolioView_Previews: PreviewProvider {
     static var previews: some View {
         PortfolioView(showModal: .constant(true))
     }
 }
+#endif

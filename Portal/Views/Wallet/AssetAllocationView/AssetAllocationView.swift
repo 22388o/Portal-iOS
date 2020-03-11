@@ -30,9 +30,11 @@ struct AssetAllocationView: View {
     }
 }
 
+#if DEBUG
 struct AssetAllocationView_Previews: PreviewProvider {
     static var previews: some View {
         AssetAllocationView()
             .frame(height: 200)
     }
 }
+#endif

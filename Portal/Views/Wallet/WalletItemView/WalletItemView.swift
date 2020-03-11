@@ -57,8 +57,10 @@ struct WalletItemView: View {
     }
 }
 
+#if DEBUG
 struct WalletItemView_Previews: PreviewProvider {
     static var previews: some View {
         WalletItemView(viewModel: CoinMock())
     }
 }
+#endif

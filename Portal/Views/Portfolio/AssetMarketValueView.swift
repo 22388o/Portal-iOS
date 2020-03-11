@@ -62,8 +62,10 @@ struct AssetMarketValueView: View {
     }
 }
 
+#if DEBUG
 struct AssetMarketValueView_Previews: PreviewProvider {
     static var previews: some View {
         AssetMarketValueView()
     }
 }
+#endif
