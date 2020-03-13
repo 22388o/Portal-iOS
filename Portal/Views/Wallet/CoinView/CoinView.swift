@@ -84,7 +84,7 @@ struct CoinView: View {
             
             Spacer()
             
-            AssetMarketValueView()
+            AssetMarketValueView(type: .asset)
         }
         .padding(4)
     }

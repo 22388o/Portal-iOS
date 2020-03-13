@@ -20,7 +20,7 @@ extension Charts.PieChartView {
         chartDescription.enabled = false
         noDataText = "No coins in the wallet"
         transparentCircleColor = UIColor.clear
-        noDataTextColor = UIColor(white: 0.3, alpha: 0.4)
+        noDataTextColor = UIColor(white: 1, alpha: 0.4)
         noDataFont = UIFont(name: "Avenir-Medium", size: 12.0)!
         extraTopOffset = 10
         extraBottomOffset = 15
@@ -35,8 +35,8 @@ extension Charts.PieChartDataSet {
         sliceSpace = 7
         xValuePosition = .outsideSlice
         yValuePosition = .outsideSlice
-        valueTextColor = UIColor(white: 0.3, alpha: 0.6)
-        valueLineColor = UIColor(white: 0.3, alpha: 0.6)
+        valueTextColor = UIColor(white: 1, alpha: 0.6)
+        valueLineColor = UIColor(white: 1, alpha: 0.6)
         entryLabelFont = UIFont(name: "Avenir-Medium", size: 12.0)!
         valueLineWidth = 2.5
         valueLinePart1OffsetPercentage = 1.5

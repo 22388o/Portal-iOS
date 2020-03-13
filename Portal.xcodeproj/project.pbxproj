@@ -45,6 +45,7 @@
 		7582D41B2418C7A9008ECAB0 /* ReceiveCoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D41A2418C7A9008ECAB0 /* ReceiveCoinView.swift */; };
 		7582D41D2418C7CD008ECAB0 /* SendToExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D41C2418C7CD008ECAB0 /* SendToExchangeView.swift */; };
 		7582D41F2418C7DB008ECAB0 /* WithdrawCoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D41E2418C7DB008ECAB0 /* WithdrawCoinView.swift */; };
+		7582D422241BAE62008ECAB0 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D421241BAE61008ECAB0 /* Color+Extension.swift */; };
 		AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A724453451E80046E8FED853 /* Pods_Portal.framework */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +114,7 @@
 		7582D41A2418C7A9008ECAB0 /* ReceiveCoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCoinView.swift; sourceTree = "<group>"; };
 		7582D41C2418C7CD008ECAB0 /* SendToExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToExchangeView.swift; sourceTree = "<group>"; };
 		7582D41E2418C7DB008ECAB0 /* WithdrawCoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawCoinView.swift; sourceTree = "<group>"; };
+		7582D421241BAE61008ECAB0 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		A724453451E80046E8FED853 /* Pods_Portal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9F3C87C7A686EE907BC034F /* Pods-Portal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal.release.xcconfig"; path = "Target Support Files/Pods-Portal/Pods-Portal.release.xcconfig"; sourceTree = "<group>"; };
 		E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal_PortalUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -284,6 +286,7 @@
 				7582D3F824161ABA008ECAB0 /* PieChart+Extension.swift */,
 				7582D4022416735F008ECAB0 /* LineChart+Extension.swift */,
 				7582D40E24167AAE008ECAB0 /* Date+Extension.swift */,
+				7582D421241BAE61008ECAB0 /* Color+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -618,6 +621,7 @@
 				7582D3F32414B0A1008ECAB0 /* PieChartUIKitWrapper.swift in Sources */,
 				7582D40524167417008ECAB0 /* PortfolioViewModelProtocol.swift in Sources */,
 				7582D41F2418C7DB008ECAB0 /* WithdrawCoinView.swift in Sources */,
+				7582D422241BAE62008ECAB0 /* Color+Extension.swift in Sources */,
 				7582D3AC24123184008ECAB0 /* MainView.swift in Sources */,
 				7582D3F124126B60008ECAB0 /* CoinView.swift in Sources */,
 				7582D41124167AE9008ECAB0 /* FiatCurrency.swift in Sources */,
