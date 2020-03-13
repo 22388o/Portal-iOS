@@ -10,27 +10,35 @@ import SwiftUI
 
 struct MainView: View {
     @State private var selection = 0
+    
+    init() {
+        UITabBar.appearance().barTintColor = UIColor(white: 0, alpha: 0.1)
+//        UITabBar.appearance().unselectedItemTintColor = UIColor.red
+    }
  
     var body: some View {
-        TabView(selection: $selection){
-            WalletView()
-                .font(.title)
-                .tabItem {
-                    VStack {
-                        Image("first")
-                        Text("Wallet")
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            
+            TabView(selection: $selection) {
+                WalletView()
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "1.square.fill")
+                            Text("Wallet")
+                        }
                     }
-                }
-                .tag(0)
-            AtomicBridgeView()
-                .font(.title)
-                .tabItem {
-                    VStack {
-                        Image("second")
-                        Text("Atomic Bridge")
+                    .tag(0)
+                AtomicBridgeView()
+//                    .font(.title)
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "2.square.fill")
+                            Text("Atomic Bridge")
+                        }
                     }
-                }
-                .tag(1)
+                    .tag(1)
+            }
         }
     }
 }

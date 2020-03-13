@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -46,6 +46,7 @@
 		7582D41D2418C7CD008ECAB0 /* SendToExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D41C2418C7CD008ECAB0 /* SendToExchangeView.swift */; };
 		7582D41F2418C7DB008ECAB0 /* WithdrawCoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D41E2418C7DB008ECAB0 /* WithdrawCoinView.swift */; };
 		7582D422241BAE62008ECAB0 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D421241BAE61008ECAB0 /* Color+Extension.swift */; };
+		7582D425241BDCA4008ECAB0 /* QGrid in Frameworks */ = {isa = PBXBuildFile; productRef = 7582D424241BDCA4008ECAB0 /* QGrid */; };
 		AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A724453451E80046E8FED853 /* Pods_Portal.framework */; };
 /* End PBXBuildFile section */
 
@@ -126,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7582D425241BDCA4008ECAB0 /* QGrid in Frameworks */,
 				AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,6 +379,9 @@
 			dependencies = (
 			);
 			name = Portal;
+			packageProductDependencies = (
+				7582D424241BDCA4008ECAB0 /* QGrid */,
+			);
 			productName = Portal;
 			productReference = 7582D3A124123184008ECAB0 /* Portal.app */;
 			productType = "com.apple.product-type.application";
@@ -452,6 +457,9 @@
 				Base,
 			);
 			mainGroup = 7582D39824123184008ECAB0;
+			packageReferences = (
+				7582D423241BDCA4008ECAB0 /* XCRemoteSwiftPackageReference "QGrid" */,
+			);
 			productRefGroup = 7582D3A224123184008ECAB0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -960,6 +968,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7582D423241BDCA4008ECAB0 /* XCRemoteSwiftPackageReference "QGrid" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Q-Mobile/QGrid";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7582D424241BDCA4008ECAB0 /* QGrid */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7582D423241BDCA4008ECAB0 /* XCRemoteSwiftPackageReference "QGrid" */;
+			productName = QGrid;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		7582D3A824123184008ECAB0 /* Portal.xcdatamodeld */ = {

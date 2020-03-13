@@ -51,9 +51,10 @@ struct WalletItemView: View {
             }
             .padding()
         }
-        .padding([.trailing], 4)
+//        .padding([.trailing], 4)
         .background(Color.black.opacity(0.1))
         .cornerRadius(16)
+//        .padding([.trailing, .leading], 10)
     }
 }
 

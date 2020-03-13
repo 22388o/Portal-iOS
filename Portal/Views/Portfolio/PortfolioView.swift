@@ -24,13 +24,9 @@ struct PortfolioView: View {
     
     let viewModel: PortfolioViewModel = PortfolioViewModel()
     
-    let topColor = Color(red: 0.0/255.0, green: 92.0/255.0, blue: 142.0/255.0)
-    let bottomColor = Color(red: 85.0/255.0, green: 148.0/255.0, blue: 174.0/255.0)
-    
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [topColor, bottomColor]), startPoint: .top, endPoint: .bottom)
-            Color.black.opacity(0.58)
+            Color.portalBackground
             
             VStack {
                 

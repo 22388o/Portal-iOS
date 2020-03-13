@@ -22,29 +22,35 @@ struct WalletView: View {
     
     init(wallet: [WalletItemViewModel] = WalletMock) {
         viewModels = wallet
+        
+        UITableView.appearance().backgroundColor = .clear
+        UITableView.appearance().separatorColor = .clear
     }
     
     var body: some View {
-        VStack(spacing: 20) {
-            AssetAllocationView()
-                .frame(width: UIScreen.main.bounds.width, height: 180.0)
-                .padding(.bottom, -20)
-                .onTapGesture {
-                self.showPortfolioView.toggle()
-            }
-            .sheet(isPresented: $showPortfolioView) {
-                PortfolioView(showModal: self.$showPortfolioView)
-            }
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
             
-            List(0 ..< viewModels.count) { index in
-                WalletItemView(viewModel: self.viewModels[index])
+            VStack(spacing: 20) {
+                AssetAllocationView()
+                    .frame(width: UIScreen.main.bounds.width, height: 180.0)
+                    .padding(.bottom, -20)
                     .onTapGesture {
-                        self.curentItem = self.viewModels[index]
+                    self.showPortfolioView.toggle()
                 }
-            }
-            .padding(.top, -10)
-            .sheet(isPresented: self.$showCoinView) {
-                CoinView(model: self.$curentItem)
+                .sheet(isPresented: $showPortfolioView) {
+                    PortfolioView(showModal: self.$showPortfolioView)
+                }
+                List(0 ..< viewModels.count) { index in
+                    WalletItemView(viewModel: self.viewModels[index])
+                        .onTapGesture {
+                            self.curentItem = self.viewModels[index]
+                    }
+                }
+                .padding([.trailing, .leading], -5)
+                .sheet(isPresented: self.$showCoinView) {
+                    CoinView(model: self.$curentItem)
+                }
             }
         }
     }
