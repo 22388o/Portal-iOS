@@ -47,6 +47,8 @@
 		7582D41F2418C7DB008ECAB0 /* WithdrawCoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D41E2418C7DB008ECAB0 /* WithdrawCoinView.swift */; };
 		7582D422241BAE62008ECAB0 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D421241BAE61008ECAB0 /* Color+Extension.swift */; };
 		7582D425241BDCA4008ECAB0 /* QGrid in Frameworks */ = {isa = PBXBuildFile; productRef = 7582D424241BDCA4008ECAB0 /* QGrid */; };
+		7582D429241FD9F0008ECAB0 /* TransactionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */; };
+		7582D42B241FDA87008ECAB0 /* AlertsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D42A241FDA87008ECAB0 /* AlertsListView.swift */; };
 		AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A724453451E80046E8FED853 /* Pods_Portal.framework */; };
 /* End PBXBuildFile section */
 
@@ -116,6 +118,8 @@
 		7582D41C2418C7CD008ECAB0 /* SendToExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToExchangeView.swift; sourceTree = "<group>"; };
 		7582D41E2418C7DB008ECAB0 /* WithdrawCoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawCoinView.swift; sourceTree = "<group>"; };
 		7582D421241BAE61008ECAB0 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
+		7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsListView.swift; sourceTree = "<group>"; };
+		7582D42A241FDA87008ECAB0 /* AlertsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsListView.swift; sourceTree = "<group>"; };
 		A724453451E80046E8FED853 /* Pods_Portal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9F3C87C7A686EE907BC034F /* Pods-Portal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal.release.xcconfig"; path = "Target Support Files/Pods-Portal/Pods-Portal.release.xcconfig"; sourceTree = "<group>"; };
 		E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal_PortalUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -335,6 +339,8 @@
 			isa = PBXGroup;
 			children = (
 				7582D3F024126B5F008ECAB0 /* CoinView.swift */,
+				7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */,
+				7582D42A241FDA87008ECAB0 /* AlertsListView.swift */,
 				7582D4202418C7E3008ECAB0 /* ModalViews */,
 			);
 			path = CoinView;
@@ -608,6 +614,7 @@
 			files = (
 				7582D40F24167AAE008ECAB0 /* Date+Extension.swift in Sources */,
 				7582D3DD241255A5008ECAB0 /* WalletItemView.swift in Sources */,
+				7582D429241FD9F0008ECAB0 /* TransactionsListView.swift in Sources */,
 				7582D41D2418C7CD008ECAB0 /* SendToExchangeView.swift in Sources */,
 				7582D3A524123184008ECAB0 /* AppDelegate.swift in Sources */,
 				7582D3F724161A34008ECAB0 /* Double+Extension.swift in Sources */,
@@ -636,6 +643,7 @@
 				7582D40D24167A87008ECAB0 /* StringFormatter.swift in Sources */,
 				7582D3FF241620A3008ECAB0 /* AssetAllocationViewModel.swift in Sources */,
 				7582D3A724123184008ECAB0 /* SceneDelegate.swift in Sources */,
+				7582D42B241FDA87008ECAB0 /* AlertsListView.swift in Sources */,
 				7582D3F924161ABA008ECAB0 /* PieChart+Extension.swift in Sources */,
 				7582D3F5241619CA008ECAB0 /* PieChartViewModel.swift in Sources */,
 			);

@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+enum CoinViewRoute {
+    case value, transactions, alerts
+}
+
 struct CoinView: View {
     @Binding var model: WalletItemViewModel
     
@@ -15,6 +19,8 @@ struct CoinView: View {
     @State var showReceiveView = false
     @State var showSendToExchangeView = false
     @State var showWithdrawView = false
+    
+    @State var route: CoinViewRoute = .value
     
     var body: some View {
         VStack() {
@@ -77,19 +83,47 @@ struct CoinView: View {
             
             Spacer()
                         
-            HStack(alignment: .center, spacing: 60) {
-                Button(action: {}) { Text("Value") }
-                Button(action: {}) { Text("Transactions") }
-                Button(action: {}) { Text("Alerts") }
+            HStack(alignment: .center) {
+                Button(action: { self.route = .value }) {
+                    Text("Value")
+                        .font(.custom("Avenir-Medium", size: 15))
+                        .foregroundColor(route == .value ? Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
+                }
+                .frame(width: 110)
+                
+                Button(action: { self.route = .transactions }) {
+                    Text("Transactions")
+                        .font(.custom("Avenir-Medium", size: 15))
+                        .foregroundColor(route == .transactions ? Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
+                }
+                .frame(width: 110)
+                
+                Button(action: { self.route = .alerts }) {
+                    Text("Alerts")
+                        .font(.custom("Avenir-Medium", size: 15))
+                        .foregroundColor(route == .alerts ? Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
+                }
+                .frame(width: 110)
             }
             
-            Divider()
+            Divider().frame(width: UIScreen.main.bounds.width - 50)
             
             Spacer()
             
-            AssetMarketValueView(type: .asset)
+            containedView()
         }
         .padding(4)
+    }
+    
+    private func containedView() -> AnyView {
+        switch self.route {
+        case .value:
+            return AnyView(AssetMarketValueView(type: .asset))
+        case .transactions:
+            return AnyView(TransactionsListView().frame(maxHeight: .infinity))
+        case .alerts:
+            return AnyView(AlertsListView().frame(maxHeight: .infinity))
+        }
     }
     
 }
@@ -99,13 +133,13 @@ struct PButtonStyle: ViewModifier {
         content
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding(8)
-            .background(Color.assetViewButtonColor)
+            .background(Color.assetViewButton)
             .cornerRadius(18)
             .font(.custom("Avenir-Medium", size: 16))
             .foregroundColor(.white)
             .overlay(
                 RoundedRectangle(cornerRadius: 18)
-                    .stroke(Color.assetViewButtonColor, lineWidth: 1)
+                    .stroke(Color.assetViewButton, lineWidth: 1)
             )
     }
 }
