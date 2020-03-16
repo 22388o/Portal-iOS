@@ -28,6 +28,9 @@ extension Color {
     static var gradientBottom: Color {
         Color(red: 85.0/255.0, green: 148.0/255.0, blue: 174.0/255.0)
     }
+    static var assetViewButtonColor: Color {
+        Color(red: 8.0/255.0, green: 137.0/255.0, blue: 206.0/255.0)
+    }
     
     static var portalBackground: some View {
         ZStack {

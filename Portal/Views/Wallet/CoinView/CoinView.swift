@@ -23,10 +23,13 @@ struct CoinView: View {
                     HStack {
                         Image("first")
                         Text("\(model.name)")
+                            .font(.custom("Avenir-Medium", size: 15))
+                            .foregroundColor(Color.lightActiveLabel)
                     }
                     
                     Text("\(model.amount)")
-                        .font(.title)
+                        .font(.custom("Avenir-Medium", size: 28))
+                        .foregroundColor(Color.assetValueLabel)
                 }
                                 
                 VStack(spacing: 8) {
@@ -96,13 +99,13 @@ struct PButtonStyle: ViewModifier {
         content
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding(8)
-            .background(Color.purple)
+            .background(Color.assetViewButtonColor)
             .cornerRadius(18)
             .font(.custom("Avenir-Medium", size: 16))
             .foregroundColor(.white)
             .overlay(
                 RoundedRectangle(cornerRadius: 18)
-                    .stroke(Color.purple, lineWidth: 1)
+                    .stroke(Color.assetViewButtonColor, lineWidth: 1)
             )
     }
 }
