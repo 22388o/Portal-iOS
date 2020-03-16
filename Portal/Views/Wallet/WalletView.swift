@@ -7,6 +7,17 @@
 //
 
 import SwiftUI
+import QGrid
+
+struct CoinAdapter: Identifiable {
+    let id: String
+    let coin: WalletItemViewModel
+
+    init(_ coin: WalletItemViewModel) {
+        self.coin = coin
+        self.id = coin.name
+    }
+}
 
 struct WalletView: View {
     @State private var showPortfolioView = false
@@ -22,9 +33,6 @@ struct WalletView: View {
     
     init(wallet: [WalletItemViewModel] = WalletMock) {
         viewModels = wallet
-        
-        UITableView.appearance().backgroundColor = .clear
-        UITableView.appearance().separatorColor = .clear
     }
     
     var body: some View {
@@ -41,13 +49,14 @@ struct WalletView: View {
                 .sheet(isPresented: $showPortfolioView) {
                     PortfolioView(showModal: self.$showPortfolioView)
                 }
-                List(0 ..< viewModels.count) { index in
-                    WalletItemView(viewModel: self.viewModels[index])
+                
+                QGrid(viewModels.map{CoinAdapter($0)}, columns: 1) { adapter in
+                    WalletItemView(viewModel: adapter.coin)
                         .onTapGesture {
-                            self.curentItem = self.viewModels[index]
+                            self.curentItem = adapter.coin
                     }
                 }
-                .padding([.trailing, .leading], -5)
+                .padding(.bottom, -10)
                 .sheet(isPresented: self.$showCoinView) {
                     CoinView(model: self.$curentItem)
                 }

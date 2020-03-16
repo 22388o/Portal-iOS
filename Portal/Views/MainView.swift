@@ -13,7 +13,6 @@ struct MainView: View {
     
     init() {
         UITabBar.appearance().barTintColor = UIColor(white: 0, alpha: 0.1)
-//        UITabBar.appearance().unselectedItemTintColor = UIColor.red
     }
  
     var body: some View {
@@ -30,7 +29,6 @@ struct MainView: View {
                     }
                     .tag(0)
                 AtomicBridgeView()
-//                    .font(.title)
                     .tabItem {
                         VStack {
                             Image(systemName: "2.square.fill")
