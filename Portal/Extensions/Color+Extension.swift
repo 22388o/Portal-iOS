@@ -37,6 +37,9 @@ extension Color {
     static var coinViewRouteButtonInactive: Color {
         Color(red: 171.0/255.0, green: 176.0/255.0, blue: 183.0/255.0)
     }
+    static var txListTxType: Color {
+        Color(red: 7.0/255.0, green: 123.0/255.0, blue: 184.0/255.0)
+    }
     
     static var portalBackground: some View {
         ZStack {

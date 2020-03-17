@@ -49,6 +49,7 @@
 		7582D425241BDCA4008ECAB0 /* QGrid in Frameworks */ = {isa = PBXBuildFile; productRef = 7582D424241BDCA4008ECAB0 /* QGrid */; };
 		7582D429241FD9F0008ECAB0 /* TransactionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */; };
 		7582D42B241FDA87008ECAB0 /* AlertsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D42A241FDA87008ECAB0 /* AlertsListView.swift */; };
+		7582D42F2420C7BF008ECAB0 /* TransactionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D42E2420C7BF008ECAB0 /* TransactionListItemView.swift */; };
 		AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A724453451E80046E8FED853 /* Pods_Portal.framework */; };
 /* End PBXBuildFile section */
 
@@ -120,6 +121,7 @@
 		7582D421241BAE61008ECAB0 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsListView.swift; sourceTree = "<group>"; };
 		7582D42A241FDA87008ECAB0 /* AlertsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsListView.swift; sourceTree = "<group>"; };
+		7582D42E2420C7BF008ECAB0 /* TransactionListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListItemView.swift; sourceTree = "<group>"; };
 		A724453451E80046E8FED853 /* Pods_Portal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9F3C87C7A686EE907BC034F /* Pods-Portal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal.release.xcconfig"; path = "Target Support Files/Pods-Portal/Pods-Portal.release.xcconfig"; sourceTree = "<group>"; };
 		E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal_PortalUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -339,8 +341,8 @@
 			isa = PBXGroup;
 			children = (
 				7582D3F024126B5F008ECAB0 /* CoinView.swift */,
-				7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */,
-				7582D42A241FDA87008ECAB0 /* AlertsListView.swift */,
+				7582D42C2420C5D2008ECAB0 /* Transactions */,
+				7582D42D2420C5E2008ECAB0 /* Alerts */,
 				7582D4202418C7E3008ECAB0 /* ModalViews */,
 			);
 			path = CoinView;
@@ -355,6 +357,23 @@
 				7582D41E2418C7DB008ECAB0 /* WithdrawCoinView.swift */,
 			);
 			path = ModalViews;
+			sourceTree = "<group>";
+		};
+		7582D42C2420C5D2008ECAB0 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */,
+				7582D42E2420C7BF008ECAB0 /* TransactionListItemView.swift */,
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		7582D42D2420C5E2008ECAB0 /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				7582D42A241FDA87008ECAB0 /* AlertsListView.swift */,
+			);
+			path = Alerts;
 			sourceTree = "<group>";
 		};
 		BD02C9DB3347F314E532AFFB /* Frameworks */ = {
@@ -645,6 +664,7 @@
 				7582D3A724123184008ECAB0 /* SceneDelegate.swift in Sources */,
 				7582D42B241FDA87008ECAB0 /* AlertsListView.swift in Sources */,
 				7582D3F924161ABA008ECAB0 /* PieChart+Extension.swift in Sources */,
+				7582D42F2420C7BF008ECAB0 /* TransactionListItemView.swift in Sources */,
 				7582D3F5241619CA008ECAB0 /* PieChartViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

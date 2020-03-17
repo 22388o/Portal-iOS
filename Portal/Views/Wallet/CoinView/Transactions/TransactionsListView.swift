@@ -11,7 +11,10 @@ import SwiftUI
 struct TransactionsListView: View {
     var body: some View {
         VStack {
-            Text("Transactions")
+            List(0 ..< 20) { index in
+                TransactionListItemView()
+            }
+            .padding(.top, -8)
         }
     }
 }

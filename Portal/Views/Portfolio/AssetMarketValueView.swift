@@ -78,7 +78,7 @@ struct AssetMarketValueView: View {
             
             LineChartUIKitWrapper()
                 .frame(height: 150)
-                .padding()
+                .padding([.leading, .trailing])
             
             HStack(spacing: 80) {
                 VStack(spacing: 10) {
@@ -103,7 +103,7 @@ struct AssetMarketValueView: View {
                 .padding()
             }
         }
-        .frame(minWidth: 0, maxWidth: .infinity)
+        .frame(maxWidth: .infinity)
     }
 }
 

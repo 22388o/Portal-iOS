@@ -37,6 +37,7 @@ struct CoinView: View {
                         .font(.custom("Avenir-Medium", size: 28))
                         .foregroundColor(Color.assetValueLabel)
                 }
+                .frame(height: 75)
                                 
                 VStack(spacing: 8) {
                     HStack() {
@@ -76,10 +77,10 @@ struct CoinView: View {
                     }
 
                 }
-                .padding(-5)
+                .padding([.leading, .trailing], -10)
                 
             }
-            .padding()
+            .padding([.leading, .trailing], 20)
             
             Spacer()
                         
@@ -105,14 +106,15 @@ struct CoinView: View {
                 }
                 .frame(width: 110)
             }
+            .padding(.top, 12)
             
-            Divider().frame(width: UIScreen.main.bounds.width - 50)
-            
-            Spacer()
-            
+            Divider()
+                .frame(width: UIScreen.main.bounds.width - 50)
+                        
             containedView()
+                .frame(maxHeight: .infinity)
         }
-        .padding(4)
+        .padding(.top, 25)
     }
     
     private func containedView() -> AnyView {
@@ -120,9 +122,9 @@ struct CoinView: View {
         case .value:
             return AnyView(AssetMarketValueView(type: .asset))
         case .transactions:
-            return AnyView(TransactionsListView().frame(maxHeight: .infinity))
+            return AnyView(TransactionsListView())
         case .alerts:
-            return AnyView(AlertsListView().frame(maxHeight: .infinity))
+            return AnyView(AlertsListView())
         }
     }
     
