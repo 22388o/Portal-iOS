@@ -9,10 +9,12 @@
 import SwiftUI
 
 struct TransactionsListView: View {
+    @Binding var model: WalletItemViewModel
+    
     var body: some View {
         VStack {
             List(0 ..< 20) { index in
-                TransactionListItemView()
+                TransactionListItemView(symbol: self.model.symbol)
             }
             .padding(.top, -8)
         }
@@ -22,7 +24,7 @@ struct TransactionsListView: View {
 #if DEBUG
 struct TransactionsPreviewView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionsListView()
+        TransactionsListView(model: .constant(CoinMock()))
     }
 }
 #endif

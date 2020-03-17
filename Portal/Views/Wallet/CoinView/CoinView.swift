@@ -122,7 +122,7 @@ struct CoinView: View {
         case .value:
             return AnyView(AssetMarketValueView(type: .asset))
         case .transactions:
-            return AnyView(TransactionsListView())
+            return AnyView(TransactionsListView(model: $model))
         case .alerts:
             return AnyView(AlertsListView())
         }

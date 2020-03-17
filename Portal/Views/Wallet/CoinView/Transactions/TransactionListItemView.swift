@@ -9,6 +9,12 @@
 import SwiftUI
 
 struct TransactionListItemView: View {
+    var symbol: String
+    
+    init(symbol: String) {
+        self.symbol = symbol
+    }
+    
     var body: some View {
         HStack {
             HStack() {
@@ -20,7 +26,7 @@ struct TransactionListItemView: View {
             .frame(maxWidth: .infinity)
             
             HStack(alignment: .center) {
-                Text("\(Double.random(in: 0.001 ..< 1.125)) BTC")
+                Text("\(Double.random(in: 0.001 ..< 1.125)) \(symbol)")
                     .font(.custom("Avenir-Medium", size: 12))
                     .foregroundColor(Color.coinViewRouteButtonActive)
             }
@@ -41,7 +47,7 @@ struct TransactionListItemView: View {
 #if DEBUG
 struct TransactionListItemView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionListItemView()
+        TransactionListItemView(symbol: "BTC")
     }
 }
 #endif

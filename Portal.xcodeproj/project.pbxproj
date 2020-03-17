@@ -50,6 +50,7 @@
 		7582D429241FD9F0008ECAB0 /* TransactionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */; };
 		7582D42B241FDA87008ECAB0 /* AlertsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D42A241FDA87008ECAB0 /* AlertsListView.swift */; };
 		7582D42F2420C7BF008ECAB0 /* TransactionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D42E2420C7BF008ECAB0 /* TransactionListItemView.swift */; };
+		7582D43124210618008ECAB0 /* TransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D43024210618008ECAB0 /* TransactionView.swift */; };
 		AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A724453451E80046E8FED853 /* Pods_Portal.framework */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +123,7 @@
 		7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsListView.swift; sourceTree = "<group>"; };
 		7582D42A241FDA87008ECAB0 /* AlertsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsListView.swift; sourceTree = "<group>"; };
 		7582D42E2420C7BF008ECAB0 /* TransactionListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListItemView.swift; sourceTree = "<group>"; };
+		7582D43024210618008ECAB0 /* TransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionView.swift; sourceTree = "<group>"; };
 		A724453451E80046E8FED853 /* Pods_Portal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9F3C87C7A686EE907BC034F /* Pods-Portal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal.release.xcconfig"; path = "Target Support Files/Pods-Portal/Pods-Portal.release.xcconfig"; sourceTree = "<group>"; };
 		E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal_PortalUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -363,6 +365,7 @@
 			isa = PBXGroup;
 			children = (
 				7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */,
+				7582D43024210618008ECAB0 /* TransactionView.swift */,
 				7582D42E2420C7BF008ECAB0 /* TransactionListItemView.swift */,
 			);
 			path = Transactions;
@@ -648,6 +651,7 @@
 				7582D3DF24125641008ECAB0 /* MockData.swift in Sources */,
 				7582D40124165C29008ECAB0 /* LineChartUIKitWrapper.swift in Sources */,
 				7582D4032416735F008ECAB0 /* LineChart+Extension.swift in Sources */,
+				7582D43124210618008ECAB0 /* TransactionView.swift in Sources */,
 				7582D3EA241261A0008ECAB0 /* PortfolioView.swift in Sources */,
 				7582D4152417A39E008ECAB0 /* AssetMarketValueView.swift in Sources */,
 				7582D409241679C3008ECAB0 /* MarketSnapshot.swift in Sources */,
