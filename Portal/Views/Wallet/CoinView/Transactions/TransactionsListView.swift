@@ -10,13 +10,20 @@ import SwiftUI
 
 struct TransactionsListView: View {
     @Binding var model: WalletItemViewModel
+    @State private var showTxInfo: Bool = false
     
     var body: some View {
         VStack {
             List(0 ..< 20) { index in
                 TransactionListItemView(symbol: self.model.symbol)
+                    .onTapGesture {
+                        self.showTxInfo.toggle()
+                }
             }
             .padding(.top, -8)
+            .sheet(isPresented: self.$showTxInfo) {
+                TransactionView()
+            }
         }
     }
 }
