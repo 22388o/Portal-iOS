@@ -15,6 +15,7 @@ struct WalletItemView: View {
     private let totalValue: String
     private let price: String
     private let change: String
+    private let icon: UIImage
     
     init(viewModel: WalletItemViewModel) {
         name = viewModel.name
@@ -23,11 +24,14 @@ struct WalletItemView: View {
         totalValue = viewModel.totalValue
         price = viewModel.price
         change = viewModel.change
+        icon = viewModel.icon
     }
     
     var body: some View {
         HStack(alignment: .center) {
-            Image("first")
+            Image(uiImage: icon)
+                .resizable()
+                .frame(width: 24, height: 24)
                 .padding([.leading])
             
             VStack(spacing: 6) {
@@ -61,7 +65,8 @@ struct WalletItemView: View {
                         .foregroundColor(Color.white.opacity(0.6))
                 }
             }
-            .padding()
+            .padding([.trailing, .top, .bottom], 15)
+            .padding(.leading, 5)
         }
         .background(Color.black.opacity(0.25))
         .cornerRadius(16)
@@ -71,7 +76,7 @@ struct WalletItemView: View {
 #if DEBUG
 struct WalletItemView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletItemView(viewModel: CoinMock())
+        WalletItemView(viewModel: XTZ())
     }
 }
 #endif

@@ -27,7 +27,9 @@ struct CoinView: View {
             VStack(alignment: .leading, spacing: 10) {
                 VStack(alignment: .leading, spacing: 0.0) {
                     HStack {
-                        Image("first")
+                        Image(uiImage: model.icon)
+                            .resizable()
+                            .frame(width: 24, height: 24)
                         Text("\(model.name)")
                             .font(.custom("Avenir-Medium", size: 15))
                             .foregroundColor(Color.lightActiveLabel)
@@ -155,7 +157,7 @@ struct PButtonStyle: ViewModifier {
 #if DEBUG
 struct CoinDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        CoinView(model: .constant(CoinMock()))
+        CoinView(model: .constant(BTC()))
     }
 }
 #endif

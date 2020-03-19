@@ -17,11 +17,13 @@ protocol WalletItemViewModel {
     var price: String { get }
     var change: String { get }
     var color: UIColor { get }
+    var icon: UIImage { get }
     
     func value(currency: Currency) -> Double
 }
 
 extension WalletItemViewModel {
+    var icon: UIImage { UIImage() }
     var name: String { "Name" }
     var symbol: String { "Symbol" }
     var amount: String { "Amount" }
