@@ -16,6 +16,7 @@ struct TransactionView: View {
     var body: some View {
         VStack {
             Spacer()
+                .frame(height: 8)
             VStack {
                 Image(uiImage: UIImage(named: "iconBtc")!)
                     .resizable()

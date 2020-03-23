@@ -364,8 +364,8 @@
 		7582D42C2420C5D2008ECAB0 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
-				7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */,
 				7582D43024210618008ECAB0 /* TransactionView.swift */,
+				7582D428241FD9F0008ECAB0 /* TransactionsListView.swift */,
 				7582D42E2420C7BF008ECAB0 /* TransactionListItemView.swift */,
 			);
 			path = Transactions;

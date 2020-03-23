@@ -16,23 +16,51 @@ struct ReceiveCoinView: View {
         self.model = viewModel
     }
     
+    private func mainFont(size: CGFloat = 12) -> Font {
+        Font.custom("Avenir-Medium", size: size)
+    }
+    
     var body: some View {
         VStack {
-            Text("Receive \(model.name)").padding()
-            HStack {
-                Image("first")
-                Text("Icon")
-            }
             Spacer()
+                .frame(height: 8)
+            VStack {
+                Image(uiImage: UIImage(named: "iconBtc")!)
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                Text("Receive Bitcoin")
+                    .font(mainFont(size: 23))
+                    .foregroundColor(Color.lightActiveLabel)
+            }
+//            Spacer()
     
             VStack {
                 Image(uiImage: generateVisualCode(address: mockAddress) ?? UIImage())
-                Text(mockAddress).scaledToFill()
+                    .resizable()
+                    .frame(width: UIScreen.main.bounds.width - 80, height: UIScreen.main.bounds.width - 80)
+
+                VStack(alignment: .center, spacing: 10) {
+                    Text("Your BTC address")
+                        .font(mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                        .opacity(0.6)
+                    Text(mockAddress)
+                        .scaledToFill()
+                        .font(mainFont(size: 16))
+                        .foregroundColor(Color.lightActiveLabel)
+                    Spacer()
+                }
+                .padding()
+//                .frame(maxHeight: .infinity)
+                
+                Button("Share") {}
+                    .modifier(PButtonStyle())
+                    .padding()
             }
-        
-            Spacer()
-            Spacer()
+            .frame(maxHeight: .infinity)
+            .padding()
         }
+        .padding()
     }
     
     private func generateVisualCode(address: String) -> UIImage? {
