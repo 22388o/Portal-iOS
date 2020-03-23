@@ -31,12 +31,12 @@ struct CoinView: View {
                             .resizable()
                             .frame(width: 24, height: 24)
                         Text("\(model.name)")
-                            .font(.custom("Avenir-Medium", size: 15))
+                            .font(Font.mainFont(size: 15))
                             .foregroundColor(Color.lightActiveLabel)
                     }
                     
                     Text("\(model.amount)")
-                        .font(.custom("Avenir-Medium", size: 28))
+                        .font(Font.mainFont(size: 28))
                         .foregroundColor(Color.assetValueLabel)
                 }
                 .frame(height: 75)
@@ -89,21 +89,21 @@ struct CoinView: View {
             HStack(alignment: .center) {
                 Button(action: { self.route = .value }) {
                     Text("Value")
-                        .font(.custom("Avenir-Medium", size: 15))
+                        .font(Font.mainFont(size: 15))
                         .foregroundColor(route == .value ? Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
                 }
                 .frame(width: 110)
                 
                 Button(action: { self.route = .transactions }) {
                     Text("Transactions")
-                        .font(.custom("Avenir-Medium", size: 15))
+                        .font(Font.mainFont(size: 15))
                         .foregroundColor(route == .transactions ? Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
                 }
                 .frame(width: 110)
                 
                 Button(action: { self.route = .alerts }) {
                     Text("Alerts")
-                        .font(.custom("Avenir-Medium", size: 15))
+                        .font(Font.mainFont(size: 15))
                         .foregroundColor(route == .alerts ? Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
                 }
                 .frame(width: 110)
@@ -139,7 +139,7 @@ struct PButtonStyle: ViewModifier {
             .padding(8)
             .background(Color.assetViewButton)
             .cornerRadius(18)
-            .font(.custom("Avenir-Medium", size: 16))
+            .font(Font.mainFont(size: 16))
             .foregroundColor(.white)
             .overlay(
                 RoundedRectangle(cornerRadius: 18)

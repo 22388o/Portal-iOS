@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B5D4645ED8B867348E63D53 /* Pods_Portal_PortalUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */; };
 		699170B47959AC03046904DC /* Pods_PortalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 208D6013569144022A61A0CB /* Pods_PortalTests.framework */; };
+		755233B324291314001D8CF8 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755233B224291314001D8CF8 /* Font+Extension.swift */; };
 		7582D3A524123184008ECAB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3A424123184008ECAB0 /* AppDelegate.swift */; };
 		7582D3A724123184008ECAB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3A624123184008ECAB0 /* SceneDelegate.swift */; };
 		7582D3AA24123184008ECAB0 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3A824123184008ECAB0 /* Portal.xcdatamodeld */; };
@@ -77,6 +78,7 @@
 		2560AA559CB382BE426B8341 /* Pods-Portal-PortalUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal-PortalUITests.release.xcconfig"; path = "Target Support Files/Pods-Portal-PortalUITests/Pods-Portal-PortalUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2A4759DB4F7D821F4AF0322A /* Pods-PortalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PortalTests.debug.xcconfig"; path = "Target Support Files/Pods-PortalTests/Pods-PortalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6068F2B744BD8F6270795EC0 /* Pods-PortalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PortalTests.release.xcconfig"; path = "Target Support Files/Pods-PortalTests/Pods-PortalTests.release.xcconfig"; sourceTree = "<group>"; };
+		755233B224291314001D8CF8 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
 		7582D3A124123184008ECAB0 /* Portal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Portal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7582D3A424123184008ECAB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7582D3A624123184008ECAB0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				7582D4022416735F008ECAB0 /* LineChart+Extension.swift */,
 				7582D40E24167AAE008ECAB0 /* Date+Extension.swift */,
 				7582D421241BAE61008ECAB0 /* Color+Extension.swift */,
+				755233B224291314001D8CF8 /* Font+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -637,6 +640,7 @@
 				7582D40F24167AAE008ECAB0 /* Date+Extension.swift in Sources */,
 				7582D3DD241255A5008ECAB0 /* WalletItemView.swift in Sources */,
 				7582D429241FD9F0008ECAB0 /* TransactionsListView.swift in Sources */,
+				755233B324291314001D8CF8 /* Font+Extension.swift in Sources */,
 				7582D41D2418C7CD008ECAB0 /* SendToExchangeView.swift in Sources */,
 				7582D3A524123184008ECAB0 /* AppDelegate.swift in Sources */,
 				7582D3F724161A34008ECAB0 /* Double+Extension.swift in Sources */,

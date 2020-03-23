@@ -24,7 +24,7 @@ struct AssetAllocationView: View {
         ZStack {
             if showTotalValue {
                 Text("$" + String(viewModel.totalPortfolioValue))
-                    .font(.custom("Avenir-Medium", size: 16))
+                    .font(Font.mainFont(size: 16))
                     .foregroundColor(Color.white)
             }
             PieChartUIKitWrapper(viewModel: viewModel)
