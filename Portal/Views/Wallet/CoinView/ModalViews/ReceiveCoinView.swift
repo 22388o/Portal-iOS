@@ -16,42 +16,35 @@ struct ReceiveCoinView: View {
         self.model = viewModel
     }
     
-    private func mainFont(size: CGFloat = 12) -> Font {
-        Font.custom("Avenir-Medium", size: size)
-    }
-    
     var body: some View {
         VStack {
             Spacer()
                 .frame(height: 8)
             VStack {
-                Image(uiImage: UIImage(named: "iconBtc")!)
+                Image(uiImage: model.icon)
                     .resizable()
                     .frame(width: 80, height: 80)
-                Text("Receive Bitcoin")
-                    .font(mainFont(size: 23))
+                Text("Receive \(model.name)")
+                    .font(Font.mainFont(size: 23))
                     .foregroundColor(Color.lightActiveLabel)
-            }
-//            Spacer()
-    
+            }    
             VStack {
                 Image(uiImage: generateVisualCode(address: mockAddress) ?? UIImage())
                     .resizable()
                     .frame(width: UIScreen.main.bounds.width - 80, height: UIScreen.main.bounds.width - 80)
 
                 VStack(alignment: .center, spacing: 10) {
-                    Text("Your BTC address")
-                        .font(mainFont(size: 14))
+                    Text("Your \(model.symbol) address")
+                        .font(Font.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
                     Text(mockAddress)
                         .scaledToFill()
-                        .font(mainFont(size: 16))
+                        .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.lightActiveLabel)
                     Spacer()
                 }
                 .padding()
-//                .frame(maxHeight: .infinity)
                 
                 Button("Share") {}
                     .modifier(PButtonStyle())
@@ -88,7 +81,7 @@ struct ReceiveCoinView: View {
 #if DEBUG
 struct ReceiveCoinView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiveCoinView()
+        ReceiveCoinView(viewModel: BTC())
     }
 }
 #endif

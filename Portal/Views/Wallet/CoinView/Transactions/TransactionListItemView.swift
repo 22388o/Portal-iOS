@@ -19,7 +19,7 @@ struct TransactionListItemView: View {
         HStack {
             HStack() {
                 Text(Bool.random() ? "Sent" : "Received")
-                    .font(.custom("Avenir-Medium", size: 12))
+                    .font(Font.mainFont())
                     .foregroundColor(Color.txListTxType)
                 Spacer()
             }
@@ -27,7 +27,7 @@ struct TransactionListItemView: View {
             
             HStack(alignment: .center) {
                 Text("\(Double.random(in: 0.001 ..< 1.125)) \(symbol)")
-                    .font(.custom("Avenir-Medium", size: 12))
+                    .font(Font.mainFont())
                     .foregroundColor(Color.coinViewRouteButtonActive)
             }
             .frame(maxWidth: .infinity)
@@ -35,7 +35,7 @@ struct TransactionListItemView: View {
             HStack(alignment: .center) {
                 Spacer()
                 Text("1 month ago")
-                    .font(.custom("Avenir-Medium", size: 12))
+                    .font(Font.mainFont())
                     .foregroundColor(Color.coinViewRouteButtonInactive)
             }
             .frame(maxWidth: .infinity)

@@ -74,7 +74,9 @@ struct LPT: WalletItemViewModel {
     var color = UIColor.yellow
 }
 
-struct CoinMock: WalletItemViewModel {}
+struct CoinMock: WalletItemViewModel {
+    var icon = UIImage(imageLiteralResourceName: "iconBtc")
+}
 
 let WalletMock: [WalletItemViewModel] = [BTC(), BCH(), ETH(), XLM(), XTZ()]
 

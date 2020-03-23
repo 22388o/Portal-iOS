@@ -65,13 +65,13 @@ struct AssetMarketValueView: View {
             
             VStack {
                 Text(type == .asset ? "Current value" : "Total value")
-                    .font(.custom("Avenir-Medium", size: 12))
+                    .font(Font.mainFont())
                     .foregroundColor(type == .asset ? Color.lightInactiveLabel : Color.white.opacity(0.5))
                 Text(viewModel.totalValue).font(.largeTitle)
-                    .font(.custom("Avenir-Medium", size: 28))
+                    .font(Font.mainFont(size: 28))
                     .foregroundColor(type == .asset ? Color.assetValueLabel : Color.white.opacity(0.8))
                 Text("-$423 (3.46%)")
-                    .font(.custom("Avenir-Medium", size: 15))
+                    .font(Font.mainFont(size: 15))
                     .foregroundColor(Color(red: 228.0/255.0, green: 136.0/255.0, blue: 37.0/255.0))
             }
             .padding()
@@ -83,20 +83,20 @@ struct AssetMarketValueView: View {
             HStack(spacing: 80) {
                 VStack(spacing: 10) {
                     Text("High")
-                        .font(.custom("Avenir-Medium", size: 12))
+                        .font(Font.mainFont())
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
                     Text("$0.0")
-                        .font(.custom("Avenir-Medium", size: 15))
+                        .font(Font.mainFont(size: 15))
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
                 }
                 .padding()
                 
                 VStack(spacing: 10) {
                     Text("Low")
-                        .font(.custom("Avenir-Medium", size: 12))
+                        .font(Font.mainFont())
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
                     Text("$0.0")
-                        .font(.custom("Avenir-Medium", size: 15))
+                        .font(Font.mainFont(size: 15))
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
 
                 }
@@ -113,7 +113,7 @@ struct TimeframeButton: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .font(.custom("Avenir-Medium", size: 12))
+            .font(Font.mainFont())
             .foregroundColor(foregroundColor(for: type, isSelected: isSelected))
             .frame(maxWidth: .infinity)
     }

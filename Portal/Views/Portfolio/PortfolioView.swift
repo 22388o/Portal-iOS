@@ -35,20 +35,20 @@ struct PortfolioView: View {
                 HStack(spacing: 50) {
                     VStack(spacing: 10) {
                         Text("Best performing")
-                            .font(.custom("Avenir-Medium", size: 12))
+                            .font(Font.mainFont())
                             .foregroundColor(Color.white.opacity(0.5))
                         Text("BTC")
-                            .font(.custom("Avenir-Medium", size: 15))
+                            .font(Font.mainFont(size: 15))
                             .foregroundColor(Color.white.opacity(0.8))
 
                     }
                     
                     VStack(spacing: 10) {
                         Text("Worst performing")
-                            .font(.custom("Avenir-Medium", size: 12))
+                            .font(Font.mainFont())
                             .foregroundColor(Color.white.opacity(0.5))
                         Text("ETH")
-                            .font(.custom("Avenir-Medium", size: 15))
+                            .font(Font.mainFont(size: 15))
                             .foregroundColor(Color.white.opacity(0.8))
 
                     }
@@ -62,7 +62,7 @@ struct PortfolioView: View {
                 
                 VStack {
                     Text("Asset allocation")
-                        .font(.custom("Avenir-Medium", size: 12))
+                        .font(Font.mainFont())
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(2)
                     
