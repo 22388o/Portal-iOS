@@ -22,7 +22,7 @@ struct TransactionsListView: View {
             }
             .padding(.top, -8)
             .sheet(isPresented: self.$showTxInfo) {
-                TransactionView()
+                TransactionView(viewModel: self.model)
             }
         }
     }
@@ -31,7 +31,7 @@ struct TransactionsListView: View {
 #if DEBUG
 struct TransactionsPreviewView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionsListView(model: .constant(CoinMock()))
+        TransactionsListView(model: .constant(BTC()))
     }
 }
 #endif

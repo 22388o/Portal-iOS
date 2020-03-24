@@ -10,19 +10,25 @@ import SwiftUI
 
 
 struct TransactionView: View {
+    let model: WalletItemViewModel
+    
+    init(viewModel: WalletItemViewModel = CoinMock()) {
+        self.model = viewModel
+    }
+    
     var body: some View {
         VStack {
             Spacer()
                 .frame(height: 8)
             VStack {
-                Image(uiImage: UIImage(named: "iconBtc")!)
+                Image(uiImage: model.icon)
                     .resizable()
                     .frame(width: 80, height: 80)
                 Text("Transaction details")
                     .font(Font.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabel)
                     .opacity(0.6)
-                Text("Received 0.0125 BTC")
+                Text("Received 0.0125 \(model.symbol)")
                     .font(Font.mainFont(size: 23))
                     .foregroundColor(Color.lightActiveLabel)
                 Text("19 Feb, 2020 at 4:49 PM (28 days ago)")
@@ -99,7 +105,7 @@ struct TransactionView: View {
 #if DEBUG
 struct TransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionView()
+        TransactionView(viewModel: ETH())
     }
 }
 #endif

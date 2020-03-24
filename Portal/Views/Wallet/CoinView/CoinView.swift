@@ -47,7 +47,7 @@ struct CoinView: View {
                         Button("Send") { self.showSendView.toggle() }
                             .modifier(PButtonStyle())
                             .sheet(isPresented: self.$showSendView) {
-                                SendCoinView()
+                                SendCoinView(viewModel: self.model)
                             }
                         Spacer()
                         Button("Receive") { self.showReceiveView.toggle() }

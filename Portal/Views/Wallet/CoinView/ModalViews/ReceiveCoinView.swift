@@ -45,13 +45,12 @@ struct ReceiveCoinView: View {
                     Spacer()
                 }
                 .padding()
-                
-                Button("Share") {}
-                    .modifier(PButtonStyle())
-                    .padding()
             }
             .frame(maxHeight: .infinity)
-            .padding()
+            
+            Button("Share") {}
+                .modifier(PButtonStyle())
+                .padding()
         }
         .padding()
     }
