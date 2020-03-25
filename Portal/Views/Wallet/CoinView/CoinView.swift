@@ -131,23 +131,6 @@ struct CoinView: View {
     }
     
 }
-
-struct PButtonStyle: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .frame(minWidth: 0, maxWidth: .infinity)
-            .padding(8)
-            .background(Color.assetViewButton)
-            .cornerRadius(18)
-            .font(Font.mainFont(size: 16))
-            .foregroundColor(.white)
-            .overlay(
-                RoundedRectangle(cornerRadius: 18)
-                    .stroke(Color.assetViewButton, lineWidth: 1)
-            )
-    }
-}
-
 //extension View {
 //    func pButtonStyle() -> some View {
 //        ModifiedContent(content: self, modifier: PButtonStyle())
