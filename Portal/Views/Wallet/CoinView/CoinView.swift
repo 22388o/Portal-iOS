@@ -63,7 +63,7 @@ struct CoinView: View {
                         Button("Send to exchange") { self.showSendToExchangeView.toggle() }
                             .modifier(PButtonStyle())
                             .sheet(isPresented: self.$showSendToExchangeView) {
-                                SendToExchangeView()
+                                SendToExchangeView(viewModel: self.model)
                             }
                         Spacer()
                     }

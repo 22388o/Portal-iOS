@@ -61,18 +61,32 @@ struct AssetMarketValueView: View {
                     Text("All time").modifier(TimeframeButton(type: type, isSelected: timeframe == .allTime))
                 }
             }
-            .padding()
+            .padding([.leading, .trailing])
             
             VStack {
-                Text(type == .asset ? "Current value" : "Total value")
-                    .font(Font.mainFont())
-                    .foregroundColor(type == .asset ? Color.lightInactiveLabel : Color.white.opacity(0.5))
-                Text(viewModel.totalValue).font(.largeTitle)
-                    .font(Font.mainFont(size: 28))
-                    .foregroundColor(type == .asset ? Color.assetValueLabel : Color.white.opacity(0.8))
-                Text("-$423 (3.46%)")
-                    .font(Font.mainFont(size: 15))
-                    .foregroundColor(Color(red: 228.0/255.0, green: 136.0/255.0, blue: 37.0/255.0))
+                VStack(spacing: 4) {
+                    Text(type == .asset ? "Current value" : "Total value")
+                        .font(Font.mainFont())
+                        .foregroundColor(type == .asset ? Color.lightInactiveLabel : Color.white.opacity(0.5))
+                    HStack(spacing: 4) {
+                        Image("dollarIconLight").resizable().frame(width: 16, height: 16)
+                        Image("btcIcon").resizable().frame(width: 16, height: 16)
+                        Image("ethIconLight").resizable().frame(width: 16, height: 16)
+                    }
+                    HStack {
+                        Image(type == .asset ? "arrowLeft" : "arrowLeftLight")
+                        Spacer()
+                        Text(viewModel.totalValue).font(.largeTitle)
+                            .font(Font.mainFont(size: 28))
+                            .foregroundColor(type == .asset ? Color.assetValueLabel : Color.white.opacity(0.8))
+                        Spacer()
+                        Image(type == .asset ? "arrowRight" : "arrowRightLight")
+                    }
+                    .padding([.leading, .trailing])
+                    Text("-$423 (3.46%)")
+                        .font(Font.mainFont(size: 15))
+                        .foregroundColor(Color(red: 228.0/255.0, green: 136.0/255.0, blue: 37.0/255.0))
+                }
             }
             .padding()
             

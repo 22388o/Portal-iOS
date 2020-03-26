@@ -41,7 +41,7 @@ struct SendToExchangeView: View {
                 Spacer().frame(height: 16)
                 
                 VStack(spacing: 6) {
-                    Divider().padding([.trailing, .leading])
+                    Divider()
                     HStack {
                         Text("Avaliable in wallet")
                             .font(Font.mainFont())
@@ -62,7 +62,7 @@ struct SendToExchangeView: View {
                             .font(Font.mainFont(size: 12))
                             .foregroundColor(.white)
                     }
-                    Divider().padding([.trailing, .leading])
+                    Divider()
                     HStack {
                         Text("Currently in exchange")
                             .font(Font.mainFont())
@@ -74,7 +74,7 @@ struct SendToExchangeView: View {
                             .foregroundColor(Color.lightActiveLabel)
                         
                     }
-                    Divider().padding([.trailing, .leading])
+                    Divider()
                 }
                 
                 Spacer().frame(height: 24)

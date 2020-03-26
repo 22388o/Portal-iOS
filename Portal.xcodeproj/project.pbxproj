@@ -282,7 +282,6 @@
 				7582D3E9241261A0008ECAB0 /* PortfolioView.swift */,
 				7582D40024165C29008ECAB0 /* LineChartUIKitWrapper.swift */,
 				7582D40424167417008ECAB0 /* PortfolioViewModelProtocol.swift */,
-				7582D4142417A39D008ECAB0 /* AssetMarketValueView.swift */,
 			);
 			path = Portfolio;
 			sourceTree = "<group>";
@@ -391,6 +390,7 @@
 		75C7D466242B2FCE00BED668 /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
+				7582D4142417A39D008ECAB0 /* AssetMarketValueView.swift */,
 				75C7D462242B2AEC00BED668 /* ExchangerView.swift */,
 			);
 			path = SharedViews;
