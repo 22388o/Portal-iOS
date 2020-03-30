@@ -49,7 +49,12 @@ extension Color {
     static var createWalletLabel: Color {
         Color(red: 73.0/255.0, green: 77.0/255.0, blue: 83.0/255.0)
     }
-    
+    static var mnemonicBackground: Color {
+        Color(red: 255.0/255.0, green: 248.0/255.0, blue: 233.0/255.0)
+    }
+    static var mango: Color {
+        Color(red: 253.0/255.0, green: 179.0/255.0, blue: 64.0/255.0)
+    }
     static var portalBackground: some View {
         ZStack {
             LinearGradient(gradient: Gradient(colors: [Color.gradientTop, Color.gradientBottom]), startPoint: .top, endPoint: .bottom)

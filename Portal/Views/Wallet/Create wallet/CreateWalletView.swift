@@ -26,35 +26,36 @@ struct CreateWalletView: View {
                     .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
                     .multilineTextAlignment(.center)
                 Divider()
-                Text("Name your wallet")
-                    .font(Font.mainFont(size: 17))
-                    .foregroundColor(Color.createWalletLabel)
-                Text("We suggest using your name, or simple words like ‘Personal’, ‘Work’, ‘Investments’ etc.")
-                    .font(Font.mainFont(size: 14))
-                    .foregroundColor(Color.coinViewRouteButtonActive)
-                    .multilineTextAlignment(.center)
-                HStack(spacing: 8) {
-                    Image("iconSafeSmall")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                    TextField("Enter wallet name", text: $walletName)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .font(Font.mainFont(size: 16))
-                        .keyboardType(.numberPad)
-                }.modifier(ExchangerTextField()).padding([.leading, .trailing], 4)
-                VStack {
-                    Spacer()
-                    Text("Bitcoin address format")
+                VStack(spacing: 20) {
+                    Text("Name your wallet")
                         .font(Font.mainFont(size: 17))
                         .foregroundColor(Color.createWalletLabel)
-                    Picker("Numbers", selection: $selectorIndex) {
-                        ForEach(0 ..< numbers.count) { index in
-                            Text(self.numbers[index]).tag(index)
+                    Text("We suggest using your name, or simple words like ‘Personal’, ‘Work’, ‘Investments’ etc.")
+                        .font(Font.mainFont(size: 14))
+                        .foregroundColor(Color.coinViewRouteButtonActive)
+                        .multilineTextAlignment(.center)
+                    HStack(spacing: 8) {
+                        Image("iconSafeSmall")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                        TextField("Enter wallet name", text: $walletName)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .font(Font.mainFont(size: 16))
+                            .keyboardType(.numberPad)
+                    }.modifier(ExchangerTextField()).padding([.leading, .trailing], 4)
+                    VStack(spacing: 20) {
+                        Text("Bitcoin address format")
+                            .font(Font.mainFont(size: 17))
+                            .foregroundColor(Color.createWalletLabel)
+                        Picker("Numbers", selection: $selectorIndex) {
+                            ForEach(0 ..< numbers.count) { index in
+                                Text(self.numbers[index]).tag(index)
+                            }
                         }
+                        .pickerStyle(SegmentedPickerStyle())
                     }
-                    .pickerStyle(SegmentedPickerStyle())
                     Spacer()
-                }
+                }.frame(maxHeight: .infinity)
             }
             Spacer()
             VStack(spacing: 12) {

@@ -55,6 +55,7 @@
 		75C7D463242B2AEC00BED668 /* ExchangerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D462242B2AEC00BED668 /* ExchangerView.swift */; };
 		75C7D465242B2F4500BED668 /* StyleModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D464242B2F4500BED668 /* StyleModifiers.swift */; };
 		75C7D46E2431D97F00BED668 /* CreateWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D46D2431D97F00BED668 /* CreateWalletView.swift */; };
+		75C7D4712431F73D00BED668 /* SeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D4702431F73D00BED668 /* SeedView.swift */; };
 		AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A724453451E80046E8FED853 /* Pods_Portal.framework */; };
 /* End PBXBuildFile section */
 
@@ -132,6 +133,7 @@
 		75C7D462242B2AEC00BED668 /* ExchangerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangerView.swift; sourceTree = "<group>"; };
 		75C7D464242B2F4500BED668 /* StyleModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleModifiers.swift; sourceTree = "<group>"; };
 		75C7D46D2431D97F00BED668 /* CreateWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletView.swift; sourceTree = "<group>"; };
+		75C7D4702431F73D00BED668 /* SeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedView.swift; sourceTree = "<group>"; };
 		A724453451E80046E8FED853 /* Pods_Portal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9F3C87C7A686EE907BC034F /* Pods-Portal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal.release.xcconfig"; path = "Target Support Files/Pods-Portal/Pods-Portal.release.xcconfig"; sourceTree = "<group>"; };
 		E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal_PortalUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -403,6 +405,7 @@
 			isa = PBXGroup;
 			children = (
 				75C7D46D2431D97F00BED668 /* CreateWalletView.swift */,
+				75C7D4702431F73D00BED668 /* SeedView.swift */,
 			);
 			path = "Create wallet";
 			sourceTree = "<group>";
@@ -702,6 +705,7 @@
 				7582D3F924161ABA008ECAB0 /* PieChart+Extension.swift in Sources */,
 				7582D42F2420C7BF008ECAB0 /* TransactionListItemView.swift in Sources */,
 				7582D3F5241619CA008ECAB0 /* PieChartViewModel.swift in Sources */,
+				75C7D4712431F73D00BED668 /* SeedView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
