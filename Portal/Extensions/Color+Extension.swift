@@ -40,13 +40,14 @@ extension Color {
     static var txListTxType: Color {
         Color(red: 7.0/255.0, green: 123.0/255.0, blue: 184.0/255.0)
     }
-    
     static var exchangerFieldBackground: Color {
         Color(red: 249.0/255.0, green: 249.0/255.0, blue: 251.0/255.0)
     }
-    
     static var exchangerFieldBorder: Color {
         Color(red: 235.0/255.0, green: 236.0/255.0, blue: 242.0/255.0)
+    }
+    static var createWalletLabel: Color {
+        Color(red: 73.0/255.0, green: 77.0/255.0, blue: 83.0/255.0)
     }
     
     static var portalBackground: some View {
