@@ -55,6 +55,12 @@ extension Color {
     static var mango: Color {
         Color(red: 253.0/255.0, green: 179.0/255.0, blue: 64.0/255.0)
     }
+    static var blush: Color {
+        Color(red: 238.0/255.0, green: 198.0/255.0, blue: 169.0/255.0)
+    }
+    static var brownishOrange: Color {
+        Color(red: 233.0/255.0, green: 134.0/255.0, blue: 49.0/255.0)
+    }
     static var portalBackground: some View {
         ZStack {
             LinearGradient(gradient: Gradient(colors: [Color.gradientTop, Color.gradientBottom]), startPoint: .top, endPoint: .bottom)
