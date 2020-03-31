@@ -56,6 +56,8 @@
 		75C7D465242B2F4500BED668 /* StyleModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D464242B2F4500BED668 /* StyleModifiers.swift */; };
 		75C7D46E2431D97F00BED668 /* CreateWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D46D2431D97F00BED668 /* CreateWalletView.swift */; };
 		75C7D4712431F73D00BED668 /* SeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D4702431F73D00BED668 /* SeedView.swift */; };
+		75C7D4732433498300BED668 /* TestSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D4722433498300BED668 /* TestSeedView.swift */; };
+		75C7D47524335F3F00BED668 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D47424335F3F00BED668 /* Int+Extension.swift */; };
 		AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A724453451E80046E8FED853 /* Pods_Portal.framework */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +136,8 @@
 		75C7D464242B2F4500BED668 /* StyleModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleModifiers.swift; sourceTree = "<group>"; };
 		75C7D46D2431D97F00BED668 /* CreateWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletView.swift; sourceTree = "<group>"; };
 		75C7D4702431F73D00BED668 /* SeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedView.swift; sourceTree = "<group>"; };
+		75C7D4722433498300BED668 /* TestSeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSeedView.swift; sourceTree = "<group>"; };
+		75C7D47424335F3F00BED668 /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		A724453451E80046E8FED853 /* Pods_Portal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9F3C87C7A686EE907BC034F /* Pods-Portal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal.release.xcconfig"; path = "Target Support Files/Pods-Portal/Pods-Portal.release.xcconfig"; sourceTree = "<group>"; };
 		E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal_PortalUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -308,6 +312,7 @@
 				7582D40E24167AAE008ECAB0 /* Date+Extension.swift */,
 				7582D421241BAE61008ECAB0 /* Color+Extension.swift */,
 				755233B224291314001D8CF8 /* Font+Extension.swift */,
+				75C7D47424335F3F00BED668 /* Int+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -406,6 +411,7 @@
 			children = (
 				75C7D46D2431D97F00BED668 /* CreateWalletView.swift */,
 				75C7D4702431F73D00BED668 /* SeedView.swift */,
+				75C7D4722433498300BED668 /* TestSeedView.swift */,
 			);
 			path = "Create wallet";
 			sourceTree = "<group>";
@@ -672,12 +678,14 @@
 				7582D41D2418C7CD008ECAB0 /* SendToExchangeView.swift in Sources */,
 				7582D3A524123184008ECAB0 /* AppDelegate.swift in Sources */,
 				7582D3F724161A34008ECAB0 /* Double+Extension.swift in Sources */,
+				75C7D47524335F3F00BED668 /* Int+Extension.swift in Sources */,
 				7582D3D924123240008ECAB0 /* WalletView.swift in Sources */,
 				7582D407241679A3008ECAB0 /* Enums.swift in Sources */,
 				7582D3E12412569F008ECAB0 /* WalletItemViewModel.swift in Sources */,
 				7582D3FC24161EB5008ECAB0 /* AssetAllocationView.swift in Sources */,
 				7582D40B24167A3F008ECAB0 /* CoinMarketData.swift in Sources */,
 				7582D3DB2412325D008ECAB0 /* AtomicBridgeView.swift in Sources */,
+				75C7D4732433498300BED668 /* TestSeedView.swift in Sources */,
 				7582D3AA24123184008ECAB0 /* Portal.xcdatamodeld in Sources */,
 				7582D4192418C799008ECAB0 /* SendCoinView.swift in Sources */,
 				7582D3DF24125641008ECAB0 /* MockData.swift in Sources */,

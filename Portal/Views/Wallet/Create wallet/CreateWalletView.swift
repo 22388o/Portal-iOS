@@ -42,7 +42,7 @@ struct CreateWalletView: View {
                             .textFieldStyle(PlainTextFieldStyle())
                             .font(Font.mainFont(size: 16))
                             .keyboardType(.numberPad)
-                    }.modifier(ExchangerTextField()).padding([.leading, .trailing], 4)
+                    }.modifier(TextFieldModifier()).padding([.leading, .trailing], 4)
                     VStack(spacing: 20) {
                         Text("Bitcoin address format")
                             .font(Font.mainFont(size: 17))

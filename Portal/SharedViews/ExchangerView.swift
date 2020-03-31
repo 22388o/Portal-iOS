@@ -51,7 +51,7 @@ struct ExchangerView: View {
                     Text(model.symbol)
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.lightActiveLabel).opacity(0.4)
-                }.modifier(ExchangerTextField())
+                }.modifier(TextFieldModifier())
                 Text("=")
                     .font(Font.mainFont(size: 16))
                     .foregroundColor(Color.lightActiveLabel).opacity(0.4)
@@ -66,7 +66,7 @@ struct ExchangerView: View {
                     Text("USD")
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.lightActiveLabel).opacity(0.4)
-                }.modifier(ExchangerTextField())
+                }.modifier(TextFieldModifier())
             }
         }
     }

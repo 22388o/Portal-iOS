@@ -24,7 +24,7 @@ struct PButtonStyle: ViewModifier {
     }
 }
 
-struct ExchangerTextField: ViewModifier {
+struct TextFieldModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding()

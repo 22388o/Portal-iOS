@@ -79,7 +79,7 @@ struct SendCoinView: View {
                         TextField("Enter \(self.model.symbol) address...", text: self.$sendToAddress)
                         .textFieldStyle(PlainTextFieldStyle())
                         .font(Font.mainFont(size: 16))
-                    }.modifier(ExchangerTextField())
+                    }.modifier(TextFieldModifier())
                 }
 
                 Spacer()
