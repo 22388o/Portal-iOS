@@ -26,14 +26,28 @@ struct SeedView: View {
                 .font(Font.mainFont(size: 15))
                 .foregroundColor(Color.createWalletLabel)
             HStack {
-                VStack(spacing: 8) {
+                VStack(spacing: 16) {
                     ForEach(1 ..< 13) { index in
-                        Text("\(index)) word")
+                        HStack {
+                            Text("\(index))")
+                                .font(Font.mainFont(size: 16))
+                                .foregroundColor(Color.blush)
+                            Text("seed")
+                                .font(Font.mainFont(size: 16))
+                                .foregroundColor(Color.brownishOrange)
+                        }
                     }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
-                VStack(spacing: 8) {
-                    ForEach(12 ..< 25) { index in
-                        Text("\(index)) word")
+                VStack(spacing: 16) {
+                    ForEach(13 ..< 25) { index in
+                        HStack {
+                            Text("\(index))")
+                                .font(Font.mainFont(size: 16))
+                                .foregroundColor(Color.blush)
+                            Text("seed")
+                                .font(Font.mainFont(size: 16))
+                                .foregroundColor(Color.brownishOrange)
+                        }
                     }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             }
