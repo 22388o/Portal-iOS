@@ -31,6 +31,26 @@ extension WalletItemViewModel {
     var price: String { "Price" }
     var change: String { "Change" }
     var color: UIColor { UIColor.clear }
+    func QRCode(address: String? = btcMockAddress) -> UIImage {
+        guard let message = address?.data(using: .utf8) else { return UIImage() }
+        
+        let parameters: [String : Any] = [
+            "inputMessage": message,
+            "inputCorrectionLevel": "L"
+        ]
+        let filter = CIFilter(name: "CIQRCodeGenerator", parameters: parameters)
+        
+        guard let outputImage = filter?.outputImage else {
+            return UIImage()
+        }
+        
+        let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: 6, y: 6))
+        guard let cgImage = CIContext().createCGImage(scaledImage, from: scaledImage.extent) else {
+            return UIImage()
+        }
+                        
+        return UIImage(cgImage: cgImage)
+    }
     func value(currency: Currency) -> Double {
         Double(totalValue) ?? 0.0
         //balance * marketData.price(currency: currency)

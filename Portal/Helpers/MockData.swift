@@ -9,6 +9,8 @@
 import Foundation
 import SwiftUI
 
+let btcMockAddress = "1HqwV7F9hpUpJXubLFomcrNMUqPLzeTVNd"
+
 struct BTC: WalletItemViewModel {
     var name  = "Bitcoin"
     var symbol = "BTC"

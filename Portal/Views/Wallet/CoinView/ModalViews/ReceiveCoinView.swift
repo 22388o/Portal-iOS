@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ReceiveCoinView: View {
     let model: WalletItemViewModel
-    let mockAddress = "1HqwV7F9hpUpJXubLFomcrNMUqPLzeTVNd"
     
     init(viewModel: WalletItemViewModel = CoinMock()) {
         self.model = viewModel
@@ -29,7 +28,7 @@ struct ReceiveCoinView: View {
                     .foregroundColor(Color.lightActiveLabel)
             }    
             VStack {
-                Image(uiImage: generateVisualCode(address: mockAddress) ?? UIImage())
+                Image(uiImage: model.QRCode())
                     .resizable()
                     .frame(width: UIScreen.main.bounds.width - 80, height: UIScreen.main.bounds.width - 80)
 
@@ -38,7 +37,7 @@ struct ReceiveCoinView: View {
                         .font(Font.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
-                    Text(mockAddress)
+                    Text(btcMockAddress)
                         .scaledToFill()
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.lightActiveLabel)
@@ -53,27 +52,6 @@ struct ReceiveCoinView: View {
                 .padding()
         }
         .padding()
-    }
-    
-    private func generateVisualCode(address: String) -> UIImage? {
-        let parameters: [String : Any] = [
-            "inputMessage": address.data(using: .utf8)!,
-            "inputCorrectionLevel": "L"
-        ]
-        let filter = CIFilter(name: "CIQRCodeGenerator", parameters: parameters)
-        
-        guard let outputImage = filter?.outputImage else {
-            return nil
-        }
-        
-        let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: 6, y: 6))
-        guard let cgImage = CIContext().createCGImage(scaledImage, from: scaledImage.extent) else {
-            return nil
-        }
-        
-//        let size = CGSize(width: 96, height: 96)
-        
-        return UIImage(cgImage: cgImage)
     }
 }
 
