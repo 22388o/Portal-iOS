@@ -16,15 +16,20 @@ struct CreateWalletView: View {
     
     var body: some View {
         VStack {
-            Image("iconSafe")
+//            Image("iconSafe")
             VStack(spacing: 20) {
-                Text("Create a wallet")
-                    .font(Font.mainFont(size: 30))
-                    .foregroundColor(Color.createWalletLabel)
-                Text("Store more than 2000 different currencies locally. Only you hold your private keys. Secure and private.")
-                    .font(Font.mainFont(size: 18))
-                    .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
-                    .multilineTextAlignment(.center)
+                Title(
+                    iconName: "iconSafe",
+                    title: "Create a wallet",
+                    subtitle: "Store more than 2000 different currencies locally. Only you hold your private keys. Secure and private."
+                )
+//                Text("Create a wallet")
+//                    .font(Font.mainFont(size: 30))
+//                    .foregroundColor(Color.createWalletLabel)
+//                Text("Store more than 2000 different currencies locally. Only you hold your private keys. Secure and private.")
+//                    .font(Font.mainFont(size: 18))
+//                    .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
+//                    .multilineTextAlignment(.center)
                 Divider()
                 VStack(spacing: 20) {
                     Text("Name your wallet")
