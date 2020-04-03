@@ -9,6 +9,9 @@
 import SwiftUI
 
 struct TestSeedView: View {
+    @State private var showConfirmation = false
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+
     private var indexes = [Int]()
     
     init() {
@@ -20,6 +23,11 @@ struct TestSeedView: View {
     
     var body: some View {
         VStack {
+            NavigationLink(destination: WalletCreatedView(), isActive: self.$showConfirmation) {
+              EmptyView()
+            }
+            .hidden()
+            
             Title(
                 iconName: "iconSafe",
                 title: "Confirm the seed",
@@ -36,11 +44,16 @@ struct TestSeedView: View {
                     .frame(maxHeight: .infinity)
                 Spacer()
                 VStack(spacing: 16) {
-                    Button("Create") {}.modifier(PButtonStyle())
-                    Button("Generate new seed") {}
+                    Button("Create") {
+                        self.showConfirmation.toggle()
+                    }.modifier(PButtonStyle())
+                    Button("Generate new seed") {
+                        self.mode.wrappedValue.dismiss()
+                    }
                 }
             }.padding()
-        }
+        }.hideNavigationBar()
+
     }
 }
 

@@ -13,12 +13,12 @@ struct CreateWalletView: View {
     @State private var legacy: Bool = false
     @State private var numbers = ["Legacy","SegWit","Native SegWit"]
     @State private var selectorIndex = 1
-    @State var pushActive = false
+    @State var showSeedView = false
     
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: SeedView(), isActive: self.$pushActive) {
+                NavigationLink(destination: SeedView(), isActive: self.$showSeedView) {
                   EmptyView()
                 }
                 .hidden()
@@ -74,7 +74,7 @@ struct CreateWalletView: View {
                 Spacer()
                 VStack(spacing: 12) {
                     Button("Create") {
-                        self.pushActive.toggle()
+                        self.showSeedView.toggle()
                     }
                     .modifier(PButtonStyle())
                     
@@ -87,10 +87,9 @@ struct CreateWalletView: View {
                     }
                 }
             }
-            .navigationBarTitle("Create Wallet")
-            .navigationBarHidden(true)
+            .hideNavigationBar()
+            .padding()
         }
-        .padding()
     }
 }
 #if DEBUG

@@ -9,9 +9,16 @@
 import SwiftUI
 
 struct WalletCreatedView: View {
+    @State private var showWallet = false
+
     let model = BTC()
     var body: some View {
         VStack {
+            NavigationLink(destination: MainView(), isActive: self.$showWallet) {
+              EmptyView()
+            }
+            .hidden()
+            
             Title(
                 iconName: "iconSafe",
                 title: "Wallet created!",
@@ -23,10 +30,13 @@ struct WalletCreatedView: View {
                 .foregroundColor(Color.coinViewRouteButtonActive)
                 .opacity(0.85)
                 .multilineTextAlignment(.center)
-            VStack {
+            VStack(spacing: 8) {
+                Text("Bitcoin")
+                .font(Font.mainFont(size: 32))
+                .foregroundColor(Color.coinViewRouteButtonActive)
                 Image(uiImage: model.QRCode())
                     .resizable()
-                    .frame(width: UIScreen.main.bounds.width - 130, height: UIScreen.main.bounds.width - 130)
+                    .frame(width: 200.0, height: 200.0, alignment: .center)
 
                 VStack(alignment: .center, spacing: 10) {
                     Text("Your \(model.symbol) address")
@@ -60,11 +70,22 @@ struct WalletCreatedView: View {
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                 }
+                HStack {
+                    Text("Syncing")
+                        .font(Font.mainFont(size: 16))
+                        .foregroundColor(Color.coinViewRouteButtonActive)
+                        .opacity(0.85)
+                    Text("0.63%")
+                        .font(Font.mainFont(size: 16))
+                        .foregroundColor(Color.coinViewRouteButtonActive)
+                }
             }.padding()
             
-            Button("Open wallet"){}.modifier(PButtonStyle())
+            Button("Open wallet"){
+                self.showWallet.toggle()
+            }.modifier(PButtonStyle())
             
-        }.padding()
+            }.padding().hideNavigationBar()
     }
 }
 

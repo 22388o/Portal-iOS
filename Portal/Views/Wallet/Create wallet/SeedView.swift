@@ -9,8 +9,18 @@
 import SwiftUI
 
 struct SeedView: View {
+    @State private var showTestSeedView = false
+
     var body: some View {
         VStack(spacing: 14) {
+            NavigationLink(destination: TestSeedView(), isActive: self.$showTestSeedView) {
+              EmptyView()
+            }
+            .hidden()
+            .onAppear() {
+                self.showTestSeedView = false
+            }
+            
             HStack {
                 Image("iconSafe")
                 VStack(alignment: .leading, spacing: 4) {
@@ -59,8 +69,12 @@ struct SeedView: View {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Color.mango, lineWidth: 2)
             )
-            Button("Next"){}.modifier(PButtonStyle())
-        }.padding()
+            Button("Next"){
+                self.showTestSeedView = true
+            }.modifier(PButtonStyle())
+        }
+        .hideNavigationBar()
+        .padding()
     }
 }
 #if DEBUG

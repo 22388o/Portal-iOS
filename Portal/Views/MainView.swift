@@ -28,6 +28,8 @@ struct MainView: View {
                         }
                     }
                     .tag(0)
+                    .hideNavigationBar()
+
                 AtomicBridgeView()
                     .tabItem {
                         VStack {
@@ -36,8 +38,10 @@ struct MainView: View {
                         }
                     }
                     .tag(1)
+                .hideNavigationBar()
+
             }
-        }
+        }.hideNavigationBar()
     }
 }
 
