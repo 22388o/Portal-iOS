@@ -8,6 +8,17 @@
 
 import SwiftUI
 
+public struct NavigationBarHider: ViewModifier {
+    @State var isHidden: Bool = false
+
+    public func body(content: Content) -> some View {
+        content
+            .navigationBarTitle("", displayMode: .inline)
+            .navigationBarHidden(isHidden)
+            .onAppear { self.isHidden = true }
+    }
+}
+
 struct PButtonStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
