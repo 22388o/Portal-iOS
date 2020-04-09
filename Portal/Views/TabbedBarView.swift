@@ -8,8 +8,9 @@
 
 import SwiftUI
 
-struct MainView: View {
+struct TabbedBarView: View {
     @State private var selection = 0
+    @State private var hasWallet = false
     
     init() {
         UITabBar.appearance().barTintColor = UIColor(white: 0, alpha: 0.1)
@@ -18,7 +19,6 @@ struct MainView: View {
     var body: some View {
         ZStack {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
-            
             TabView(selection: $selection) {
                 WalletView()
                     .tabItem {
@@ -39,7 +39,6 @@ struct MainView: View {
                     }
                     .tag(1)
                 .hideNavigationBar()
-
             }
         }.hideNavigationBar()
     }
@@ -48,7 +47,7 @@ struct MainView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
+        TabbedBarView()
     }
 }
 #endif
