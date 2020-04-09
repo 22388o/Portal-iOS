@@ -16,38 +16,41 @@ struct TransactionListItemView: View {
     }
     
     var body: some View {
-        HStack {
-            HStack() {
-                Text(Bool.random() ? "Sent" : "Received")
-                    .font(Font.mainFont())
-                    .foregroundColor(Color.txListTxType)
-                Spacer()
+        VStack(spacing: 8) {
+            HStack {
+                HStack() {
+                    Text(Bool.random() ? "Sent" : "Received")
+                        .font(Font.mainFont())
+                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                
+                HStack(alignment: .center) {
+                    Text("\(Double.random(in: 0.001 ..< 1.125)) \(symbol)")
+                        .font(Font.mainFont())
+                        .foregroundColor(Color.white)
+                }
+                .frame(maxWidth: .infinity)
+                
+                HStack(alignment: .center) {
+                    Spacer()
+                    Text("1 month ago")
+                        .font(Font.mainFont())
+                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                }
+                .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity)
-            
-            HStack(alignment: .center) {
-                Text("\(Double.random(in: 0.001 ..< 1.125)) \(symbol)")
-                    .font(Font.mainFont())
-                    .foregroundColor(Color.coinViewRouteButtonActive)
-            }
-            .frame(maxWidth: .infinity)
-            
-            HStack(alignment: .center) {
-                Spacer()
-                Text("1 month ago")
-                    .font(Font.mainFont())
-                    .foregroundColor(Color.coinViewRouteButtonInactive)
-            }
-            .frame(maxWidth: .infinity)
-        }
-        .padding([.trailing, .leading])
+            .padding([.trailing, .leading])
+//            Rectangle().frame(height: 0.5)
+        }//.frame(height: 34)
     }
 }
 
 #if DEBUG
 struct TransactionListItemView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionListItemView(symbol: "BTC")
+        TransactionListItemView(symbol: "BTC").background(Color.gray)
     }
 }
 #endif
