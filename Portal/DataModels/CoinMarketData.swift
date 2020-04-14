@@ -19,12 +19,12 @@ struct CoinMarketData {
     
     var hasData: Bool = true
     
-    func price(currency: Currency) -> Double {
+    func price(currency: UserCurrency) -> Double {
         let symbol = currency.stringValue()
         return priceData[symbol]?.price ?? 0.0
     }
     
-    func priceString(currency: Currency, fiatCurrency: FiatCurrency? = nil) -> String {
+    func priceString(currency: UserCurrency, fiatCurrency: FiatCurrency? = nil) -> String {
         let symbol = currency.stringValue()
         switch currency {
         case .btc:
@@ -57,7 +57,7 @@ struct CoinMarketData {
         }
     }
     
-    func changeString(for timeframe: Timeframe, currrency: Currency, fiat: FiatCurrency) -> String {
+    func changeString(for timeframe: Timeframe, currrency: UserCurrency, fiat: FiatCurrency) -> String {
         let price = self.price(currency: currrency)
         let change = self.changeInPercents(tf: timeframe)
 
