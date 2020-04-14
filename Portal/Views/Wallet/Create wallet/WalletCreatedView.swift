@@ -14,7 +14,7 @@ struct WalletCreatedView: View {
     let model = BTC()
     var body: some View {
         VStack {
-            NavigationLink(destination: MainView(), isActive: self.$showWallet) {
+            NavigationLink(destination: TabbedBarView(), isActive: self.$showWallet) {
               EmptyView()
             }
             .hidden()
