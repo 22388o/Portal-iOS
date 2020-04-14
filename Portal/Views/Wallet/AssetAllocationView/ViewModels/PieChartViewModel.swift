@@ -15,7 +15,7 @@ protocol PieChartViewModelProtocol {
 }
 
 extension PieChartViewModelProtocol {
-    var totalValueCurrency: Currency { .usd }
+    var totalValueCurrency: UserCurrency { .usd }
     
     var totalPortfolioValue: Double {
         assets.map{ $0.value(currency: totalValueCurrency) }.reduce(0){ $0 + $1 }

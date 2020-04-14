@@ -24,7 +24,7 @@ struct StringFormatter {
         return formatter.string(from: NSNumber(value: value)) ?? "#"
     }
 
-    static func changeString(price: Double, change: Double, currency: Currency, fiat: FiatCurrency? = nil) -> String {
+    static func changeString(price: Double, change: Double, currency: UserCurrency, fiat: FiatCurrency? = nil) -> String {
         switch currency {
         case .btc, .eth:
             return changeString(price: price, change: change, currency: currency.stringValue())
@@ -67,7 +67,7 @@ struct StringFormatter {
         return outputString + percentFormatted(change)
     }
 
-    static func totalValueString(value: Double, currency: Currency, fiat: FiatCurrency? = nil) -> String {
+    static func totalValueString(value: Double, currency: UserCurrency, fiat: FiatCurrency? = nil) -> String {
         switch currency {
         case .btc:
             return value.btcFormatted()

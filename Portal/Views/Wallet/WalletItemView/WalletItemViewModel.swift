@@ -19,7 +19,7 @@ protocol WalletItemViewModel {
     var color: UIColor { get }
     var icon: UIImage { get }
     
-    func value(currency: Currency) -> Double
+    func value(currency: UserCurrency) -> Double
 }
 
 extension WalletItemViewModel {
@@ -51,7 +51,7 @@ extension WalletItemViewModel {
                         
         return UIImage(cgImage: cgImage)
     }
-    func value(currency: Currency) -> Double {
+    func value(currency: UserCurrency) -> Double {
         Double(totalValue) ?? 0.0
         //balance * marketData.price(currency: currency)
     }
