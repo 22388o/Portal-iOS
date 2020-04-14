@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Currency: Int {
+enum UserCurrency: Int {
     case usd
     case btc
     case eth
