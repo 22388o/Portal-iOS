@@ -28,7 +28,7 @@ final class RatesDataUpdater: ObservableObject {
     init(
         jsonDecoder: JSONDecoder = JSONDecoder(),
         timer: DispatchSourceTimer = DispatchSource.makeTimerSource(queue: .global(qos: .userInitiated)),
-        interval: Int = 60
+        interval: Int
     ) {
         self.jsonDecoder = jsonDecoder
 

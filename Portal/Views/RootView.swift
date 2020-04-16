@@ -12,10 +12,6 @@ protocol HistoricalData {
     func fetchHistoricalData()
 }
 
-protocol PricesData {
-    func updatePrices()
-}
-
 struct RootView: View {
     @State private var hasWallet = true
     
