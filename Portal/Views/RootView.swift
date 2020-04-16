@@ -8,10 +8,6 @@
 
 import SwiftUI
 
-protocol HistoricalData {
-    func fetchHistoricalData()
-}
-
 struct RootView: View {
     @State private var hasWallet = true
     

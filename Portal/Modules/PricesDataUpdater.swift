@@ -39,7 +39,6 @@ final class PricesDataUpdater: PricesData {
                     print(error.localizedDescription)
                 }
             }
-
         }
         self.timer.resume()
     }

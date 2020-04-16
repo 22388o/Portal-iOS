@@ -20,6 +20,8 @@
 		756A75FB24470F5000C66739 /* MarketPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A75FA24470F5000C66739 /* MarketPrice.swift */; };
 		756A75FD244844BC00C66739 /* PricesDataUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A75FC244844BC00C66739 /* PricesDataUpdater.swift */; };
 		756A75FF244844E300C66739 /* PriceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A75FE244844E300C66739 /* PriceData.swift */; };
+		756A76012448B0CB00C66739 /* HistoricalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A76002448B0CB00C66739 /* HistoricalData.swift */; };
+		756A76032448B62100C66739 /* MarketDataUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A76022448B62100C66739 /* MarketDataUpdater.swift */; };
 		7582D3A524123184008ECAB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3A424123184008ECAB0 /* AppDelegate.swift */; };
 		7582D3A724123184008ECAB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3A624123184008ECAB0 /* SceneDelegate.swift */; };
 		7582D3AA24123184008ECAB0 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3A824123184008ECAB0 /* Portal.xcdatamodeld */; };
@@ -108,6 +110,8 @@
 		756A75FA24470F5000C66739 /* MarketPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketPrice.swift; sourceTree = "<group>"; };
 		756A75FC244844BC00C66739 /* PricesDataUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricesDataUpdater.swift; sourceTree = "<group>"; };
 		756A75FE244844E300C66739 /* PriceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceData.swift; sourceTree = "<group>"; };
+		756A76002448B0CB00C66739 /* HistoricalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalData.swift; sourceTree = "<group>"; };
+		756A76022448B62100C66739 /* MarketDataUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataUpdater.swift; sourceTree = "<group>"; };
 		7582D3A124123184008ECAB0 /* Portal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Portal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7582D3A424123184008ECAB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7582D3A624123184008ECAB0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -217,6 +221,7 @@
 			children = (
 				756A75F02445F51500C66739 /* MarketData.swift */,
 				756A75FE244844E300C66739 /* PriceData.swift */,
+				756A76002448B0CB00C66739 /* HistoricalData.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -225,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				756A75F22445F57D00C66739 /* MarketDataRepository.swift */,
+				756A76022448B62100C66739 /* MarketDataUpdater.swift */,
 				756A75F52445F65C00C66739 /* RatesDataUpdater.swift */,
 				756A75FC244844BC00C66739 /* PricesDataUpdater.swift */,
 			);
@@ -778,8 +784,10 @@
 				7582D42B241FDA87008ECAB0 /* AlertsListView.swift in Sources */,
 				7582D3F924161ABA008ECAB0 /* PieChart+Extension.swift in Sources */,
 				756A75FD244844BC00C66739 /* PricesDataUpdater.swift in Sources */,
+				756A76012448B0CB00C66739 /* HistoricalData.swift in Sources */,
 				7582D42F2420C7BF008ECAB0 /* TransactionListItemView.swift in Sources */,
 				7582D3F5241619CA008ECAB0 /* PieChartViewModel.swift in Sources */,
+				756A76032448B62100C66739 /* MarketDataUpdater.swift in Sources */,
 				75C7D4712431F73D00BED668 /* SeedView.swift in Sources */,
 				756A75F62445F65C00C66739 /* RatesDataUpdater.swift in Sources */,
 			);
