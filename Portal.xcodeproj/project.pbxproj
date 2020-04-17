@@ -10,6 +10,7 @@
 		1B5D4645ED8B867348E63D53 /* Pods_Portal_PortalUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */; };
 		699170B47959AC03046904DC /* Pods_PortalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 208D6013569144022A61A0CB /* Pods_PortalTests.framework */; };
 		755233B324291314001D8CF8 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755233B224291314001D8CF8 /* Font+Extension.swift */; };
+		7568D2AC2449D6A4000217D9 /* MarketDataServerResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7568D2AB2449D6A4000217D9 /* MarketDataServerResponseMock.swift */; };
 		756A75EA2437467A00C66739 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A75E92437467A00C66739 /* View+Extension.swift */; };
 		756A75EC243EF37100C66739 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A75EB243EF37100C66739 /* RootView.swift */; };
 		756A75EE2444571600C66739 /* Syncronized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A75ED2444571600C66739 /* Syncronized.swift */; };
@@ -100,6 +101,7 @@
 		2A4759DB4F7D821F4AF0322A /* Pods-PortalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PortalTests.debug.xcconfig"; path = "Target Support Files/Pods-PortalTests/Pods-PortalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6068F2B744BD8F6270795EC0 /* Pods-PortalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PortalTests.release.xcconfig"; path = "Target Support Files/Pods-PortalTests/Pods-PortalTests.release.xcconfig"; sourceTree = "<group>"; };
 		755233B224291314001D8CF8 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
+		7568D2AB2449D6A4000217D9 /* MarketDataServerResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataServerResponseMock.swift; sourceTree = "<group>"; };
 		756A75E92437467A00C66739 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		756A75EB243EF37100C66739 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		756A75ED2444571600C66739 /* Syncronized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Syncronized.swift; sourceTree = "<group>"; };
@@ -399,6 +401,7 @@
 			isa = PBXGroup;
 			children = (
 				7582D3DE24125641008ECAB0 /* MockData.swift */,
+				7568D2AB2449D6A4000217D9 /* MarketDataServerResponseMock.swift */,
 				75C7D464242B2F4500BED668 /* StyleModifiers.swift */,
 				7582D40C24167A87008ECAB0 /* StringFormatter.swift */,
 				756A75ED2444571600C66739 /* Syncronized.swift */,
@@ -751,6 +754,7 @@
 				7582D3DB2412325D008ECAB0 /* AtomicBridgeView.swift in Sources */,
 				756A75F32445F57D00C66739 /* MarketDataRepository.swift in Sources */,
 				75C7D4732433498300BED668 /* TestSeedView.swift in Sources */,
+				7568D2AC2449D6A4000217D9 /* MarketDataServerResponseMock.swift in Sources */,
 				7582D3AA24123184008ECAB0 /* Portal.xcdatamodeld in Sources */,
 				7582D4192418C799008ECAB0 /* SendCoinView.swift in Sources */,
 				7582D3DF24125641008ECAB0 /* MockData.swift in Sources */,
