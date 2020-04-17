@@ -8,6 +8,10 @@
 
 import Foundation
 
+enum MarketDataRange {
+    case hour, day, week, month, year
+}
+
 enum UserCurrency: Int {
     case usd
     case btc
