@@ -12,6 +12,6 @@ import Combine
 typealias HistoricalDataResponse = Dictionary<String, [MarketSnapshot]>
 
 protocol HistoricalData: ObservableObject {
-    var onUpdatePublisher: PassthroughSubject<HistoricalDataResponse, Never> { get }
-    func fetchHistoricalData(assets: String, _ competionHandler: @escaping ((Result<HistoricalDataResponse, NetworkError>) -> Void))
+    var onUpdatePublisher: PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never> { get }
+    func fetchHistoricalData(assets: String)
 }
