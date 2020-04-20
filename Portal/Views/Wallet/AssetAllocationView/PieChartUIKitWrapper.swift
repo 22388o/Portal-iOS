@@ -12,7 +12,7 @@ import Charts
 struct PieChartUIKitWrapper: UIViewRepresentable {
     let viewModel: PieChartViewModelProtocol
 
-    init(viewModel: AssetAllocationViewModel = AssetAllocationViewModel(assets: WalletMock)) {
+    init(viewModel: AssetAllocationViewModel = AssetAllocationViewModel()) {
         self.viewModel = viewModel
     }
     

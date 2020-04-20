@@ -9,20 +9,23 @@
 import SwiftUI
 
 struct PortfolioViewModel: PortfolioViewModelProtocol {
+    var wallet: Wallet
     var marketData: [String : CoinMarketData]
-    var assets: [WalletItemViewModel]
     
-    init(marketData: [String : CoinMarketData] = [String : CoinMarketData](), assets: [WalletItemViewModel] = WalletMock) {
+    init(wallet: Wallet, marketData: [String : CoinMarketData]) {
+        self.wallet = wallet
         self.marketData = marketData
-        self.assets = assets
         self.mockHourData()
     }
 }
 
 struct PortfolioView: View {
     @Binding var showModal: Bool
-    
-    let viewModel: PortfolioViewModel = PortfolioViewModel()
+        
+    let viewModel: PortfolioViewModel = PortfolioViewModel(
+        wallet: WalletMock(),
+        marketData: [String : CoinMarketData]()
+    )
     
     var body: some View {
         ZStack {
@@ -30,7 +33,7 @@ struct PortfolioView: View {
             
             VStack {
                 
-                AssetMarketValueView(type: .portfolio)
+                AssetMarketValueView(type: .portfolio, viewModel: viewModel)
                             
                 HStack(spacing: 50) {
                     VStack(spacing: 10) {

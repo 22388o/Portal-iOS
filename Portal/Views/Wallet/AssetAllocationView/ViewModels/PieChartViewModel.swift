@@ -11,7 +11,7 @@ import SwiftUI
 import Charts
 
 protocol PieChartViewModelProtocol {
-    var assets: [WalletItemViewModel] { get }
+    var assets: [CoinViewModel] { get }
 }
 
 extension PieChartViewModelProtocol {
@@ -60,7 +60,7 @@ extension PieChartViewModelProtocol {
         return (entries, colors)
     }
     
-    func allocationSizeInPercents(for coin: WalletItemViewModel) -> Double {
+    func allocationSizeInPercents(for coin: CoinViewModel) -> Double {
         let value = coin.value(currency: totalValueCurrency)
         return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
     }

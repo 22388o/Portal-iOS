@@ -9,13 +9,21 @@
 import SwiftUI
 import QGrid
 
+protocol Asset {
+    var viewModel: CoinViewModel { get }
+}
+
+protocol Wallet {
+    var assets: [Asset] { get }
+}
+
 struct CoinAdapter: Identifiable {
     let id: String
-    let coin: WalletItemViewModel
+    let coin: CoinViewModel
 
-    init(_ coin: WalletItemViewModel) {
-        self.coin = coin
+    init(coin: CoinViewModel) {
         self.id = coin.name
+        self.coin = coin
     }
 }
 
@@ -23,16 +31,16 @@ struct WalletView: View {
     @State private var showPortfolioView = false
     @State private var showCoinView = false
     
-    @State private var curentItem: WalletItemViewModel = CoinMock() {
+    @State private var curentItem: CoinViewModel = CoinMock() {
         didSet {
             showCoinView.toggle()
         }
     }
     
-    private var viewModels: [WalletItemViewModel]
+    private var viewModels: [CoinViewModel]
     
-    init(wallet: [WalletItemViewModel] = WalletMock) {
-        viewModels = wallet
+    init(wallet: Wallet = WalletMock()) {
+        viewModels = wallet.assets.map{ $0.viewModel }
     }
     
     var body: some View {
@@ -50,7 +58,7 @@ struct WalletView: View {
                     PortfolioView(showModal: self.$showPortfolioView)
                 }
                 
-                QGrid(viewModels.map{CoinAdapter($0)}, columns: 1) { adapter in
+                QGrid(viewModels.map{ CoinAdapter(coin: $0) }, columns: 1) { adapter in
                     WalletItemView(viewModel: adapter.coin)
                         .onTapGesture {
                             self.curentItem = adapter.coin
@@ -68,7 +76,7 @@ struct WalletView: View {
 #if DEBUG
 struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletView(wallet: WalletMock)
+        WalletView(wallet: WalletMock())
     }
 }
 #endif
