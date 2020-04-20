@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct ReceiveCoinView: View {
-    let model: WalletItemViewModel
+    let model: CoinViewModel
     
-    init(viewModel: WalletItemViewModel = CoinMock()) {
+    init(viewModel: CoinViewModel = CoinMock()) {
         self.model = viewModel
     }
     
@@ -58,7 +58,7 @@ struct ReceiveCoinView: View {
 #if DEBUG
 struct ReceiveCoinView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiveCoinView(viewModel: BTC())
+        ReceiveCoinView(viewModel: BTC().viewModel)
     }
 }
 #endif

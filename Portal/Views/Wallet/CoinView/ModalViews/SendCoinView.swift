@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct SendCoinView: View {
-    private let model: WalletItemViewModel
+    private let model: CoinViewModel
     @State var sendToAddress: String = ""
     
-    init(viewModel: WalletItemViewModel = CoinMock()) {
+    init(viewModel: CoinViewModel = CoinMock()) {
         self.model = viewModel
     }
     
@@ -98,7 +98,7 @@ struct SendCoinView: View {
 #if DEBUG
 struct SendCoinsView_Previews: PreviewProvider {
     static var previews: some View {
-        SendCoinView(viewModel: BTC())
+        SendCoinView(viewModel: BTC().viewModel)
     }
 }
 #endif

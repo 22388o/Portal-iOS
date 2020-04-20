@@ -10,9 +10,9 @@ import SwiftUI
 
 
 struct TransactionView: View {
-    let model: WalletItemViewModel
+    let model: CoinViewModel
     
-    init(viewModel: WalletItemViewModel = CoinMock()) {
+    init(viewModel: CoinViewModel = CoinMock()) {
         self.model = viewModel
     }
     
@@ -105,7 +105,7 @@ struct TransactionView: View {
 #if DEBUG
 struct TransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionView(viewModel: ETH())
+        TransactionView(viewModel: ETH().viewModel)
     }
 }
 #endif

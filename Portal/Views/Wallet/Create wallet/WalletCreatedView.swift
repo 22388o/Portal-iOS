@@ -11,7 +11,7 @@ import SwiftUI
 struct WalletCreatedView: View {
     @State private var showWallet = false
 
-    let model = BTC()
+    let model = BTC().viewModel
     var body: some View {
         VStack {
             NavigationLink(destination: TabbedBarView(), isActive: self.$showWallet) {

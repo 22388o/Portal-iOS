@@ -17,7 +17,7 @@ struct WalletItemView: View {
     private let change: String
     private let icon: UIImage
     
-    init(viewModel: WalletItemViewModel) {
+    init(viewModel: CoinViewModel) {
         name = viewModel.name
         symbol = viewModel.symbol
         amount = viewModel.amount
@@ -76,7 +76,7 @@ struct WalletItemView: View {
 #if DEBUG
 struct WalletItemView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletItemView(viewModel: XTZ())
+        WalletItemView(viewModel: XTZ().viewModel)
     }
 }
 #endif

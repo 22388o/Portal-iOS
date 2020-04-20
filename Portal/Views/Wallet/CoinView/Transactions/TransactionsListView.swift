@@ -17,7 +17,7 @@ struct TransactionItem: Identifiable {
 }
 
 struct TransactionsListView: View {
-    @Binding var model: WalletItemViewModel
+    @Binding var model: CoinViewModel
     @State private var showTxInfo: Bool = false
     
     var txs: [TransactionItem] {
@@ -49,7 +49,7 @@ struct TransactionsListView: View {
 #if DEBUG
 struct TransactionsPreviewView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionsListView(model: .constant(BTC()))
+        TransactionsListView(model: .constant(BTC().viewModel))
     }
 }
 #endif
