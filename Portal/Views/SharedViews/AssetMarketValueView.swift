@@ -18,7 +18,7 @@ struct AssetMarketValueView: View {
     private let type: AssetMarketValueViewType
     private let viewModel: PortfolioViewModel
     
-    init(type: AssetMarketValueViewType = .asset, viewModel: PortfolioViewModel = PortfolioViewModel()) {
+    init(type: AssetMarketValueViewType = .asset, viewModel: PortfolioViewModel) {
         self.viewModel = viewModel
         self.type = type
     }
@@ -90,7 +90,7 @@ struct AssetMarketValueView: View {
             }
             .padding()
             
-            LineChartUIKitWrapper()
+            LineChartUIKitWrapper(viewModel: viewModel)
                 .frame(height: 150)
                 .padding([.leading, .trailing])
             
@@ -145,7 +145,13 @@ struct TimeframeButton: ViewModifier {
 #if DEBUG
 struct AssetMarketValueView_Previews: PreviewProvider {
     static var previews: some View {
-        AssetMarketValueView(type: .asset)
+        AssetMarketValueView(
+            type: .asset,
+            viewModel: PortfolioViewModel(
+                wallet: WalletMock(),
+                marketData: [String : CoinMarketData]()
+            )
+        )
     }
 }
 #endif

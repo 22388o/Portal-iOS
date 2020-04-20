@@ -10,9 +10,9 @@ import Foundation
 import Charts
 
 struct AssetAllocationViewModel: PieChartViewModelProtocol {
-    var assets: [WalletItemViewModel]
+    var assets: [CoinViewModel]
     
-    init(assets: [WalletItemViewModel]) {
+    init(assets: [CoinViewModel] = WalletMock().assets.map{ $0.viewModel }) {
         self.assets = assets
     }
 }

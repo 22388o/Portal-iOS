@@ -13,7 +13,7 @@ struct AssetAllocationView: View {
     let showTotalValue: Bool
     
     init(
-        viewModel: AssetAllocationViewModel = AssetAllocationViewModel(assets: WalletMock),
+        viewModel: AssetAllocationViewModel = AssetAllocationViewModel(),
         showTotalValue: Bool = true
     ) {
         self.viewModel = viewModel
