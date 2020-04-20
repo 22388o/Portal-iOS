@@ -9,7 +9,7 @@
 import Foundation
 
 struct CoinMarketData {
-    var priceData = [String: MarketPrice]()
+    var priceData: MarketPrice?
     
     var hourPoints = [MarketSnapshot]()
     var dayPoints = [MarketSnapshot]()
@@ -20,22 +20,20 @@ struct CoinMarketData {
     var hasData: Bool = true
     
     func price(currency: UserCurrency) -> Double {
-        let symbol = currency.stringValue()
-        return priceData[symbol]?.price ?? 0.0
+        return priceData?.price ?? 0.0
     }
     
     func priceString(currency: UserCurrency, fiatCurrency: FiatCurrency? = nil) -> String {
-        let symbol = currency.stringValue()
         switch currency {
         case .btc:
-            return priceData[symbol]?.price.btcFormatted() ?? 0.0.btcFormatted()
+            return priceData?.price.btcFormatted() ?? 0.0.btcFormatted()
         case .eth:
-            return priceData[symbol]?.price.ethFormatted() ?? 0.0.ethFormatted()
+            return priceData?.price.ethFormatted() ?? 0.0.ethFormatted()
         case .usd:
             guard let fiat = fiatCurrency else {
-                return priceData[symbol]?.price.dollarFormatted() ?? 0.0.dollarFormatted()
+                return priceData?.price.dollarFormatted() ?? 0.0.dollarFormatted()
             }
-            let value = (priceData[symbol]?.price ?? 0.0) * fiat.rate
+            let value = (priceData?.price ?? 0.0) * fiat.rate
             return StringFormatter.localizedValueString(value: value, symbol: fiat.symbol ?? "$")
         }
     }

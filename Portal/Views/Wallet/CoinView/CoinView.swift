@@ -13,7 +13,7 @@ enum CoinViewRoute {
 }
 
 struct CoinView: View {
-    @Binding var model: WalletItemViewModel
+    @Binding var model: CoinViewModel
     
     @State var showSendView = false
     @State var showReceiveView = false
@@ -21,6 +21,11 @@ struct CoinView: View {
     @State var showWithdrawView = false
     
     @State var route: CoinViewRoute = .value
+    
+    let viewModel = PortfolioViewModel(
+        wallet: WalletMock(),
+        marketData: [String : CoinMarketData]()
+    )
     
     var body: some View {
         ZStack {
@@ -126,7 +131,7 @@ struct CoinView: View {
     private func containedView() -> AnyView {
         switch self.route {
         case .value:
-            return AnyView(AssetMarketValueView(type: .portfolio))
+            return AnyView(AssetMarketValueView(type: .portfolio, viewModel: viewModel))
         case .transactions:
             return AnyView(TransactionsListView(model: $model))
         case .alerts:
@@ -144,7 +149,7 @@ struct CoinView: View {
 #if DEBUG
 struct CoinDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        CoinView(model: .constant(BTC()))
+        CoinView(model: .constant(BTC().viewModel))
     }
 }
 #endif

@@ -1,5 +1,5 @@
 //
-//  WalletItemViewModel.swift
+//  CoinViewModel.swift
 //  Portal
 //
 //  Created by Farid on 06.03.2020.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-protocol WalletItemViewModel {
+protocol CoinViewModel: ObservableObject {
     var name: String { get }
     var symbol: String { get }
     var amount: String { get }
@@ -19,10 +19,12 @@ protocol WalletItemViewModel {
     var color: UIColor { get }
     var icon: UIImage { get }
     
+    var marketData: CoinMarketData { get }
+    
     func value(currency: UserCurrency) -> Double
 }
 
-extension WalletItemViewModel {
+extension CoinViewModel {
     var icon: UIImage { UIImage() }
     var name: String { "Name" }
     var symbol: String { "Symbol" }
@@ -31,6 +33,7 @@ extension WalletItemViewModel {
     var price: String { "Price" }
     var change: String { "Change" }
     var color: UIColor { UIColor.clear }
+//    var marketData: CoinMarketData { CoinMarketData() }
     func QRCode(address: String? = btcMockAddress) -> UIImage {
         guard let message = address?.data(using: .utf8) else { return UIImage() }
         
