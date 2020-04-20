@@ -13,7 +13,7 @@ struct LineChartUIKitWrapper: UIViewRepresentable {
     
     let viewModel: PortfolioViewModel
     
-    init(viewModel: PortfolioViewModel = PortfolioViewModel()) {
+    init(viewModel: PortfolioViewModel) {
         self.viewModel = viewModel
     }
     
@@ -45,7 +45,12 @@ struct LineChartUIKitWrapper: UIViewRepresentable {
 #if DEBUG
 struct LineChartUIKitWrapper_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartUIKitWrapper()
+        LineChartUIKitWrapper(
+            viewModel: PortfolioViewModel(
+                wallet: WalletMock(),
+                marketData: [String : CoinMarketData]()
+            )
+        )
             .frame(width: UIScreen.main.bounds.width, height: 150)
     }
 }

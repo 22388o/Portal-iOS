@@ -11,7 +11,7 @@ import SwiftUI
 
 let btcMockAddress = "1HqwV7F9hpUpJXubLFomcrNMUqPLzeTVNd"
 
-struct BTC: WalletItemViewModel {
+class BTCViewModel: CoinViewModel {
     var name  = "Bitcoin"
     var symbol = "BTC"
     var amount = "2.332502"
@@ -20,9 +20,23 @@ struct BTC: WalletItemViewModel {
     var change = "+0.25%"
     var color = UIColor.green
     var icon = UIImage(imageLiteralResourceName: "iconBtc")
+    
+    @Published var marketData: CoinMarketData
+    
+    init(marketData: CoinMarketData) {
+        self.marketData = marketData
+    }
 }
 
-struct BCH: WalletItemViewModel {
+final class BTC: Asset {
+    var viewModel: CoinViewModel
+    
+    init(marketData: CoinMarketData = CoinMarketData()) {
+        viewModel = BTCViewModel(marketData: marketData)
+    }
+}
+
+class BCHViewModel: CoinViewModel {
     var name  = "Bitcoin Cash"
     var symbol = "BCH"
     var amount = "10.2502"
@@ -31,9 +45,23 @@ struct BCH: WalletItemViewModel {
     var change = "+2.15%"
     var color = UIColor.gray
     var icon = UIImage(imageLiteralResourceName: "iconBch")
+    
+    @Published var marketData: CoinMarketData
+    
+    init(marketData: CoinMarketData) {
+        self.marketData = marketData
+    }
 }
 
-struct ETH: WalletItemViewModel {
+final class BCH: Asset {
+    var viewModel: CoinViewModel
+    
+    init(marketData: CoinMarketData = CoinMarketData()) {
+        viewModel = BCHViewModel(marketData: marketData)
+    }
+}
+
+class ETHViewModel: CoinViewModel {
     var name  = "Ethereum"
     var symbol = "ETH"
     var amount = "20.332502"
@@ -42,9 +70,23 @@ struct ETH: WalletItemViewModel {
     var change = "+6.25%"
     var color = UIColor.blue
     var icon = UIImage(imageLiteralResourceName: "iconEth")
+    
+    @Published var marketData: CoinMarketData
+    
+    init(marketData: CoinMarketData) {
+        self.marketData = marketData
+    }
 }
 
-struct XLM: WalletItemViewModel {
+final class ETH: Asset {
+    var viewModel: CoinViewModel
+    
+    init(marketData: CoinMarketData = CoinMarketData()) {
+        viewModel = ETHViewModel(marketData: marketData)
+    }
+}
+
+class XLMViewModel: CoinViewModel {
     var name  = "Stellar Lumens"
     var symbol = "XLM"
     var amount = "200.13"
@@ -53,9 +95,23 @@ struct XLM: WalletItemViewModel {
     var change = "+0.02%"
     var color = UIColor.red
     var icon = UIImage(imageLiteralResourceName: "iconXlm")
+    
+    @Published var marketData: CoinMarketData
+    
+    init(marketData: CoinMarketData) {
+        self.marketData = marketData
+    }
 }
 
-struct XTZ: WalletItemViewModel {
+final class XLM: Asset {
+    var viewModel: CoinViewModel
+    
+    init(marketData: CoinMarketData = CoinMarketData()) {
+        viewModel = XLMViewModel(marketData: marketData)
+    }
+}
+
+class XTZViewModel: CoinViewModel {
     var name  = "Tezos"
     var symbol = "XTZ"
     var amount = "1.42"
@@ -64,9 +120,23 @@ struct XTZ: WalletItemViewModel {
     var change = "+0.02%"
     var color = UIColor.lightGray
     var icon = UIImage(imageLiteralResourceName: "iconXtz")
+    
+    @Published var marketData: CoinMarketData
+    
+    init(marketData: CoinMarketData) {
+        self.marketData = marketData
+    }
 }
 
-struct LPT: WalletItemViewModel {
+final class XTZ: Asset {
+    var viewModel: CoinViewModel
+    
+    init(marketData: CoinMarketData = CoinMarketData()) {
+        viewModel = XTZViewModel(marketData: marketData)
+    }
+}
+
+class LPTViewModel: CoinViewModel {
     var name  = "Livepeer Token"
     var symbol = "LPT"
     var amount = "2.13"
@@ -74,10 +144,41 @@ struct LPT: WalletItemViewModel {
     var price = "$215"
     var change = "+0.02%"
     var color = UIColor.yellow
+    
+    @Published var marketData: CoinMarketData
+    
+    init(marketData: CoinMarketData) {
+        self.marketData = marketData
+    }
 }
 
-struct CoinMock: WalletItemViewModel {
+final class LPT: Asset {
+    var viewModel: CoinViewModel
+    
+    init(marketData: CoinMarketData = CoinMarketData()) {
+        viewModel = LPTViewModel(marketData: marketData)
+    }
+}
+
+struct CoinMock: CoinViewModel {
+    var marketData: CoinMarketData = CoinMarketData()
+    
     var icon = UIImage(imageLiteralResourceName: "iconBtc")
 }
 
-let WalletMock: [WalletItemViewModel] = [BTC(), BCH(), ETH(), XLM(), XTZ()]
+class WalletMock: Wallet {
+    
+    var assets = [Asset]()
+    
+    init() {
+        self.assets = [
+            BTC(marketData: CoinMarketData()),
+            BCH(marketData: CoinMarketData()),
+            ETH(marketData: CoinMarketData()),
+            XLM(marketData: CoinMarketData()),
+            XTZ(marketData: CoinMarketData())
+        ]
+    }
+}
+
+//let CoinsMock: [Asset] = [BTC(), BCH(), ETH(), XLM(), XTZ()]

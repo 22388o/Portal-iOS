@@ -26,9 +26,9 @@ struct ExchangerView: View {
     @State var amountInCrypto: String = ""
     @State var amountInFiat: String = ""
     
-    private let model: WalletItemViewModel
+    private let model: CoinViewModel
     
-    init(viewModel: WalletItemViewModel = CoinMock()) {
+    init(viewModel: CoinViewModel = CoinMock()) {
         self.model = viewModel
     }
 
@@ -75,7 +75,7 @@ struct ExchangerView: View {
 #if DEBUG
 struct ExchangerView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangerView(viewModel: ETH()).padding()
+        ExchangerView(viewModel: ETH().viewModel).padding()
     }
 }
 #endif
