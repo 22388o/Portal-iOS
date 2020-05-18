@@ -17,27 +17,24 @@ struct FiatRatesResponse: Codable {
     let rates: Rates?
 }
 
-final class RatesDataUpdater: ObservableObject {
+final class RatesDataUpdater {
     let onUpdatePublisher = PassthroughSubject<Rates, Never>()
     
     private var task: URLSessionTask?
     
     private let jsonDecoder: JSONDecoder
-    private let timer: DispatchSourceTimer
+    private let timer: RepeatingTimer
         
     init(
         jsonDecoder: JSONDecoder = JSONDecoder(),
-        timer: DispatchSourceTimer = DispatchSource.makeTimerSource(queue: .global(qos: .userInitiated)),
-        interval: Int
+        interval: TimeInterval
     ) {
         self.jsonDecoder = jsonDecoder
-
-        self.timer = timer
-        self.timer.schedule(deadline: .now(), repeating: .seconds(interval))
-        self.timer.setEventHandler { [weak self] in
+        self.timer = RepeatingTimer(timeInterval: interval)
+        self.timer.eventHandler = { [weak self] in
             guard self?.task?.state != .running else { return }
             
-            self?.updateRates { [weak self] result in
+            self?.updateRates { result in
                 guard let self = self else { return }
                 switch result {
                 case let .success(rates):
@@ -50,14 +47,7 @@ final class RatesDataUpdater: ObservableObject {
         }
         self.timer.resume()
     }
-    
-    deinit {
-        timer.setEventHandler(handler: nil)
-        timer.cancel()
-        // https://forums.developer.apple.com/thread/15902
-        timer.resume()
-    }
-            
+                
     private func updateRates(_ competionHandler: @escaping ((Result<Rates, NetworkError>) -> Void)) {
         guard let url = URL(string: "https://data.fixer.io/api/latest?access_key=13af1e52c56117b6c7d513603fb7cee8&base=USD") else {
             competionHandler(.failure(.networkError))
@@ -86,5 +76,13 @@ final class RatesDataUpdater: ObservableObject {
             }
         }
         task?.resume()
+    }
+    
+    func pause() {
+        timer.suspend()
+    }
+    
+    func resume() {
+        timer.resume()
     }
 }
