@@ -8,19 +8,15 @@
 
 import SwiftUI
 
-struct TabbedBarView: View {
+struct MainView: View {
+    @EnvironmentObject var walletCoordinator: WalletCoordinator
     @State private var selection = 0
-    @State private var hasWallet = false
-    
-    init() {
-        UITabBar.appearance().barTintColor = UIColor(white: 0, alpha: 0.1)
-    }
  
     var body: some View {
         ZStack {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
             TabView(selection: $selection) {
-                WalletView()
+                WalletView(walletCoordinator: self.walletCoordinator)
                     .tabItem {
                         VStack {
                             Image(systemName: "1.square.fill")
@@ -40,14 +36,22 @@ struct TabbedBarView: View {
                     .tag(1)
                 .hideNavigationBar()
             }
-        }.hideNavigationBar()
+        }
+        .hideNavigationBar()
+//        .onReceive(walletCoordinator.$currentWallet, perform: { newWallet in
+//            guard newWallet != nil else { return }
+//            self.wallet = newWallet!
+//        })
     }
 }
 
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TabbedBarView()
+        MainView()
+            .environmentObject(
+                WalletCoordinator(mockedWallet: WalletMock())
+            )
     }
 }
 #endif

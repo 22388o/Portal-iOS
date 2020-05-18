@@ -10,27 +10,22 @@ import Foundation
 import SwiftUI
 import Combine
 
-final class MarketDataRepository: MarketData, ObservableObject  {
-    @ObservedObject private var marketDataUpdater = MarketDataUpdater()
-    @ObservedObject private var ratesUpdater = RatesDataUpdater(interval: 60)
-    @ObservedObject private var priceUpdater = PricesDataUpdater(interval: 60)
+final class MarketDataRepository: IMarketData  {
+    private var marketDataUpdater = MarketDataUpdater()
+    private var ratesUpdater = RatesDataUpdater(interval: 60)
+    private var priceUpdater = PricesDataUpdater(interval: 60)
     
     private var cancellables: Set<AnyCancellable> = []
     
-    @Published private var currencyRates = Synchronized([String : Double]())
-    @Published private var marketData = Synchronized([String : CoinMarketData]())
+    private var currencyRates = Synchronized([String : Double]())
+    private var marketData = Synchronized([String : CoinMarketData]())
         
     init() {
         bindServices()
     }
     
-    deinit {
-        _ = cancellables.map{ $0.cancel() }
-    }
-    
     private func bindServices() {
         marketDataUpdater.onUpdatePublisher
-            .print()
             .sink(receiveValue: { [weak self] (range, data) in
                 guard let self = self else { return }
                 self.update(range, data)
@@ -38,7 +33,6 @@ final class MarketDataRepository: MarketData, ObservableObject  {
             .store(in: &cancellables)
         
         ratesUpdater.onUpdatePublisher
-            .print()
             .sink(receiveValue: { [weak self] rates in
                 guard let self = self else { return }
                 self.update(rates)
@@ -46,7 +40,6 @@ final class MarketDataRepository: MarketData, ObservableObject  {
             .store(in: &cancellables)
         
         priceUpdater.onUpdatePublisher
-            .print()
             .sink(receiveValue: { [weak self] prices in
                 guard let self = self else { return }
                 self.update(prices)
@@ -61,6 +54,16 @@ final class MarketDataRepository: MarketData, ObservableObject  {
     func rate(for currency: FiatCurrency) -> Double {
         let code = currency.code
         return currencyRates.value[code] ?? 1.0
+    }
+    
+    func pause() {
+        ratesUpdater.pause()
+        priceUpdater.pause()
+    }
+    
+    func resume() {
+        ratesUpdater.resume()
+        priceUpdater.resume()
     }
 }
 

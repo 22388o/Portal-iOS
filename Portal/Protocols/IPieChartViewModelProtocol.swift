@@ -1,5 +1,5 @@
 //
-//  PieChartViewModelProtocol.swift
+//  IPieChartViewModelProtocol.swift
 //  Portal
 //
 //  Created by Farid on 09.03.2020.
@@ -10,11 +10,11 @@ import Foundation
 import SwiftUI
 import Charts
 
-protocol PieChartViewModelProtocol {
-    var assets: [CoinViewModel] { get }
+protocol IPieChartViewModelProtocol {
+    var assets: [ICoinViewModel] { get }
 }
 
-extension PieChartViewModelProtocol {
+extension IPieChartViewModelProtocol {
     var totalValueCurrency: UserCurrency { .usd }
     
     var totalPortfolioValue: Double {
@@ -60,7 +60,7 @@ extension PieChartViewModelProtocol {
         return (entries, colors)
     }
     
-    func allocationSizeInPercents(for coin: CoinViewModel) -> Double {
+    func allocationSizeInPercents(for coin: ICoinViewModel) -> Double {
         let value = coin.value(currency: totalValueCurrency)
         return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
     }

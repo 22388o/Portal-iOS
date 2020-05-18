@@ -1,5 +1,5 @@
 //
-//  CoinViewModel.swift
+//  ICoinViewModel.swift
 //  Portal
 //
 //  Created by Farid on 06.03.2020.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-protocol CoinViewModel: ObservableObject {
+protocol ICoinViewModel {
     var name: String { get }
     var symbol: String { get }
     var amount: String { get }
@@ -24,7 +24,7 @@ protocol CoinViewModel: ObservableObject {
     func value(currency: UserCurrency) -> Double
 }
 
-extension CoinViewModel {
+extension ICoinViewModel {
     var icon: UIImage { UIImage() }
     var name: String { "Name" }
     var symbol: String { "Symbol" }

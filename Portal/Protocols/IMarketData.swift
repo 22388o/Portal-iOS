@@ -1,5 +1,5 @@
 //
-//  MarketData.swift
+//  IMarketData.swift
 //  Portal
 //
 //  Created by Farid on 14.04.2020.
@@ -8,12 +8,14 @@
 
 import Foundation
 
-protocol MarketData {
+protocol IMarketData {
     func marketData(for coin: String) -> CoinMarketData
     func rate(for currency: FiatCurrency) -> Double
+    func pause()
+    func resume()
 }
 
-extension MarketData {
+extension IMarketData {
     var assetSymbols: [String] {
         ["BTC", "BCH", "ETH"]
     }

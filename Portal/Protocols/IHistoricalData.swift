@@ -1,5 +1,5 @@
 //
-//  HistoricalData.swift
+//  IHistoricalData.swift
 //  Portal
 //
 //  Created by Farid on 16.04.2020.
@@ -11,7 +11,7 @@ import Combine
 
 typealias HistoricalDataResponse = Dictionary<String, [MarketSnapshot]>
 
-protocol HistoricalData: ObservableObject {
+protocol IHistoricalData {
     var onUpdatePublisher: PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never> { get }
     func fetchHistoricalData(assets: String)
 }

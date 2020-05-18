@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-final class MarketDataUpdater: HistoricalData {
+final class MarketDataUpdater: IHistoricalData {
     var onUpdatePublisher = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
     
     private let marketDataQueue = DispatchQueue(label: "com.portal.market.data.queue", attributes: .concurrent)
