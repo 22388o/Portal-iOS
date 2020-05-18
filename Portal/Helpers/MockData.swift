@@ -11,7 +11,7 @@ import SwiftUI
 
 let btcMockAddress = "1HqwV7F9hpUpJXubLFomcrNMUqPLzeTVNd"
 
-class BTCViewModel: CoinViewModel {
+class BTCViewModel: ICoinViewModel {
     var name  = "Bitcoin"
     var symbol = "BTC"
     var amount = "2.332502"
@@ -28,15 +28,15 @@ class BTCViewModel: CoinViewModel {
     }
 }
 
-final class BTC: Asset {
-    var viewModel: CoinViewModel
+final class BTC: IAsset {
+    var viewModel: ICoinViewModel
     
     init(marketData: CoinMarketData = CoinMarketData()) {
         viewModel = BTCViewModel(marketData: marketData)
     }
 }
 
-class BCHViewModel: CoinViewModel {
+class BCHViewModel: ICoinViewModel {
     var name  = "Bitcoin Cash"
     var symbol = "BCH"
     var amount = "10.2502"
@@ -53,15 +53,15 @@ class BCHViewModel: CoinViewModel {
     }
 }
 
-final class BCH: Asset {
-    var viewModel: CoinViewModel
+final class BCH: IAsset {
+    var viewModel: ICoinViewModel
     
     init(marketData: CoinMarketData = CoinMarketData()) {
         viewModel = BCHViewModel(marketData: marketData)
     }
 }
 
-class ETHViewModel: CoinViewModel {
+class ETHViewModel: ICoinViewModel {
     var name  = "Ethereum"
     var symbol = "ETH"
     var amount = "20.332502"
@@ -78,15 +78,15 @@ class ETHViewModel: CoinViewModel {
     }
 }
 
-final class ETH: Asset {
-    var viewModel: CoinViewModel
+final class ETH: IAsset {
+    var viewModel: ICoinViewModel
     
     init(marketData: CoinMarketData = CoinMarketData()) {
         viewModel = ETHViewModel(marketData: marketData)
     }
 }
 
-class XLMViewModel: CoinViewModel {
+class XLMViewModel: ICoinViewModel {
     var name  = "Stellar Lumens"
     var symbol = "XLM"
     var amount = "200.13"
@@ -103,15 +103,15 @@ class XLMViewModel: CoinViewModel {
     }
 }
 
-final class XLM: Asset {
-    var viewModel: CoinViewModel
+final class XLM: IAsset {
+    var viewModel: ICoinViewModel
     
     init(marketData: CoinMarketData = CoinMarketData()) {
         viewModel = XLMViewModel(marketData: marketData)
     }
 }
 
-class XTZViewModel: CoinViewModel {
+class XTZViewModel: ICoinViewModel {
     var name  = "Tezos"
     var symbol = "XTZ"
     var amount = "1.42"
@@ -128,15 +128,15 @@ class XTZViewModel: CoinViewModel {
     }
 }
 
-final class XTZ: Asset {
-    var viewModel: CoinViewModel
+final class XTZ: IAsset {
+    var viewModel: ICoinViewModel
     
     init(marketData: CoinMarketData = CoinMarketData()) {
         viewModel = XTZViewModel(marketData: marketData)
     }
 }
 
-class LPTViewModel: CoinViewModel {
+class LPTViewModel: ICoinViewModel {
     var name  = "Livepeer Token"
     var symbol = "LPT"
     var amount = "2.13"
@@ -152,23 +152,24 @@ class LPTViewModel: CoinViewModel {
     }
 }
 
-final class LPT: Asset {
-    var viewModel: CoinViewModel
+final class LPT: IAsset {
+    var viewModel: ICoinViewModel
     
     init(marketData: CoinMarketData = CoinMarketData()) {
         viewModel = LPTViewModel(marketData: marketData)
     }
 }
 
-struct CoinMock: CoinViewModel {
+struct CoinMock: ICoinViewModel {
     var marketData: CoinMarketData = CoinMarketData()
     
     var icon = UIImage(imageLiteralResourceName: "iconBtc")
 }
 
-class WalletMock: Wallet {
+class WalletMock: IWallet {
+    var walletID: UUID = UUID()
     
-    var assets = [Asset]()
+    var assets = [IAsset]()
     
     init() {
         self.assets = [
@@ -179,6 +180,8 @@ class WalletMock: Wallet {
             XTZ(marketData: CoinMarketData())
         ]
     }
+    
+    func setup() {}
 }
 
 //let CoinsMock: [Asset] = [BTC(), BCH(), ETH(), XLM(), XTZ()]

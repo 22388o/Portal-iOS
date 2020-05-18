@@ -31,6 +31,9 @@ extension Color {
     static var assetViewButton: Color {
         Color(red: 8.0/255.0, green: 137.0/255.0, blue: 206.0/255.0)
     }
+    static var pButtonDisableBackground: Color {
+        Color(red: 204.0/255.0, green: 207.0/255.0, blue: 212.0/255.0)
+    }
     static var coinViewRouteButtonActive: Color {
         Color(red: 101.0/255.0, green: 106.0/255.0, blue: 114.0/255.0)
     }
