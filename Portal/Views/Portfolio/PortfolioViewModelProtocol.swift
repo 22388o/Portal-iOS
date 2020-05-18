@@ -11,7 +11,7 @@ import Charts
 
 protocol PortfolioViewModelProtocol {
     var totalValue: String { get }
-    var wallet: Wallet { get }
+    var wallet: IWallet { get }
     var marketData: [String: CoinMarketData] { set get }
 }
 
