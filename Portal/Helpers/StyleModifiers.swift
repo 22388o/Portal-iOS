@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 public struct NavigationBarHider: ViewModifier {
     @State var isHidden: Bool = false
@@ -19,18 +20,19 @@ public struct NavigationBarHider: ViewModifier {
     }
 }
 
-struct PButtonStyle: ViewModifier {
+struct PButtonEnabledStyle: ViewModifier {
+    @Binding var enabled: Bool
     func body(content: Content) -> some View {
         content
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding(8)
-            .background(Color.assetViewButton)
+            .background(enabled ? Color.assetViewButton : Color.pButtonDisableBackground)
             .cornerRadius(18)
             .font(Font.mainFont(size: 16))
             .foregroundColor(.white)
             .overlay(
                 RoundedRectangle(cornerRadius: 18)
-                    .stroke(Color.assetViewButton, lineWidth: 1)
+                    .stroke(enabled ? Color.assetViewButton : Color.pButtonDisableBackground, lineWidth: 1)
             )
     }
 }
@@ -45,5 +47,61 @@ struct TextFieldModifier: ViewModifier {
                 RoundedRectangle(cornerRadius: 26)
                 .stroke(Color.exchangerFieldBorder, lineWidth: 1)
             )
+    }
+}
+
+struct TimeframeButton: ViewModifier {
+    var type: AssetMarketValueViewType
+    var isSelected: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .font(Font.mainFont())
+            .foregroundColor(foregroundColor(for: type, isSelected: isSelected))
+            .frame(maxWidth: .infinity)
+    }
+    
+    private func foregroundColor(for type: AssetMarketValueViewType, isSelected: Bool) -> Color {
+        switch type {
+        case .asset:
+            return isSelected ? Color.lightActiveLabel : Color.lightInactiveLabel
+        case .portfolio:
+            return isSelected ? Color.white : Color.darkInactiveLabel
+        }
+    }
+}
+
+struct KeyboardResponsive: ViewModifier {
+    @State var currentHeight: CGFloat = 0
+
+    func body(content: Content) -> some View {
+        GeometryReader { geometry in
+            content
+                .padding(.bottom, self.currentHeight)
+                .animation(.easeOut(duration: 0.16))
+                .onAppear(perform: {
+                    NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillShowNotification)
+                        .merge(with: NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillChangeFrameNotification))
+                        .compactMap { notification in
+                            notification.userInfo?["UIKeyboardFrameEndUserInfoKey"] as? CGRect
+                    }
+                    .map { rect in
+                        rect.height - geometry.safeAreaInsets.bottom
+                    }
+                    .subscribe(Subscribers.Assign(object: self, keyPath: \.currentHeight))
+
+                    NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillHideNotification)
+                        .compactMap { notification in
+                            CGFloat.zero
+                    }
+                    .subscribe(Subscribers.Assign(object: self, keyPath: \.currentHeight))
+                })
+        }
+    }
+}
+
+extension View {
+    func keyboardResponsive() -> ModifiedContent<Self, KeyboardResponsive> {
+      return modifier(KeyboardResponsive())
     }
 }
