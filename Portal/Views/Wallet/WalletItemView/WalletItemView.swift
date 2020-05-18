@@ -17,7 +17,7 @@ struct WalletItemView: View {
     private let change: String
     private let icon: UIImage
     
-    init(viewModel: CoinViewModel) {
+    init(viewModel: ICoinViewModel) {
         name = viewModel.name
         symbol = viewModel.symbol
         amount = viewModel.amount

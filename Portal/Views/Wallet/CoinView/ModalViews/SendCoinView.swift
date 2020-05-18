@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct SendCoinView: View {
-    private let model: CoinViewModel
+    private let asset: IAsset
     @State var sendToAddress: String = ""
     
-    init(viewModel: CoinViewModel = CoinMock()) {
-        self.model = viewModel
+    init(asset: IAsset = BTC()) {
+        self.asset = asset
     }
     
     private func endEditing() {
@@ -26,13 +26,13 @@ struct SendCoinView: View {
                 Spacer()
                     .frame(height: 8)
                 VStack {
-                    Image(uiImage: self.model.icon)
+                    Image(uiImage: self.asset.viewModel.icon)
                         .resizable()
                         .frame(width: 80, height: 80)
-                    Text("Send \(self.model.name)")
+                    Text("Send \(self.asset.viewModel.name)")
                         .font(Font.mainFont(size: 23))
                         .foregroundColor(Color.lightActiveLabel)
-                    Text("Instantly send to any \(self.model.symbol) address")
+                    Text("Instantly send to any \(self.asset.viewModel.symbol) address")
                         .font(Font.mainFont())
                         .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
@@ -46,7 +46,7 @@ struct SendCoinView: View {
                         .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
                     
-                    Text("\(self.model.amount) \(self.model.symbol)")
+                    Text("\(self.asset.viewModel.amount) \(self.asset.viewModel.symbol)")
                         .font(Font.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                     
@@ -63,7 +63,7 @@ struct SendCoinView: View {
                 
                 Spacer().frame(height: 16)
                 
-                ExchangerView(viewModel: self.model)
+                ExchangerView(asset: self.asset)
                 
                 Spacer().frame(height: 16)
                 
@@ -76,7 +76,7 @@ struct SendCoinView: View {
                     Spacer().frame(height: 16)
                     
                     VStack {
-                        TextField("Enter \(self.model.symbol) address...", text: self.$sendToAddress)
+                        TextField("Enter \(self.asset.viewModel.symbol) address...", text: self.$sendToAddress)
                         .textFieldStyle(PlainTextFieldStyle())
                         .font(Font.mainFont(size: 16))
                     }.modifier(TextFieldModifier())
@@ -87,7 +87,7 @@ struct SendCoinView: View {
                 Button("Send") {
                     
                 }
-                .modifier(PButtonStyle())
+                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
             }
         }.onTapGesture {
             self.endEditing()
@@ -98,7 +98,7 @@ struct SendCoinView: View {
 #if DEBUG
 struct SendCoinsView_Previews: PreviewProvider {
     static var previews: some View {
-        SendCoinView(viewModel: BTC().viewModel)
+        SendCoinView(asset: BTC())
     }
 }
 #endif

@@ -10,10 +10,18 @@ import SwiftUI
 
 struct SeedView: View {
     @State private var showTestSeedView = false
+    private var newWalletModel: NewWalletModel
+    
+    init(newWalletModel: NewWalletModel) {
+        self.newWalletModel = newWalletModel
+    }
 
     var body: some View {
         VStack(spacing: 14) {
-            NavigationLink(destination: TestSeedView(), isActive: self.$showTestSeedView) {
+            NavigationLink(
+                destination: TestSeedView(newWalletModel: newWalletModel),
+                isActive: self.$showTestSeedView
+            ) {
               EmptyView()
             }
             .hidden()
@@ -35,43 +43,10 @@ struct SeedView: View {
             Text("Make 100% sure you have all the words, in that same order, and continue when you’re ready.")
                 .font(Font.mainFont(size: 15))
                 .foregroundColor(Color.createWalletLabel)
-            HStack {
-                VStack(spacing: 16) {
-                    ForEach(1 ..< 13) { index in
-                        HStack {
-                            Text("\(index))")
-                                .font(Font.mainFont(size: 16))
-                                .foregroundColor(Color.blush)
-                            Text("seed")
-                                .font(Font.mainFont(size: 16))
-                                .foregroundColor(Color.brownishOrange)
-                        }
-                    }
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
-                VStack(spacing: 16) {
-                    ForEach(13 ..< 25) { index in
-                        HStack {
-                            Text("\(index))")
-                                .font(Font.mainFont(size: 16))
-                                .foregroundColor(Color.blush)
-                            Text("seed")
-                                .font(Font.mainFont(size: 16))
-                                .foregroundColor(Color.brownishOrange)
-                        }
-                    }
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(8)
-            .background(Color.mnemonicBackground)
-            .cornerRadius(8)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.mango, lineWidth: 2)
-            )
+            SeedContainerView(seed: newWalletModel.seed)
             Button("Next"){
                 self.showTestSeedView = true
-            }.modifier(PButtonStyle())
+            }.modifier(PButtonEnabledStyle(enabled: .constant(true)))
         }
         .hideNavigationBar()
         .padding()
@@ -80,7 +55,48 @@ struct SeedView: View {
 #if DEBUG
 struct SeedView_Previews: PreviewProvider {
     static var previews: some View {
-        SeedView()
+        SeedView(newWalletModel: .init(name: "Test"))
     }
 }
 #endif
+
+struct SeedContainerView: View {
+    var seed: [String]
+    var body: some View {
+        HStack {
+            VStack(spacing: 16) {
+                ForEach(1 ..< 13) { index in
+                    HStack {
+                        Text("\(index))")
+                            .font(Font.mainFont(size: 16))
+                            .foregroundColor(Color.blush)
+                        Text(self.seed[index - 1])
+                            .font(Font.mainFont(size: 16))
+                            .foregroundColor(Color.brownishOrange)
+                    }
+                }
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            VStack(spacing: 16) {
+                ForEach(13 ..< 25) { index in
+                    HStack {
+                        Text("\(index))")
+                            .font(Font.mainFont(size: 16))
+                            .foregroundColor(Color.blush)
+                        Text(self.seed[index - 1])
+                            .font(Font.mainFont(size: 16))
+                            .foregroundColor(Color.brownishOrange)
+                    }
+                }
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(8)
+        .background(Color.mnemonicBackground)
+        .cornerRadius(8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.mango, lineWidth: 2)
+        )
+    }
+}
+

@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct ReceiveCoinView: View {
-    let model: CoinViewModel
+    let asset: IAsset
     
-    init(viewModel: CoinViewModel = CoinMock()) {
-        self.model = viewModel
+    init(asset: IAsset = BTC()) {
+        self.asset = asset
     }
     
     var body: some View {
@@ -20,20 +20,20 @@ struct ReceiveCoinView: View {
             Spacer()
                 .frame(height: 8)
             VStack {
-                Image(uiImage: model.icon)
+                Image(uiImage: asset.viewModel.icon)
                     .resizable()
                     .frame(width: 80, height: 80)
-                Text("Receive \(model.name)")
+                Text("Receive \(asset.viewModel.name)")
                     .font(Font.mainFont(size: 23))
                     .foregroundColor(Color.lightActiveLabel)
             }    
             VStack {
-                Image(uiImage: model.QRCode())
+                Image(uiImage: asset.viewModel.QRCode())
                     .resizable()
                     .frame(width: UIScreen.main.bounds.width - 80, height: UIScreen.main.bounds.width - 80)
 
                 VStack(alignment: .center, spacing: 10) {
-                    Text("Your \(model.symbol) address")
+                    Text("Your \(asset.viewModel.symbol) address")
                         .font(Font.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
@@ -48,7 +48,7 @@ struct ReceiveCoinView: View {
             .frame(maxHeight: .infinity)
             
             Button("Share") {}
-                .modifier(PButtonStyle())
+                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                 .padding()
         }
         .padding()
@@ -58,7 +58,7 @@ struct ReceiveCoinView: View {
 #if DEBUG
 struct ReceiveCoinView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiveCoinView(viewModel: BTC().viewModel)
+        ReceiveCoinView(asset: BTC())
     }
 }
 #endif

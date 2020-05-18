@@ -26,10 +26,10 @@ struct ExchangerView: View {
     @State var amountInCrypto: String = ""
     @State var amountInFiat: String = ""
     
-    private let model: CoinViewModel
+    private let asset: IAsset
     
-    init(viewModel: CoinViewModel = CoinMock()) {
-        self.model = viewModel
+    init(asset: IAsset = BTC()) {
+        self.asset = asset
     }
 
     var body: some View {
@@ -41,14 +41,14 @@ struct ExchangerView: View {
             
             VStack(spacing: 4) {
                 HStack(spacing: 8) {
-                    Image(uiImage: model.icon)
+                    Image(uiImage: asset.viewModel.icon)
                         .resizable()
                         .frame(width: 24, height: 24)
                     TextField("0.0", text: $amountInCrypto)
                         .textFieldStyle(PlainTextFieldStyle())
                         .font(Font.mainFont(size: 16))
                         .keyboardType(.numberPad)
-                    Text(model.symbol)
+                    Text(asset.viewModel.symbol)
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.lightActiveLabel).opacity(0.4)
                 }.modifier(TextFieldModifier())
@@ -75,7 +75,7 @@ struct ExchangerView: View {
 #if DEBUG
 struct ExchangerView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangerView(viewModel: ETH().viewModel).padding()
+        ExchangerView(asset: ETH()).padding()
     }
 }
 #endif

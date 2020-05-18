@@ -7,27 +7,33 @@
 //
 
 import SwiftUI
+import Combine
 
 struct TestSeedView: View {
-    @State private var showConfirmation = false
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
-
-    private var indexes = [Int]()
+    @EnvironmentObject var walletCoordinator: WalletCoordinator
+    @ObservedObject private var viewModel: TestSeedViewModel
+    @State private var walletCreated = false
     
-    init() {
-        while indexes.count <= 3 {
-            let 🎲 = Int.random(in: 1..<24)
-            if !indexes.contains(🎲) { indexes.append(🎲) }
-        }
+    @State private var index0 = 0
+    @State private var index1 = 1
+    @State private var index2 = 2
+    @State private var index3 = 3
+    
+    init(newWalletModel: NewWalletModel) {
+        self.viewModel = .init(newWalletModel: newWalletModel)
     }
     
     var body: some View {
         VStack {
-            NavigationLink(destination: WalletCreatedView(), isActive: self.$showConfirmation) {
+            NavigationLink(
+                destination: WalletCreatedView(),
+                isActive: self.$walletCreated
+            ) {
               EmptyView()
             }
             .hidden()
-            
+
             Title(
                 iconName: "iconSafe",
                 title: "Confirm the seed",
@@ -35,32 +41,60 @@ struct TestSeedView: View {
             )
             Spacer()
             VStack {
-                ForEach(0 ..< indexes.count) {
-                    ConfirmSeedInputView(wordIndex: self.indexes[$0])
-                }
-                Text("Your wallet will be ready when words are correct.")
+                ConfirmSeedInputView(inputString: $viewModel.testString1, wordIndex: $index0)
+                ConfirmSeedInputView(inputString: $viewModel.testString2, wordIndex: $index1)
+                ConfirmSeedInputView(inputString: $viewModel.testString3, wordIndex: $index2)
+                ConfirmSeedInputView(inputString: $viewModel.testString4, wordIndex: $index3)
+
+                Text(
+                    viewModel.formIsValid ?
+                        "You wallet is ready!"
+                            :
+                        "Your wallet will be ready when words are correct."
+                )
                     .font(Font.mainFont(size: 14))
                     .foregroundColor(Color.createWalletLabel)
                     .frame(maxHeight: .infinity)
                 Spacer()
                 VStack(spacing: 16) {
                     Button("Create") {
-                        self.showConfirmation.toggle()
-                    }.modifier(PButtonStyle())
+                        self.walletCoordinator.createWallet(model: self.viewModel.newWalletModel)
+                    }
+                    .modifier(PButtonEnabledStyle(enabled: $viewModel.formIsValid))
+                    .disabled(!viewModel.formIsValid)
+
                     Button("Generate new seed") {
                         self.mode.wrappedValue.dismiss()
                     }
                 }
-            }.padding()
-        }.hideNavigationBar()
-
+            }
+            .padding()
+        }
+        .hideNavigationBar()
+        .keyboardResponsive()
+        .onAppear {
+            self.viewModel.setup()
+            self.updateIndices()
+            print("Test solved: \(self.viewModel.testSolved)")
+        }
+        .onReceive(walletCoordinator.$currentWallet, perform: { newWallet in
+            guard newWallet != nil else { return }
+            self.walletCreated.toggle()
+        })
+    }
+    
+    private func updateIndices() {
+        index0 = viewModel.testIndices[0]
+        index1 = viewModel.testIndices[1]
+        index2 = viewModel.testIndices[2]
+        index3 = viewModel.testIndices[3]
     }
 }
 
 #if DEBUG
 struct TestSeedView_Previews: PreviewProvider {
     static var previews: some View {
-        TestSeedView()
+        TestSeedView(newWalletModel: .init(name: "Test")).environmentObject(WalletCoordinator())
     }
 }
 #endif

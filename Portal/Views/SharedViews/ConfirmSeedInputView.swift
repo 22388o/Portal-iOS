@@ -9,22 +9,19 @@
 import SwiftUI
 
 struct ConfirmSeedInputView: View {
-    private var index: Int = 0
-    @State private var inputString: String = ""
-    
-    init(wordIndex: Int = 0) {
-        index = wordIndex
-    }
+    @Binding var inputString: String
+    @Binding var wordIndex: Int
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("\(index.enumerationFormattedString())")
+            Text("\(wordIndex.enumerationFormattedString())")
                 .font(Font.mainFont(size: 14))
                 .foregroundColor(Color.createWalletLabel)
                 .offset(x: 24)
             TextField("Enter word", text: $inputString)
                 .textFieldStyle(PlainTextFieldStyle())
                 .font(Font.mainFont(size: 16))
+                .autocapitalization(.none)
                 //                    .keyboardType(.numberPad)
                 .modifier(TextFieldModifier())
         }
@@ -34,7 +31,7 @@ struct ConfirmSeedInputView: View {
 #if DEBUG
 struct ConfirmSeedInputView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfirmSeedInputView()
+        ConfirmSeedInputView(inputString: .constant(""), wordIndex: .constant(1))
     }
 }
 #endif

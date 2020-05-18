@@ -7,17 +7,29 @@
 //
 
 import SwiftUI
+import CoreData
+import Combine
 
 struct RootView: View {
-    @State private var hasWallet = true
+//    @FetchRequest(
+//        entity: DBWallet.entity(),
+//        sortDescriptors: [],
+//        predicate: NSPredicate(format: "current = %d", true)
+//    ) var currentWallet: FetchedResults<DBWallet>
+    @EnvironmentObject var walletCoordinator: WalletCoordinator
     
-    @ViewBuilder
+    init() {
+        UITabBar.appearance().barTintColor = UIColor(white: 0, alpha: 0.1)
+    }
+    
     var body: some View {
         NavigationView {
-            if hasWallet {
-                TabbedBarView()
+            if walletCoordinator.currentWallet != nil {
+                MainView().environmentObject(walletCoordinator)
             } else {
-                CreateWalletView().hideNavigationBar()
+                CreateWalletView()
+                    .environmentObject(walletCoordinator)
+                    .hideNavigationBar()
             }
         }
     }
@@ -27,6 +39,9 @@ struct RootView: View {
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
         RootView()
+            .environmentObject(
+                WalletCoordinator()
+            )
     }
 }
 #endif

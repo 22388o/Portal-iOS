@@ -121,27 +121,6 @@ struct AssetMarketValueView: View {
     }
 }
 
-struct TimeframeButton: ViewModifier {
-    var type: AssetMarketValueViewType
-    var isSelected: Bool
-    
-    func body(content: Content) -> some View {
-        content
-            .font(Font.mainFont())
-            .foregroundColor(foregroundColor(for: type, isSelected: isSelected))
-            .frame(maxWidth: .infinity)
-    }
-    
-    private func foregroundColor(for type: AssetMarketValueViewType, isSelected: Bool) -> Color {
-        switch type {
-        case .asset:
-            return isSelected ? Color.lightActiveLabel : Color.lightInactiveLabel
-        case .portfolio:
-            return isSelected ? Color.white : Color.darkInactiveLabel
-        }
-    }
-}
-
 #if DEBUG
 struct AssetMarketValueView_Previews: PreviewProvider {
     static var previews: some View {

@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct PortfolioViewModel: PortfolioViewModelProtocol {
-    var wallet: Wallet
+    var wallet: IWallet
     var marketData: [String : CoinMarketData]
     
-    init(wallet: Wallet, marketData: [String : CoinMarketData]) {
+    init(wallet: IWallet, marketData: [String : CoinMarketData]) {
         self.wallet = wallet
         self.marketData = marketData
         self.mockHourData()

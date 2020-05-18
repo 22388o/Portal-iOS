@@ -9,12 +9,15 @@
 import SwiftUI
 
 struct WalletCreatedView: View {
+    @EnvironmentObject private var walletCoordinator: WalletCoordinator
     @State private var showWallet = false
 
     let model = BTC().viewModel
     var body: some View {
         VStack {
-            NavigationLink(destination: TabbedBarView(), isActive: self.$showWallet) {
+            NavigationLink(
+                destination: MainView(),
+                isActive: self.$showWallet) {
               EmptyView()
             }
             .hidden()
@@ -83,7 +86,7 @@ struct WalletCreatedView: View {
             
             Button("Open wallet"){
                 self.showWallet.toggle()
-            }.modifier(PButtonStyle())
+            }.modifier(PButtonEnabledStyle(enabled: .constant(true)))
             
             }.padding().hideNavigationBar()
     }

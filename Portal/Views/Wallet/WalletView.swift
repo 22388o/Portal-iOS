@@ -9,38 +9,20 @@
 import SwiftUI
 import QGrid
 
-protocol Asset {
-    var viewModel: CoinViewModel { get }
-}
-
-protocol Wallet {
-    var assets: [Asset] { get }
-}
-
-struct CoinAdapter: Identifiable {
-    let id: String
-    let coin: CoinViewModel
-
-    init(coin: CoinViewModel) {
-        self.id = coin.name
-        self.coin = coin
-    }
-}
-
 struct WalletView: View {
     @State private var showPortfolioView = false
     @State private var showCoinView = false
     
-    @State private var curentItem: CoinViewModel = CoinMock() {
+    @State private var selectedAsset: IAsset = BTC() {
         didSet {
             showCoinView.toggle()
         }
     }
     
-    private var viewModels: [CoinViewModel]
+    @ObservedObject var viewModel: WalletViewModel
     
-    init(wallet: Wallet = WalletMock()) {
-        viewModels = wallet.assets.map{ $0.viewModel }
+    init(walletCoordinator: WalletCoordinator) {
+        viewModel = .init(wallet: walletCoordinator.$currentWallet)
     }
     
     var body: some View {
@@ -57,16 +39,15 @@ struct WalletView: View {
                 .sheet(isPresented: $showPortfolioView) {
                     PortfolioView(showModal: self.$showPortfolioView)
                 }
-                
-                QGrid(viewModels.map{ CoinAdapter(coin: $0) }, columns: 1) { adapter in
-                    WalletItemView(viewModel: adapter.coin)
+                QGrid(viewModel.assets.map{ CoinAdapter(asset: $0) }, columns: 1) { adapter in
+                    WalletItemView(viewModel: adapter.asset.viewModel)
                         .onTapGesture {
-                            self.curentItem = adapter.coin
+                            self.selectedAsset = adapter.asset
                     }
                 }
                 .padding(.bottom, -10)
                 .sheet(isPresented: self.$showCoinView) {
-                    CoinView(model: self.$curentItem)
+                    CoinView(asset: self.$selectedAsset)
                 }
             }
         }
@@ -76,7 +57,7 @@ struct WalletView: View {
 #if DEBUG
 struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletView(wallet: WalletMock())
+        WalletView(walletCoordinator: WalletCoordinator(mockedWallet: WalletMock()))
     }
 }
 #endif

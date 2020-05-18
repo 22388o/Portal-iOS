@@ -9,15 +9,22 @@
 import SwiftUI
 
 struct CreateWalletView: View {
-    @State private var walletName: String = ""
-    @State private var legacy: Bool = false
-    @State private var numbers = ["Legacy","SegWit","Native SegWit"]
-    @State private var selectorIndex = 1
-    @State var showSeedView = false
+    @State var showSeedView: Bool = false
+    
+    @ObservedObject var viewModel: CreateWalletViewModel
+    
+    init() {
+        self.viewModel = CreateWalletViewModel()
+    }
     
     var body: some View {
         VStack {
-            NavigationLink(destination: SeedView(), isActive: self.$showSeedView) {
+            NavigationLink(
+                destination: SeedView(
+                    newWalletModel: viewModel.newModel()
+                ),
+                isActive: self.$showSeedView
+            ) {
               EmptyView()
             }
             .hidden()
@@ -41,7 +48,7 @@ struct CreateWalletView: View {
                         Image("iconSafeSmall")
                             .resizable()
                             .frame(width: 24, height: 24)
-                        TextField("Enter wallet name", text: $walletName)
+                        TextField("Enter wallet name", text: $viewModel.name)
                             .textFieldStyle(PlainTextFieldStyle())
                             .font(Font.mainFont(size: 16))
                     }
@@ -57,9 +64,9 @@ struct CreateWalletView: View {
                             .foregroundColor(Color.coinViewRouteButtonActive)
                             .multilineTextAlignment(.center)
                             .frame(maxHeight: .infinity)
-                        Picker("Numbers", selection: $selectorIndex) {
-                            ForEach(0 ..< numbers.count) { index in
-                                Text(self.numbers[index]).tag(index)
+                        Picker("Numbers", selection: $viewModel.selectorIndex) {
+                            ForEach(0 ..< BtcAddressFormat.allCases.count) { index in
+                                Text(BtcAddressFormat.allCases[index].description).tag(index)
                             }
                         }
                         .pickerStyle(SegmentedPickerStyle())
@@ -72,7 +79,8 @@ struct CreateWalletView: View {
                 Button("Create") {
                     self.showSeedView.toggle()
                 }
-                .modifier(PButtonStyle())
+                .modifier(PButtonEnabledStyle(enabled: $viewModel.walletDataValidated))
+                .disabled(!viewModel.walletDataValidated)
                 
                 HStack {
                     Text("Already have a wallet?")
@@ -84,6 +92,9 @@ struct CreateWalletView: View {
             }
         }
         .padding()
+        .onAppear {
+            self.viewModel.setup()
+        }
     }
 }
 #if DEBUG

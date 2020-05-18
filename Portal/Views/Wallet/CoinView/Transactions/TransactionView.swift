@@ -10,10 +10,10 @@ import SwiftUI
 
 
 struct TransactionView: View {
-    let model: CoinViewModel
+    let asset: IAsset
     
-    init(viewModel: CoinViewModel = CoinMock()) {
-        self.model = viewModel
+    init(asset: IAsset = BTC()) {
+        self.asset = asset
     }
     
     var body: some View {
@@ -21,14 +21,14 @@ struct TransactionView: View {
             Spacer()
                 .frame(height: 8)
             VStack {
-                Image(uiImage: model.icon)
+                Image(uiImage: asset.viewModel.icon)
                     .resizable()
                     .frame(width: 80, height: 80)
                 Text("Transaction details")
                     .font(Font.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabel)
                     .opacity(0.6)
-                Text("Received 0.0125 \(model.symbol)")
+                Text("Received 0.0125 \(asset.viewModel.symbol)")
                     .font(Font.mainFont(size: 23))
                     .foregroundColor(Color.lightActiveLabel)
                 Text("19 Feb, 2020 at 4:49 PM (28 days ago)")
@@ -91,7 +91,7 @@ struct TransactionView: View {
                 .background(Color(red: 245.0/255.0, green: 245.0/255.0, blue: 248.0/255.0))
                 
                 Button("View transaction in block explorer") { /*self.showSendView.toggle()*/ }
-                    .modifier(PButtonStyle())
+                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                     .padding()
                 
             }
@@ -105,7 +105,7 @@ struct TransactionView: View {
 #if DEBUG
 struct TransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionView(viewModel: ETH().viewModel)
+        TransactionView(asset: ETH())
     }
 }
 #endif

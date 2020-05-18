@@ -13,7 +13,7 @@ enum CoinViewRoute {
 }
 
 struct CoinView: View {
-    @Binding var model: CoinViewModel
+    @Binding var asset: IAsset
     
     @State var showSendView = false
     @State var showReceiveView = false
@@ -35,15 +35,15 @@ struct CoinView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     VStack(alignment: .leading, spacing: 0.0) {
                         HStack {
-                            Image(uiImage: model.icon)
+                            Image(uiImage: asset.viewModel.icon)
                                 .resizable()
                                 .frame(width: 24, height: 24)
-                            Text("\(model.name)")
+                            Text("\(asset.viewModel.name)")
                                 .font(Font.mainFont(size: 15))
                                 .foregroundColor(Color.lightActiveLabel)
                         }
                         
-                        Text("\(model.amount)")
+                        Text("\(asset.viewModel.amount)")
                             .font(Font.mainFont(size: 28))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                     }
@@ -53,15 +53,15 @@ struct CoinView: View {
                         HStack() {
                             Spacer()
                             Button("Send") { self.showSendView.toggle() }
-                                .modifier(PButtonStyle())
+                                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                                 .sheet(isPresented: self.$showSendView) {
-                                    SendCoinView(viewModel: self.model)
+                                    SendCoinView(asset: self.asset)
                                 }
                             Spacer()
                             Button("Receive") { self.showReceiveView.toggle() }
-                                .modifier(PButtonStyle())
+                                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                                 .sheet(isPresented: self.$showReceiveView) {
-                                    ReceiveCoinView(viewModel: self.model)
+                                    ReceiveCoinView(asset: self.asset)
                                 }
                             Spacer()
                         }
@@ -69,9 +69,9 @@ struct CoinView: View {
                         HStack() {
                             Spacer()
                             Button("Send to exchange") { self.showSendToExchangeView.toggle() }
-                                .modifier(PButtonStyle())
+                                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                                 .sheet(isPresented: self.$showSendToExchangeView) {
-                                    SendToExchangeView(viewModel: self.model)
+                                    SendToExchangeView(asset: self.asset)
                                 }
                             Spacer()
                         }
@@ -79,7 +79,7 @@ struct CoinView: View {
                         HStack() {
                             Spacer()
                             Button("Withdraw") { self.showWithdrawView.toggle() }
-                                .modifier(PButtonStyle())
+                                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                                 .sheet(isPresented: self.$showWithdrawView) {
                                     WithdrawCoinView()
                                 }
@@ -133,7 +133,7 @@ struct CoinView: View {
         case .value:
             return AnyView(AssetMarketValueView(type: .portfolio, viewModel: viewModel))
         case .transactions:
-            return AnyView(TransactionsListView(model: $model))
+            return AnyView(TransactionsListView(asset: $asset))
         case .alerts:
             return AnyView(AlertsListView())
         }
@@ -149,7 +149,7 @@ struct CoinView: View {
 #if DEBUG
 struct CoinDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        CoinView(model: .constant(BTC().viewModel))
+        CoinView(asset: .constant(BTC()))
     }
 }
 #endif
