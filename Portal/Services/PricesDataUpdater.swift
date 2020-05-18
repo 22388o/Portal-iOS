@@ -11,26 +11,24 @@ import Combine
 
 typealias PriceResponse = Dictionary<String, Dictionary<String, MarketPrice>>
 
-final class PricesDataUpdater: PricesData {
+final class PricesDataUpdater: IPricesData {
     var onUpdatePublisher = PassthroughSubject<PriceResponse, Never>()
     
     private let jsonDecoder: JSONDecoder
-    private let timer: DispatchSourceTimer
+    private let timer: RepeatingTimer
     private var task: URLSessionTask?
         
     init(
         jsonDecoder: JSONDecoder = JSONDecoder(),
-        timer: DispatchSourceTimer = DispatchSource.makeTimerSource(queue: .global(qos: .userInitiated)),
-        interval: Int
+        interval: TimeInterval
     ) {
         self.jsonDecoder = jsonDecoder
 
-        self.timer = timer
-        self.timer.schedule(deadline: .now(), repeating: .seconds(interval))
-        self.timer.setEventHandler { [weak self] in
+        self.timer = RepeatingTimer(timeInterval: interval)
+        self.timer.eventHandler = { [weak self] in
             guard self?.task?.state != .running else { return }
             
-            self?.updatePrices(for: "") { [weak self] result in
+            self?.updatePrices(for: "") { result in
                 guard let self = self else { return }
                 switch result {
                 case let .success(prices):
@@ -41,12 +39,6 @@ final class PricesDataUpdater: PricesData {
             }
         }
         self.timer.resume()
-    }
-    
-    deinit {
-        timer.setEventHandler(handler: nil)
-        timer.cancel()
-        timer.resume()
     }
             
     func updatePrices(for assets: String, _ competionHandler: @escaping ((Result<PriceResponse, NetworkError>) -> Void)) {
@@ -72,5 +64,13 @@ final class PricesDataUpdater: PricesData {
             }
         }
         task?.resume()
+    }
+    
+    func pause() {
+        timer.suspend()
+    }
+    
+    func resume() {
+        timer.resume()
     }
 }
