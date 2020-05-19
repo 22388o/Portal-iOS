@@ -13,7 +13,7 @@ struct CoinAdapter: Identifiable {
     let asset: IAsset
 
     init(asset: IAsset) {
-        self.id = asset.viewModel.name
+        self.id = asset.coin.name
         self.asset = asset
     }
 }
