@@ -12,7 +12,12 @@ enum AssetMarketValueViewType {
     case portfolio, asset
 }
 
-struct AssetMarketValueView: View {
+struct AssetMarketValueViewModel {
+    let totalValueString: String
+    let changeSting: String
+}
+
+struct PortfolioLineChartView: View {
     @State var timeframe: Timeframe = .hour
     
     private let type: AssetMarketValueViewType
@@ -122,14 +127,11 @@ struct AssetMarketValueView: View {
 }
 
 #if DEBUG
-struct AssetMarketValueView_Previews: PreviewProvider {
+struct PortfolioLineChartView_Previews: PreviewProvider {
     static var previews: some View {
-        AssetMarketValueView(
+        PortfolioLineChartView(
             type: .asset,
-            viewModel: PortfolioViewModel(
-                wallet: WalletMock(),
-                marketData: [String : CoinMarketData]()
-            )
+            viewModel: PortfolioViewModel(assets: WalletMock().assets, marketData: [String : CoinMarketData]())
         )
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 protocol IAsset {
     var coin: Coin { get }
-    var coinKit: ICoinKit { get }
+    var kit: ICoinKit { get }
     var marketData: CoinMarketData { get }
     var chartDataProvider: IChartDataProvider { get }
     var balanceProvider: IBalanceProvider { get }

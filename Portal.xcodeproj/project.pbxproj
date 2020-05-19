@@ -64,7 +64,7 @@
 		7582D3DD241255A5008ECAB0 /* WalletItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3DC241255A5008ECAB0 /* WalletItemView.swift */; };
 		7582D3DF24125641008ECAB0 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3DE24125641008ECAB0 /* MockData.swift */; };
 		7582D3EA241261A0008ECAB0 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3E9241261A0008ECAB0 /* PortfolioView.swift */; };
-		7582D3F124126B60008ECAB0 /* CoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3F024126B5F008ECAB0 /* CoinView.swift */; };
+		7582D3F124126B60008ECAB0 /* AssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3F024126B5F008ECAB0 /* AssetView.swift */; };
 		7582D3F32414B0A1008ECAB0 /* PieChartUIKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3F22414B0A1008ECAB0 /* PieChartUIKitWrapper.swift */; };
 		7582D3F5241619CA008ECAB0 /* IPieChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3F4241619CA008ECAB0 /* IPieChartModel.swift */; };
 		7582D3F724161A34008ECAB0 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D3F624161A34008ECAB0 /* Double+Extension.swift */; };
@@ -80,7 +80,7 @@
 		7582D40D24167A87008ECAB0 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D40C24167A87008ECAB0 /* StringFormatter.swift */; };
 		7582D40F24167AAE008ECAB0 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D40E24167AAE008ECAB0 /* Date+Extension.swift */; };
 		7582D41124167AE9008ECAB0 /* FiatCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D41024167AE9008ECAB0 /* FiatCurrency.swift */; };
-		7582D4152417A39E008ECAB0 /* AssetMarketValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D4142417A39D008ECAB0 /* AssetMarketValueView.swift */; };
+		7582D4152417A39E008ECAB0 /* PortfolioLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D4142417A39D008ECAB0 /* PortfolioLineChartView.swift */; };
 		7582D4192418C799008ECAB0 /* SendCoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D4182418C799008ECAB0 /* SendCoinView.swift */; };
 		7582D41B2418C7A9008ECAB0 /* ReceiveCoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D41A2418C7A9008ECAB0 /* ReceiveCoinView.swift */; };
 		7582D41D2418C7CD008ECAB0 /* SendToExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582D41C2418C7CD008ECAB0 /* SendToExchangeView.swift */; };
@@ -187,7 +187,7 @@
 		7582D3DC241255A5008ECAB0 /* WalletItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletItemView.swift; sourceTree = "<group>"; };
 		7582D3DE24125641008ECAB0 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		7582D3E9241261A0008ECAB0 /* PortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
-		7582D3F024126B5F008ECAB0 /* CoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinView.swift; sourceTree = "<group>"; };
+		7582D3F024126B5F008ECAB0 /* AssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetView.swift; sourceTree = "<group>"; };
 		7582D3F22414B0A1008ECAB0 /* PieChartUIKitWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartUIKitWrapper.swift; sourceTree = "<group>"; };
 		7582D3F4241619CA008ECAB0 /* IPieChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPieChartModel.swift; sourceTree = "<group>"; };
 		7582D3F624161A34008ECAB0 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
@@ -203,7 +203,7 @@
 		7582D40C24167A87008ECAB0 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
 		7582D40E24167AAE008ECAB0 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		7582D41024167AE9008ECAB0 /* FiatCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiatCurrency.swift; sourceTree = "<group>"; };
-		7582D4142417A39D008ECAB0 /* AssetMarketValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetMarketValueView.swift; sourceTree = "<group>"; };
+		7582D4142417A39D008ECAB0 /* PortfolioLineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioLineChartView.swift; sourceTree = "<group>"; };
 		7582D4182418C799008ECAB0 /* SendCoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCoinView.swift; sourceTree = "<group>"; };
 		7582D41A2418C7A9008ECAB0 /* ReceiveCoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCoinView.swift; sourceTree = "<group>"; };
 		7582D41C2418C7CD008ECAB0 /* SendToExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToExchangeView.swift; sourceTree = "<group>"; };
@@ -517,7 +517,7 @@
 		7582D4172418C618008ECAB0 /* CoinView */ = {
 			isa = PBXGroup;
 			children = (
-				7582D3F024126B5F008ECAB0 /* CoinView.swift */,
+				7582D3F024126B5F008ECAB0 /* AssetView.swift */,
 				7582D42C2420C5D2008ECAB0 /* Transactions */,
 				7582D42D2420C5E2008ECAB0 /* Alerts */,
 				7582D4202418C7E3008ECAB0 /* ModalViews */,
@@ -557,7 +557,7 @@
 		75C7D466242B2FCE00BED668 /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
-				7582D4142417A39D008ECAB0 /* AssetMarketValueView.swift */,
+				7582D4142417A39D008ECAB0 /* PortfolioLineChartView.swift */,
 				75C7D462242B2AEC00BED668 /* ExchangerView.swift */,
 				75C7D4782435D34700BED668 /* Title.swift */,
 				75C7D47A2435D38E00BED668 /* ConfirmSeedInputView.swift */,
@@ -877,7 +877,7 @@
 				7551CBA32473E2B600ECD2C0 /* ICoinKit.swift in Sources */,
 				755158FB246D911900C9EAF0 /* IWalletCoordinator.swift in Sources */,
 				7551CB972473E16E00ECD2C0 /* QRCodeProvider.swift in Sources */,
-				7582D4152417A39E008ECAB0 /* AssetMarketValueView.swift in Sources */,
+				7582D4152417A39E008ECAB0 /* PortfolioLineChartView.swift in Sources */,
 				7582D409241679C3008ECAB0 /* MarketSnapshot.swift in Sources */,
 				755158F7246D8FC500C9EAF0 /* KeychainStorage.swift in Sources */,
 				7551CB902473E0B900ECD2C0 /* Asset.swift in Sources */,
@@ -893,7 +893,7 @@
 				755158FE246D934C00C9EAF0 /* CreateWalletViewModel.swift in Sources */,
 				7582D422241BAE62008ECAB0 /* Color+Extension.swift in Sources */,
 				7582D3AC24123184008ECAB0 /* MainView.swift in Sources */,
-				7582D3F124126B60008ECAB0 /* CoinView.swift in Sources */,
+				7582D3F124126B60008ECAB0 /* AssetView.swift in Sources */,
 				7582D41124167AE9008ECAB0 /* FiatCurrency.swift in Sources */,
 				7551CB942473E13C00ECD2C0 /* MarketChangeProvider.swift in Sources */,
 				75C7D4772435B5D100BED668 /* WalletCreatedView.swift in Sources */,

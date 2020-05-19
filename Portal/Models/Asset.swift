@@ -8,20 +8,33 @@
 
 import Foundation
 
+final class TxProvider: ITxProvider {
+    let coin: Coin
+    let kit: ICoinKit
+    
+    init(coin: Coin, kit: ICoinKit) {
+        self.coin = coin
+        self.kit = kit
+    }
+}
+protocol ITxProvider {}
+
+
+
 final class Asset: IAsset {
     var coin: Coin
-    var coinKit: ICoinKit
+    var kit: ICoinKit
     var marketData: CoinMarketData
     var balanceProvider: IBalanceProvider
     var chartDataProvider: IChartDataProvider
     var marketChangeProvider: IMarketChangeProvider
     var qrCodeProvider: IQRCodeProvider
 
-    init(coin: Coin, data: Data = Data()) {
+    init(coin: Coin, data: Data = Data(), kit: ICoinKit = MockCoinKit()) {
         self.coin = coin
-        self.coinKit = MockCoinKit()
+        self.kit = kit
         self.marketData = CoinMarketData()
-        self.balanceProvider = BalanceProvider(coin: self.coin, kit: self.coinKit)
+        self.balanceProvider = BalanceProvider(coin: coin, kit: kit)
         self.chartDataProvider = ChartDataProvider()
         self.marketChangeProvider = MarketChangeProvider()
         self.qrCodeProvider = QRCodeProvider()

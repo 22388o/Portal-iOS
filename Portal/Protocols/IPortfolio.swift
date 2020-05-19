@@ -11,13 +11,13 @@ import Charts
 
 protocol IPortfolio {
     var totalValue: String { get }
-    var wallet: IWallet { get }
+    var assets: [IAsset] { get }
     var marketData: [String: CoinMarketData] { set get }
 }
 
 extension IPortfolio {
     var totalValue: String {
-        "$" + String(wallet.assets.map{ $0.balanceProvider.balance(currency: .usd) }.reduce(0){ $0 + $1 })
+        "$" + String(assets.map{ $0.balanceProvider.balance(currency: .usd) }.reduce(0){ $0 + $1 })
     }
     var selectedTimeframe: Timeframe { .hour }
     var marketData: [String: CoinMarketData] { [String: CoinMarketData]() }
@@ -29,15 +29,15 @@ extension IPortfolio {
 
         switch selectedTimeframe {
         case .hour:
-            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
         case .day:
-            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BCH"]?.hourPoints ?? []) }
         case .week:
-            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["ETH"]?.hourPoints ?? []) }
         case .month:
-            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
         case .year:
-            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
         case .allTime: return [ChartDataEntry]()
         }
 

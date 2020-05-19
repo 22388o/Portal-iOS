@@ -22,7 +22,7 @@ struct WalletItemView: View {
         symbol = asset.coin.code
         amount = asset.balanceProvider.balanceString
         totalValue = asset.balanceProvider.totalValueString
-        price = "$\(Double.random(in: 200..<5000).rounded(toPlaces: 2))"//asset.marketData.priceString(currency: .usd)
+        price = asset.balanceProvider.price//asset.marketData.priceString(currency: .usd)
         change = asset.marketChangeProvider.changeString
         icon = asset.coin.icon
     }

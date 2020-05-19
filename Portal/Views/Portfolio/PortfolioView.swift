@@ -9,12 +9,18 @@
 import SwiftUI
 
 struct PortfolioView: View {
-    @Binding var showModal: Bool
+//    @Binding var showModal: Bool
+    private var assets: [IAsset]
         
-    let viewModel: PortfolioViewModel = PortfolioViewModel(
-        wallet: WalletMock(),
-        marketData: [String : CoinMarketData]()
-    )
+    let viewModel: PortfolioViewModel
+    
+    init(assets: [IAsset]) {
+        self.assets = assets
+        self.viewModel = PortfolioViewModel(
+            assets: assets,
+            marketData: [String : CoinMarketData]()
+        )
+    }
     
     var body: some View {
         ZStack {
@@ -22,7 +28,7 @@ struct PortfolioView: View {
             
             VStack {
                 
-                AssetMarketValueView(type: .portfolio, viewModel: viewModel)
+                PortfolioLineChartView(type: .portfolio, viewModel: viewModel)
                             
                 HStack(spacing: 50) {
                     VStack(spacing: 10) {
@@ -58,7 +64,7 @@ struct PortfolioView: View {
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(2)
                     
-                    AssetAllocationView(showTotalValue: false)
+                    AssetAllocationView(assets: viewModel.assets, showTotalValue: false)
                         .frame(height: 150)
                 }
                 
@@ -72,7 +78,7 @@ struct PortfolioView: View {
 #if DEBUG
 struct PortfolioView_Previews: PreviewProvider {
     static var previews: some View {
-        PortfolioView(showModal: .constant(true))
+        PortfolioView(assets: WalletMock().assets)
     }
 }
 #endif

@@ -47,7 +47,7 @@ struct LineChartUIKitWrapper_Previews: PreviewProvider {
     static var previews: some View {
         LineChartUIKitWrapper(
             viewModel: PortfolioViewModel(
-                wallet: WalletMock(),
+                assets: WalletMock().assets,
                 marketData: [String : CoinMarketData]()
             )
         )

@@ -12,4 +12,5 @@ protocol IBalanceProvider {
     func balance(currency: UserCurrency) -> Double
     var balanceString: String { get }
     var totalValueString: String { get }
+    var price: String { get }
 }

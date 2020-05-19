@@ -12,7 +12,7 @@ enum CoinViewRoute {
     case value, transactions, alerts
 }
 
-struct CoinView: View {
+struct AssetView: View {
     @Binding var asset: IAsset
     
     @State var showSendView = false
@@ -23,7 +23,7 @@ struct CoinView: View {
     @State var route: CoinViewRoute = .value
     
     let viewModel = PortfolioViewModel(
-        wallet: WalletMock(),
+        assets: WalletMock().assets,
         marketData: [String : CoinMarketData]()
     )
     
@@ -131,7 +131,7 @@ struct CoinView: View {
     private func containedView() -> AnyView {
         switch self.route {
         case .value:
-            return AnyView(AssetMarketValueView(type: .portfolio, viewModel: viewModel))
+            return AnyView(PortfolioLineChartView(type: .portfolio, viewModel: viewModel))
         case .transactions:
             return AnyView(TransactionsListView(asset: $asset))
         case .alerts:
@@ -149,7 +149,7 @@ struct CoinView: View {
 #if DEBUG
 struct CoinDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        CoinView(asset: .constant(Asset(coin: Coin(code: "ETH", name: "Ethereum"))))
+        AssetView(asset: .constant(Asset(coin: Coin(code: "ETH", name: "Ethereum", icon: UIImage(imageLiteralResourceName: "iconEth")))))
     }
 }
 #endif

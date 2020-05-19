@@ -9,11 +9,11 @@
 import Foundation
 
 struct PortfolioViewModel: IPortfolio {
-    var wallet: IWallet
+    var assets: [IAsset]
     var marketData: [String : CoinMarketData]
     
-    init(wallet: IWallet, marketData: [String : CoinMarketData]) {
-        self.wallet = wallet
+    init(assets: [IAsset], marketData: [String : CoinMarketData]) {
+        self.assets = assets
         self.marketData = marketData
         self.mockHourData()
     }
