@@ -10,7 +10,7 @@ import SwiftUI
 import Charts
 
 struct PieChartUIKitWrapper: UIViewRepresentable {
-    let viewModel: IPieChartViewModelProtocol
+    let viewModel: IPieChartModel
 
     init(viewModel: AssetAllocationViewModel = AssetAllocationViewModel()) {
         self.viewModel = viewModel

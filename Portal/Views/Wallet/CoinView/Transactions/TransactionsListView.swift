@@ -33,7 +33,7 @@ struct TransactionsListView: View {
             Color.clear
             
             QGrid(txs, columns: 1, hSpacing: 0) { adapter in
-                TransactionListItemView(symbol: self.asset.viewModel.symbol)
+                TransactionListItemView(symbol: self.asset.coin.code)
                     .onTapGesture {
                         self.showTxInfo.toggle()
                 }.padding([.top, .bottom], 6)
@@ -49,7 +49,7 @@ struct TransactionsListView: View {
 #if DEBUG
 struct TransactionsPreviewView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionsListView(asset: .constant(BTC()))
+        TransactionsListView(asset: .constant(Asset(coin: Coin(code: "ETH", name: "Ethereum"))))
     }
 }
 #endif

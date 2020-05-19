@@ -35,15 +35,15 @@ struct CoinView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     VStack(alignment: .leading, spacing: 0.0) {
                         HStack {
-                            Image(uiImage: asset.viewModel.icon)
+                            Image(uiImage: asset.coin.icon)
                                 .resizable()
                                 .frame(width: 24, height: 24)
-                            Text("\(asset.viewModel.name)")
+                            Text("\(asset.coin.name)")
                                 .font(Font.mainFont(size: 15))
                                 .foregroundColor(Color.lightActiveLabel)
                         }
                         
-                        Text("\(asset.viewModel.amount)")
+                        Text("\(asset.balanceProvider.balanceString)")
                             .font(Font.mainFont(size: 28))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                     }
@@ -149,7 +149,7 @@ struct CoinView: View {
 #if DEBUG
 struct CoinDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        CoinView(asset: .constant(BTC()))
+        CoinView(asset: .constant(Asset(coin: Coin(code: "ETH", name: "Ethereum"))))
     }
 }
 #endif

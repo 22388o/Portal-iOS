@@ -17,14 +17,14 @@ struct WalletItemView: View {
     private let change: String
     private let icon: UIImage
     
-    init(viewModel: ICoinViewModel) {
-        name = viewModel.name
-        symbol = viewModel.symbol
-        amount = viewModel.amount
-        totalValue = viewModel.totalValue
-        price = viewModel.price
-        change = viewModel.change
-        icon = viewModel.icon
+    init(asset: IAsset) {
+        name = asset.coin.name
+        symbol = asset.coin.code
+        amount = asset.balanceProvider.balanceString
+        totalValue = asset.balanceProvider.totalValueString
+        price = "$\(Double.random(in: 200..<5000).rounded(toPlaces: 2))"//asset.marketData.priceString(currency: .usd)
+        change = asset.marketChangeProvider.changeString
+        icon = asset.coin.icon
     }
     
     var body: some View {
@@ -76,7 +76,7 @@ struct WalletItemView: View {
 #if DEBUG
 struct WalletItemView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletItemView(viewModel: XTZ().viewModel)
+        WalletItemView(asset: Asset(coin: Coin(code: "ETH", name: "Ethereum", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconEth"))))
     }
 }
 #endif

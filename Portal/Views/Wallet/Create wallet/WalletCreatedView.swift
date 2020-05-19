@@ -12,7 +12,7 @@ struct WalletCreatedView: View {
     @EnvironmentObject private var walletCoordinator: WalletCoordinator
     @State private var showWallet = false
 
-    let model = BTC().viewModel
+    let asset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))
     var body: some View {
         VStack {
             NavigationLink(
@@ -37,12 +37,12 @@ struct WalletCreatedView: View {
                 Text("Bitcoin")
                 .font(Font.mainFont(size: 32))
                 .foregroundColor(Color.coinViewRouteButtonActive)
-                Image(uiImage: model.QRCode())
+                Image(uiImage: asset.qrCodeProvider.qrCode(address: btcMockAddress))
                     .resizable()
                     .frame(width: 200.0, height: 200.0, alignment: .center)
 
                 VStack(alignment: .center, spacing: 10) {
-                    Text("Your \(model.symbol) address")
+                    Text("Your \(asset.coin.code) address")
                         .font(Font.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
@@ -60,7 +60,7 @@ struct WalletCreatedView: View {
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                         .opacity(0.85)
-                    Text("0.0000000 \(model.symbol)")
+                    Text("0.0000000 \(asset.coin.code)")
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                 }
@@ -69,7 +69,7 @@ struct WalletCreatedView: View {
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                         .opacity(0.85)
-                    Text("0.0000000 \(model.symbol)")
+                    Text("0.0000000 \(asset.coin.code)")
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                 }

@@ -13,7 +13,7 @@ struct WalletView: View {
     @State private var showPortfolioView = false
     @State private var showCoinView = false
     
-    @State private var selectedAsset: IAsset = BTC() {
+    @State private var selectedAsset: IAsset = Asset(coin: Coin(code: "ETH", name: "Ethereum")) {
         didSet {
             showCoinView.toggle()
         }
@@ -40,7 +40,7 @@ struct WalletView: View {
                     PortfolioView(showModal: self.$showPortfolioView)
                 }
                 QGrid(viewModel.assets.map{ CoinAdapter(asset: $0) }, columns: 1) { adapter in
-                    WalletItemView(viewModel: adapter.asset.viewModel)
+                    WalletItemView(asset: adapter.asset)
                         .onTapGesture {
                             self.selectedAsset = adapter.asset
                     }

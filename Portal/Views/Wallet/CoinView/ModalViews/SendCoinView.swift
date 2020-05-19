@@ -12,7 +12,7 @@ struct SendCoinView: View {
     private let asset: IAsset
     @State var sendToAddress: String = ""
     
-    init(asset: IAsset = BTC()) {
+    init(asset: IAsset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))) {
         self.asset = asset
     }
     
@@ -26,13 +26,13 @@ struct SendCoinView: View {
                 Spacer()
                     .frame(height: 8)
                 VStack {
-                    Image(uiImage: self.asset.viewModel.icon)
+                    Image(uiImage: self.asset.coin.icon)
                         .resizable()
                         .frame(width: 80, height: 80)
-                    Text("Send \(self.asset.viewModel.name)")
+                    Text("Send \(self.asset.coin.name)")
                         .font(Font.mainFont(size: 23))
                         .foregroundColor(Color.lightActiveLabel)
-                    Text("Instantly send to any \(self.asset.viewModel.symbol) address")
+                    Text("Instantly send to any \(self.asset.coin.code) address")
                         .font(Font.mainFont())
                         .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
@@ -46,7 +46,7 @@ struct SendCoinView: View {
                         .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
                     
-                    Text("\(self.asset.viewModel.amount) \(self.asset.viewModel.symbol)")
+                    Text("\(self.asset.balanceProvider.balanceString) \(self.asset.coin.code)")
                         .font(Font.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                     
@@ -76,7 +76,7 @@ struct SendCoinView: View {
                     Spacer().frame(height: 16)
                     
                     VStack {
-                        TextField("Enter \(self.asset.viewModel.symbol) address...", text: self.$sendToAddress)
+                        TextField("Enter \(self.asset.coin.code) address...", text: self.$sendToAddress)
                         .textFieldStyle(PlainTextFieldStyle())
                         .font(Font.mainFont(size: 16))
                     }.modifier(TextFieldModifier())
@@ -98,7 +98,7 @@ struct SendCoinView: View {
 #if DEBUG
 struct SendCoinsView_Previews: PreviewProvider {
     static var previews: some View {
-        SendCoinView(asset: BTC())
+        SendCoinView(asset: Asset(coin: Coin(code: "ETH", name: "Ethereum")))
     }
 }
 #endif

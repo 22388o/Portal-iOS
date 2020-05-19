@@ -8,17 +8,6 @@
 
 import SwiftUI
 
-struct PortfolioViewModel: PortfolioViewModelProtocol {
-    var wallet: IWallet
-    var marketData: [String : CoinMarketData]
-    
-    init(wallet: IWallet, marketData: [String : CoinMarketData]) {
-        self.wallet = wallet
-        self.marketData = marketData
-        self.mockHourData()
-    }
-}
-
 struct PortfolioView: View {
     @Binding var showModal: Bool
         

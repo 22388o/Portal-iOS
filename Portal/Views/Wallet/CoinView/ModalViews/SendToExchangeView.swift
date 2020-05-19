@@ -12,7 +12,7 @@ struct SendToExchangeView: View {
     private let asset: IAsset
     @State var sendToAddress: String = ""
     
-    init(asset: IAsset = BTC()) {
+    init(asset: IAsset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))) {
         self.asset = asset
     }
     
@@ -26,13 +26,13 @@ struct SendToExchangeView: View {
                 Spacer()
                     .frame(height: 8)
                 VStack {
-                    Image(uiImage: self.asset.viewModel.icon)
+                    Image(uiImage: self.asset.coin.icon)
                         .resizable()
                         .frame(width: 80, height: 80)
-                    Text("Send \(self.asset.viewModel.name) to exchange")
+                    Text("Send \(self.asset.coin.name) to exchange")
                         .font(Font.mainFont(size: 23))
                         .foregroundColor(Color.lightActiveLabel)
-                    Text("Transfer \(self.asset.viewModel.symbol) into exchange balance to trade with.")
+                    Text("Transfer \(self.asset.coin.code) into exchange balance to trade with.")
                         .font(Font.mainFont())
                         .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
@@ -48,7 +48,7 @@ struct SendToExchangeView: View {
                             .foregroundColor(Color.lightActiveLabel)
                             .opacity(0.6)
                         
-                        Text("\(self.asset.viewModel.amount) \(self.asset.viewModel.symbol)")
+                        Text("\(self.asset.balanceProvider.balanceString) \(self.asset.coin.code)")
                             .font(Font.mainFont(size: 14))
                             .foregroundColor(Color.lightActiveLabel)
                         
@@ -69,7 +69,7 @@ struct SendToExchangeView: View {
                             .foregroundColor(Color.lightActiveLabel)
                             .opacity(0.6)
                         
-                        Text("0.0 \(self.asset.viewModel.symbol) ($0.0)")
+                        Text("0.0 \(self.asset.coin.code) ($0.0)")
                             .font(Font.mainFont(size: 14))
                             .foregroundColor(Color.lightActiveLabel)
                         
@@ -92,7 +92,7 @@ struct SendToExchangeView: View {
                     Spacer().frame(height: 16)
                     
                     VStack {
-                        TextField("Enter \(self.asset.viewModel.symbol) address...", text: self.$sendToAddress)
+                        TextField("Enter \(self.asset.coin.code) address...", text: self.$sendToAddress)
                         .textFieldStyle(PlainTextFieldStyle())
                         .font(Font.mainFont(size: 16))
                     }.modifier(TextFieldModifier())
@@ -114,7 +114,7 @@ struct SendToExchangeView: View {
 #if DEBUG
 struct SendToExchangeView_Previews: PreviewProvider {
     static var previews: some View {
-        SendToExchangeView(asset: BTC())
+        SendToExchangeView(asset: Asset(coin: Coin(code: "ETH", name: "Ethereum")))
     }
 }
 #endif
