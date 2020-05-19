@@ -9,5 +9,11 @@
 import Foundation
 
 protocol IAsset {
-    var viewModel: ICoinViewModel { get }
+    var coin: Coin { get }
+    var coinKit: ICoinKit { get }
+    var marketData: CoinMarketData { get }
+    var chartDataProvider: IChartDataProvider { get }
+    var balanceProvider: IBalanceProvider { get }
+    var marketChangeProvider: IMarketChangeProvider { get }
+    var qrCodeProvider: IQRCodeProvider { get }
 }

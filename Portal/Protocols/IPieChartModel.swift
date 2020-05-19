@@ -1,5 +1,5 @@
 //
-//  IPieChartViewModelProtocol.swift
+//  IPieChartModel.swift
 //  Portal
 //
 //  Created by Farid on 09.03.2020.
@@ -10,15 +10,15 @@ import Foundation
 import SwiftUI
 import Charts
 
-protocol IPieChartViewModelProtocol {
-    var assets: [ICoinViewModel] { get }
+protocol IPieChartModel {
+    var assets: [IAsset] { get }
 }
 
-extension IPieChartViewModelProtocol {
+extension IPieChartModel {
     var totalValueCurrency: UserCurrency { .usd }
     
     var totalPortfolioValue: Double {
-        assets.map{ $0.value(currency: totalValueCurrency) }.reduce(0){ $0 + $1 }
+        assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency) }.reduce(0){ $0 + $1 }
     }
     
     func pieChartData() -> (entries: [PieChartDataEntry], colors: [UIColor]) {
@@ -33,8 +33,8 @@ extension IPieChartViewModelProtocol {
             let size = allocationSizeInPercents(for: asset)
             if size >= minimumValue {
                 assetAllocationValues.append(size)
-                labels.append(asset.symbol + " \(size)%")
-                colors.append(asset.color)
+                labels.append(asset.coin.code + " \(size)%")
+                colors.append(asset.coin.color)
             } else {
                 others.append(size)
             }
@@ -60,8 +60,8 @@ extension IPieChartViewModelProtocol {
         return (entries, colors)
     }
     
-    func allocationSizeInPercents(for coin: ICoinViewModel) -> Double {
-        let value = coin.value(currency: totalValueCurrency)
+    func allocationSizeInPercents(for asset: IAsset) -> Double {
+        let value = asset.balanceProvider.balance(currency: totalValueCurrency)
         return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
     }
     

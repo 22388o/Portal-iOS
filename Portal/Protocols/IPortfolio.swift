@@ -1,5 +1,5 @@
 //
-//  PortfolioViewModelProtocol.swift
+//  IPortfolio.swift
 //  Portal
 //
 //  Created by Farid on 09.03.2020.
@@ -9,15 +9,15 @@
 import Foundation
 import Charts
 
-protocol PortfolioViewModelProtocol {
+protocol IPortfolio {
     var totalValue: String { get }
     var wallet: IWallet { get }
     var marketData: [String: CoinMarketData] { set get }
 }
 
-extension PortfolioViewModelProtocol {
+extension IPortfolio {
     var totalValue: String {
-        "$" + String(wallet.assets.map{ $0.viewModel.value(currency: .usd) }.reduce(0){ $0 + $1 })
+        "$" + String(wallet.assets.map{ $0.balanceProvider.balance(currency: .usd) }.reduce(0){ $0 + $1 })
     }
     var selectedTimeframe: Timeframe { .hour }
     var marketData: [String: CoinMarketData] { [String: CoinMarketData]() }
@@ -29,15 +29,15 @@ extension PortfolioViewModelProtocol {
 
         switch selectedTimeframe {
         case .hour:
-            valuesArray = wallet.assets.map{ $0.viewModel.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
         case .day:
-            valuesArray = wallet.assets.map{ $0.viewModel.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
         case .week:
-            valuesArray = wallet.assets.map{ $0.viewModel.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
         case .month:
-            valuesArray = wallet.assets.map{ $0.viewModel.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
         case .year:
-            valuesArray = wallet.assets.map{ $0.viewModel.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = wallet.assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
         case .allTime: return [ChartDataEntry]()
         }
 
