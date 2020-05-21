@@ -52,10 +52,10 @@ final class AssetViewModel: ObservableObject, IMarketDataMockable {
     
     private func updateValues() {
         print("Value updated")
-        balance = asset.balanceProvider.balanceString //+ "\(Int.random(in: 1...8))"
-        totalValue = asset.balanceProvider.totalValueString //+ "\(Int.random(in: 1...8))"
-        price = asset.balanceProvider.price //+ "\(Int.random(in: 1...8))"
-        change = asset.marketChangeProvider.changeString //+ "\(Int.random(in: 1...8))"
+        balance = asset.balanceProvider.balanceString
+        totalValue = asset.balanceProvider.totalValueString + "\(Int.random(in: 1...8))"
+        price = asset.balanceProvider.price + "\(Int.random(in: 1...8))"
+        change = asset.marketChangeProvider.changeString + "\(Int.random(in: 1...8))"
     }
     
     private func portfolioChartDataEntries() -> [ChartDataEntry] {

@@ -9,8 +9,12 @@
 import SwiftUI
 
 struct AssetItemView: View {
-     @State var viewModel: AssetItemViewModel
+     @ObservedObject var viewModel: AssetItemViewModel
             
+    init(viewModel: AssetItemViewModel) {
+        self.viewModel = viewModel
+    }
+    
     var body: some View {
         HStack(alignment: .center) {
             Image(uiImage: viewModel.icon)
@@ -36,7 +40,6 @@ struct AssetItemView: View {
                     HStack() { EmptyView() }.frame(minWidth: 0, maxWidth: .infinity)
                     Text(viewModel.totalValue)
                         .font(Font.mainFont(size: 14))
-                        .foregroundColor(Color.white.opacity(0.6))
                 }
                 
                 HStack() {
@@ -64,7 +67,7 @@ struct AssetItemView: View {
 }
 
 #if DEBUG
-struct WalletItemView_Previews: PreviewProvider {
+struct AssetItemView_Previews: PreviewProvider {
     static var previews: some View {
         AssetItemView(viewModel:
             AssetItemViewModel(asset: Asset(coin: Coin(code: "BTC", name: "Bitcoin")))

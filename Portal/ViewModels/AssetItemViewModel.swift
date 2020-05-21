@@ -41,9 +41,9 @@ final class AssetItemViewModel: ObservableObject {
         
         cancellable = queue.schedule(
             after: queue.now,
-            interval: .seconds(60)
+            interval: .seconds(5)
         ){ [weak self] in
-            print("\(self?.code ?? "Unknown") market data is updated")
+//            print("\(self?.code ?? "Unknown") market data is updated")
             self?.updateValues()
         }
     }
@@ -54,9 +54,9 @@ final class AssetItemViewModel: ObservableObject {
     }
     
     private func updateValues() {
-        balance = asset.balanceProvider.balanceString + "\(Int.random(in: 1...8))"
+        balance = asset.balanceProvider.balanceString
         totalValue = asset.balanceProvider.totalValueString + "\(Int.random(in: 1...8))"
         price = asset.balanceProvider.price + "\(Int.random(in: 1...8))"
-        change = asset.marketChangeProvider.changeString + "\(Int.random(in: 1...8))"
+        change = asset.marketChangeProvider.changeString + "\(Int.random(in: 1...8))%"
     }
 }

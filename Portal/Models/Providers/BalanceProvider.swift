@@ -13,9 +13,9 @@ final class BalanceProvider: IBalanceProvider {
     let coinKit: ICoinKit
     
     let tempBalance: String
-    let tempTotalValue = "\(Double.random(in: 255..<5955).rounded(toPlaces: 2))"
+    let tempTotalValue = "\(Double.random(in: 255..<5955).rounded(toPlaces: 1))"
     let tempBalanceForCurrency = Double.random(in: 0.75 ..< 2.795).rounded(toPlaces: 1)
-    let tempPrice = "$\(Double.random(in: 200..<5000).rounded(toPlaces: 2))"
+    let tempPrice = "$\(Double.random(in: 200..<5000).rounded(toPlaces: 1))"
     
     init(coin: Coin, kit: ICoinKit) {
         self.coin = coin
