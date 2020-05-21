@@ -10,14 +10,27 @@ import Foundation
 import Combine
 
 final class WalletViewModel: ObservableObject {
-    private var subscription: AnyCancellable?
-    @Published var assets: [IAsset] = []
+//    private var subscription: AnyCancellable?
     
-    init(wallet: Published<IWallet?>.Publisher) {
-        subscription = wallet
-            .unwrap()
-            .sink { [weak self] currentWallet in
-                self?.assets = currentWallet.assets
-            }
+    var adapters: [CoinAdapter]
+    
+    @Published var showPortfolioView = false
+    @Published var showCoinView = false
+    
+    @Published var selectedAsset: IAsset = Asset(coin: Coin(code: "BTC", name: "Bitcoin")) {
+        didSet {
+            showCoinView.toggle()
+        }
+    }
+    
+    init(assets: [IAsset]) {
+        print("WalletViewModel init")
+        self.adapters = assets.map{ CoinAdapter(asset: $0) }
+//        self.viewModels = self.assets.map{ AssetItemViewModel(asset: $0) }
+//        subscription = wallet
+//            .unwrap()
+//            .sink { [weak self] currentWallet in
+//                self?.assets = currentWallet.assets
+//            }
     }
 }

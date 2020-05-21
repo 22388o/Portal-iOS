@@ -13,6 +13,7 @@ struct AssetAllocationViewModel: IPieChartModel {
     var assets: [IAsset]
     
     init(assets: [IAsset] = WalletMock().assets.map{ $0 }) {
+        print("Asset allocation view model init")
         self.assets = assets
     }
 }
