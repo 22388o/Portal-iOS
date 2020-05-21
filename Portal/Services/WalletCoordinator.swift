@@ -61,7 +61,8 @@ final class WalletCoordinator: ObservableObject {
     
     private func saveSeed(data: Data, key: String) {
         if Device.hasSecureEnclave {
-            fatalError("Not implemented yet")
+            keychainStorage.save(data: data, key: key)
+//            fatalError("Not implemented yet")
         } else {
             keychainStorage.save(data: data, key: key)
         }

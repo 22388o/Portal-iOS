@@ -8,12 +8,22 @@
 
 import Foundation
 
-struct CoinAdapter: Identifiable {
+struct CoinAdapter: Hashable, Identifiable {
     let id: String
     let asset: IAsset
+    let viewModel: AssetItemViewModel
 
     init(asset: IAsset) {
         self.id = asset.coin.name
         self.asset = asset
+        self.viewModel = AssetItemViewModel(asset: asset)
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: CoinAdapter, rhs: CoinAdapter) -> Bool {
+        lhs.id == rhs.id
     }
 }

@@ -11,7 +11,7 @@ import Combine
 import SwiftUI
 import Charts
 
-final class AssetViewModel: ObservableObject, MarketDataMockable {
+final class AssetViewModel: ObservableObject, IMarketDataMockable {
     var asset: IAsset
     
     let code: String
