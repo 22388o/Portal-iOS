@@ -9,17 +9,11 @@
 import SwiftUI
 
 struct PortfolioView: View {
-//    @Binding var showModal: Bool
-    private var assets: [IAsset]
-        
-    let viewModel: PortfolioViewModel
+    @ObservedObject var viewModel: PortfolioViewModel
     
     init(assets: [IAsset]) {
-        self.assets = assets
-        self.viewModel = PortfolioViewModel(
-            assets: assets,
-            marketData: [String : CoinMarketData]()
-        )
+        print("Portfolio init")
+        self.viewModel = .init(assets: assets, marketData: [String : CoinMarketData]())
     }
     
     var body: some View {
@@ -28,7 +22,7 @@ struct PortfolioView: View {
             
             VStack {
                 
-                PortfolioLineChartView(type: .portfolio, viewModel: viewModel)
+                LineChartsView(timeframe: $viewModel.selectedTimeframe, totalValue: $viewModel.totalValue, chartDataEntries: $viewModel.chartDataEntries)
                             
                 HStack(spacing: 50) {
                     VStack(spacing: 10) {
@@ -70,6 +64,11 @@ struct PortfolioView: View {
                 
             }
             .padding(6)
+            .onAppear {
+                print("On appear")
+            }.onDisappear {
+                print("On dissapear")
+            }
         }
         .edgesIgnoringSafeArea(.all)
     }

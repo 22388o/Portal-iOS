@@ -16,6 +16,7 @@ struct AssetAllocationView: View {
         assets: [IAsset],
         showTotalValue: Bool = true
     ) {
+        print("Asset allocation view init")
         self.viewModel = AssetAllocationViewModel(assets: assets)
         self.showTotalValue = showTotalValue
     }
@@ -23,7 +24,7 @@ struct AssetAllocationView: View {
     var body: some View {
         ZStack {
             if showTotalValue {
-                Text("$" + String(viewModel.totalPortfolioValue))
+                Text("$" + "\(viewModel.totalPortfolioValue)")
                     .font(Font.mainFont(size: 16))
                     .foregroundColor(Color.white)
             }

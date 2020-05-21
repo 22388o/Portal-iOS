@@ -17,8 +17,12 @@ struct TransactionItem: Identifiable {
 }
 
 struct TransactionsListView: View {
-    @Binding var asset: IAsset
+    private let coin: Coin
     @State private var showTxInfo: Bool = false
+    
+    init(coin: Coin) {
+        self.coin = coin
+    }
     
     var txs: [TransactionItem] {
         var transactions = [TransactionItem]()
@@ -33,14 +37,14 @@ struct TransactionsListView: View {
             Color.clear
             
             QGrid(txs, columns: 1, hSpacing: 0) { adapter in
-                TransactionListItemView(symbol: self.asset.coin.code)
+                TransactionListItemView(symbol: self.coin.code)
                     .onTapGesture {
                         self.showTxInfo.toggle()
                 }.padding([.top, .bottom], 6)
             }
             .padding(.top, -8)
             .sheet(isPresented: self.$showTxInfo) {
-                TransactionView(asset: self.asset)
+                TransactionView(coin: self.coin)
             }
         }
     }
@@ -49,7 +53,7 @@ struct TransactionsListView: View {
 #if DEBUG
 struct TransactionsPreviewView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionsListView(asset: .constant(Asset(coin: Coin(code: "ETH", name: "Ethereum"))))
+        TransactionsListView(coin: Coin(code: "ETH", name: "Ethereum"))
     }
 }
 #endif

@@ -11,24 +11,22 @@ import Charts
 
 struct LineChartUIKitWrapper: UIViewRepresentable {
     
-    let viewModel: PortfolioViewModel
+    let chartDataEntries: [ChartDataEntry]
     
-    init(viewModel: PortfolioViewModel) {
-        self.viewModel = viewModel
+    init(chartDataEntries: [ChartDataEntry]) {
+        self.chartDataEntries = chartDataEntries
     }
     
     func makeUIView(context: Context) -> LineChartView {
         let lineChart = LineChartView()
         lineChart.applyStandardSettings()
-        
-        let entries = viewModel.portfolioChartDataEntries()
-        
+                
         let data = LineChartData()
-        let dataSet = viewModel.portfolioChartDataSet(entries: entries)
+        let dataSet = chartDataEntries.dataSet()
         
         data.dataSets = [dataSet]
                 
-        let maxValue = entries.map{$0.y}.max()
+        let maxValue = chartDataEntries.map{$0.y}.max()
         
         if maxValue != nil {
             dataSet.gradientPositions = [0, CGFloat(maxValue!)]
@@ -45,12 +43,7 @@ struct LineChartUIKitWrapper: UIViewRepresentable {
 #if DEBUG
 struct LineChartUIKitWrapper_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartUIKitWrapper(
-            viewModel: PortfolioViewModel(
-                assets: WalletMock().assets,
-                marketData: [String : CoinMarketData]()
-            )
-        )
+        LineChartUIKitWrapper(chartDataEntries: [])
             .frame(width: UIScreen.main.bounds.width, height: 150)
     }
 }

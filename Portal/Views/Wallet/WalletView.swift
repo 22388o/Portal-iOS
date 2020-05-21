@@ -10,19 +10,11 @@ import SwiftUI
 import QGrid
 
 struct WalletView: View {
-    @State private var showPortfolioView = false
-    @State private var showCoinView = false
-    
-    @State private var selectedAsset: IAsset = Asset(coin: Coin(code: "BTC", name: "Bitcoin")) {
-        didSet {
-            showCoinView.toggle()
-        }
-    }
-    
     @ObservedObject var viewModel: WalletViewModel
-    
-    init(walletCoordinator: WalletCoordinator) {
-        viewModel = .init(wallet: walletCoordinator.$currentWallet)
+        
+    init(wallet: IWallet = WalletMock()) {
+        print("WalletView init")
+        viewModel = .init(assets: wallet.assets)
     }
     
     var body: some View {
@@ -30,24 +22,24 @@ struct WalletView: View {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 20) {
-                AssetAllocationView(assets: viewModel.assets)
+                AssetAllocationView(assets: viewModel.adapters.map{$0.asset})
                     .frame(width: UIScreen.main.bounds.width, height: 180.0)
                     .padding(.bottom, -20)
                     .onTapGesture {
-                    self.showPortfolioView.toggle()
+                        self.viewModel.showPortfolioView.toggle()
                 }
-                .sheet(isPresented: $showPortfolioView) {
-                    PortfolioView(assets: self.viewModel.assets)
+                .sheet(isPresented: $viewModel.showPortfolioView) {
+                    PortfolioView(assets: self.viewModel.adapters.map{$0.asset})
                 }
-                QGrid(viewModel.assets.map{ CoinAdapter(asset: $0) }, columns: 1) { adapter in
-                    WalletItemView(asset: adapter.asset)
+                QGrid(viewModel.adapters, columns: 1) { adapter in
+                    AssetItemView(viewModel: adapter.viewModel)
                         .onTapGesture {
-                            self.selectedAsset = adapter.asset
+                            self.viewModel.selectedAsset = adapter.asset
                     }
                 }
                 .padding(.bottom, -10)
-                .sheet(isPresented: self.$showCoinView) {
-                    AssetView(asset: self.$selectedAsset)
+                .sheet(isPresented: self.$viewModel.showCoinView) {
+                    AssetView(asset: self.viewModel.selectedAsset)
                 }
             }
         }
@@ -57,7 +49,7 @@ struct WalletView: View {
 #if DEBUG
 struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletView(walletCoordinator: WalletCoordinator(mockedWallet: WalletMock()))
+        WalletView(wallet: WalletMock())
     }
 }
 #endif

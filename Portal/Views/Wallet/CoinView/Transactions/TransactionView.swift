@@ -10,10 +10,10 @@ import SwiftUI
 
 
 struct TransactionView: View {
-    let asset: IAsset
+    let coin: Coin
     
-    init(asset: IAsset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))) {
-        self.asset = asset
+    init(coin: Coin = Coin(code: "ETH", name: "Ethereum")) {
+        self.coin = coin
     }
     
     var body: some View {
@@ -21,14 +21,14 @@ struct TransactionView: View {
             Spacer()
                 .frame(height: 8)
             VStack {
-                Image(uiImage: asset.coin.icon)
+                Image(uiImage: coin.icon)
                     .resizable()
                     .frame(width: 80, height: 80)
                 Text("Transaction details")
                     .font(Font.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabel)
                     .opacity(0.6)
-                Text("Received 0.0125 \(asset.coin.code)")
+                Text("Received 0.0125 \(coin.code)")
                     .font(Font.mainFont(size: 23))
                     .foregroundColor(Color.lightActiveLabel)
                 Text("19 Feb, 2020 at 4:49 PM (28 days ago)")
@@ -105,7 +105,7 @@ struct TransactionView: View {
 #if DEBUG
 struct TransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionView(asset: Asset(coin: Coin(code: "ETH", name: "Ethereum")))
+        TransactionView(coin: Coin(code: "ETH", name: "Ethereum"))
     }
 }
 #endif

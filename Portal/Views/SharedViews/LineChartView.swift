@@ -1,5 +1,5 @@
 //
-//  AssetMarketValueView.swift
+//  LineChartsView.swift
 //  Portal
 //
 //  Created by Farid on 10.03.2020.
@@ -17,16 +17,19 @@ struct AssetMarketValueViewModel {
     let changeSting: String
 }
 
-struct PortfolioLineChartView: View {
-    @State var timeframe: Timeframe = .hour
+import Charts
+struct LineChartsView: View {
+    @Binding var timeframe: Timeframe
+    @Binding var totalValue: String
+    @Binding var chartDataEntries: [ChartDataEntry]
+    @State var type: AssetMarketValueViewType = .portfolio
     
-    private let type: AssetMarketValueViewType
-    private let viewModel: PortfolioViewModel
+//    private let viewModel: PortfolioViewModel
     
-    init(type: AssetMarketValueViewType = .asset, viewModel: PortfolioViewModel) {
-        self.viewModel = viewModel
-        self.type = type
-    }
+//    init(type: AssetMarketValueViewType = .asset, viewModel: PortfolioViewModel) {
+//        self.viewModel = viewModel
+//        self.type = type
+//    }
 
     var body: some View {
         VStack {
@@ -34,36 +37,53 @@ struct PortfolioLineChartView: View {
                 Button(action: {
                     self.timeframe = .hour
                 }) {
-                    Text("Hour").modifier(TimeframeButton(type: type, isSelected: timeframe == .hour))
+                    Text("Hour")
+                        .modifier(
+                            TimeframeButton(type: type, isSelected: timeframe == .hour)
+                        )
                 }
 
                 Button(action: {
                     self.timeframe = .day
                 }) {
-                    Text("Day").modifier(TimeframeButton(type: type, isSelected: timeframe == .day))
+                    Text("Day")
+                        .modifier(
+                            TimeframeButton(type: type, isSelected: timeframe == .day)
+                        )
                 }
 
                 Button(action: {
                     self.timeframe = .week
                 }) {
-                    Text("Week").modifier(TimeframeButton(type: type, isSelected: timeframe == .week))
+                    Text("Week")
+                        .modifier(
+                            TimeframeButton(type: type, isSelected: timeframe == .week)
+                        )
                 }
                 Button(action: {
                     self.timeframe = .month
                 }) {
-                    Text("Month").modifier(TimeframeButton(type: type, isSelected: timeframe == .month))
+                    Text("Month")
+                        .modifier(
+                            TimeframeButton(type: type, isSelected: timeframe == .month)
+                        )
                 }
                                 
                 Button(action: {
                     self.timeframe = .year
                 }) {
-                    Text("Year").modifier(TimeframeButton(type: type, isSelected: timeframe == .year))
+                    Text("Year")
+                        .modifier(
+                            TimeframeButton(type: type, isSelected: timeframe == .year)
+                        )
                 }
 
                 Button(action: {
                     self.timeframe = .allTime
                 }) {
-                    Text("All time").modifier(TimeframeButton(type: type, isSelected: timeframe == .allTime))
+                    Text("All time")
+                        .modifier(TimeframeButton(type: type, isSelected: timeframe == .allTime)
+                    )
                 }
             }
             .padding([.leading, .trailing])
@@ -81,7 +101,7 @@ struct PortfolioLineChartView: View {
                     HStack {
                         Image(type == .asset ? "arrowLeft" : "arrowLeftLight")
                         Spacer()
-                        Text(viewModel.totalValue).font(.largeTitle)
+                        Text(totalValue).font(.largeTitle)
                             .font(Font.mainFont(size: 28))
                             .foregroundColor(type == .asset ? Color.assetValueLabel : Color.white.opacity(0.8))
                         Spacer()
@@ -95,7 +115,7 @@ struct PortfolioLineChartView: View {
             }
             .padding()
             
-            LineChartUIKitWrapper(viewModel: viewModel)
+            LineChartUIKitWrapper(chartDataEntries: chartDataEntries)
                 .frame(height: 150)
                 .padding([.leading, .trailing])
             
@@ -127,11 +147,12 @@ struct PortfolioLineChartView: View {
 }
 
 #if DEBUG
-struct PortfolioLineChartView_Previews: PreviewProvider {
+struct LineChartsView_Previews: PreviewProvider {
     static var previews: some View {
-        PortfolioLineChartView(
-            type: .asset,
-            viewModel: PortfolioViewModel(assets: WalletMock().assets, marketData: [String : CoinMarketData]())
+        LineChartsView(
+            timeframe: .constant(.hour),
+            totalValue: .constant("$2836.21"),
+            chartDataEntries: .constant([])
         )
     }
 }

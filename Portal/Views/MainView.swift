@@ -16,7 +16,7 @@ struct MainView: View {
         ZStack {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
             TabView(selection: $selection) {
-                WalletView(walletCoordinator: self.walletCoordinator)
+                WalletView(wallet: self.walletCoordinator.currentWallet ?? WalletMock())
                     .tabItem {
                         VStack {
                             Image(systemName: "1.square.fill")

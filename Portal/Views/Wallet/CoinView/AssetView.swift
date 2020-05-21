@@ -7,25 +7,18 @@
 //
 
 import SwiftUI
+import Charts
 
 enum CoinViewRoute {
     case value, transactions, alerts
 }
 
 struct AssetView: View {
-    @Binding var asset: IAsset
+    @ObservedObject var viewModel: AssetViewModel
     
-    @State var showSendView = false
-    @State var showReceiveView = false
-    @State var showSendToExchangeView = false
-    @State var showWithdrawView = false
-    
-    @State var route: CoinViewRoute = .value
-    
-    let viewModel = PortfolioViewModel(
-        assets: WalletMock().assets,
-        marketData: [String : CoinMarketData]()
-    )
+    init(asset: IAsset) {
+        viewModel = .init(asset: asset)
+    }
     
     var body: some View {
         ZStack {
@@ -35,15 +28,15 @@ struct AssetView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     VStack(alignment: .leading, spacing: 0.0) {
                         HStack {
-                            Image(uiImage: asset.coin.icon)
+                            Image(uiImage: viewModel.icon)
                                 .resizable()
                                 .frame(width: 24, height: 24)
-                            Text("\(asset.coin.name)")
+                            Text("\(viewModel.name)")
                                 .font(Font.mainFont(size: 15))
                                 .foregroundColor(Color.lightActiveLabel)
                         }
                         
-                        Text("\(asset.balanceProvider.balanceString)")
+                        Text("\(viewModel.balance)")
                             .font(Font.mainFont(size: 28))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                     }
@@ -52,37 +45,45 @@ struct AssetView: View {
                     VStack(spacing: 8) {
                         HStack() {
                             Spacer()
-                            Button("Send") { self.showSendView.toggle() }
-                                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-                                .sheet(isPresented: self.$showSendView) {
-                                    SendCoinView(asset: self.asset)
-                                }
+                            Button("Send") {
+                                self.viewModel.showSendView.toggle()
+                            }
+                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                            .sheet(isPresented: self.$viewModel.showSendView) {
+                                SendCoinView(asset: self.viewModel.asset)
+                            }
                             Spacer()
-                            Button("Receive") { self.showReceiveView.toggle() }
-                                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-                                .sheet(isPresented: self.$showReceiveView) {
-                                    ReceiveCoinView(asset: self.asset)
-                                }
-                            Spacer()
-                        }
-                        
-                        HStack() {
-                            Spacer()
-                            Button("Send to exchange") { self.showSendToExchangeView.toggle() }
-                                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-                                .sheet(isPresented: self.$showSendToExchangeView) {
-                                    SendToExchangeView(asset: self.asset)
-                                }
+                            Button("Receive") {
+                                self.viewModel.showReceiveView.toggle()
+                            }
+                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                            .sheet(isPresented: self.$viewModel.showReceiveView) {
+                                ReceiveCoinView(asset: self.viewModel.asset)
+                            }
                             Spacer()
                         }
                         
                         HStack() {
                             Spacer()
-                            Button("Withdraw") { self.showWithdrawView.toggle() }
-                                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-                                .sheet(isPresented: self.$showWithdrawView) {
-                                    WithdrawCoinView()
-                                }
+                            Button("Send to exchange") {
+                                self.viewModel.showSendToExchangeView.toggle()
+                            }
+                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                            .sheet(isPresented: self.$viewModel.showSendToExchangeView) {
+                                SendToExchangeView(asset: self.viewModel.asset)
+                            }
+                            Spacer()
+                        }
+                        
+                        HStack() {
+                            Spacer()
+                            Button("Withdraw") {
+                                self.viewModel.showWithdrawView.toggle()
+                            }
+                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                            .sheet(isPresented: self.$viewModel.showWithdrawView) {
+                                WithdrawCoinView()
+                            }
                             Spacer()
                         }
 
@@ -95,24 +96,24 @@ struct AssetView: View {
                 Spacer()
                             
                 HStack(alignment: .center) {
-                    Button(action: { self.route = .value }) {
+                    Button(action: { self.viewModel.route = .value }) {
                         Text("Value")
                             .font(Font.mainFont(size: 15))
-                            .foregroundColor(route == .value ? Color.coinViewRouteButtonInactive : Color.coinViewRouteButtonActive)
+                            .foregroundColor(viewModel.route == .value ? Color.coinViewRouteButtonInactive : Color.coinViewRouteButtonActive)
                     }
                     .frame(width: 110)
                     
-                    Button(action: { self.route = .transactions }) {
+                    Button(action: { self.viewModel.route = .transactions }) {
                         Text("Transactions")
                             .font(Font.mainFont(size: 15))
-                            .foregroundColor(route == .transactions ?  Color.coinViewRouteButtonInactive : Color.coinViewRouteButtonActive)
+                            .foregroundColor(viewModel.route == .transactions ?  Color.coinViewRouteButtonInactive : Color.coinViewRouteButtonActive)
                     }
                     .frame(width: 110)
                     
-                    Button(action: { self.route = .alerts }) {
+                    Button(action: { self.viewModel.route = .alerts }) {
                         Text("Alerts")
                             .font(Font.mainFont(size: 15))
-                            .foregroundColor(route == .alerts ? Color.coinViewRouteButtonInactive : Color.coinViewRouteButtonActive)
+                            .foregroundColor(viewModel.route == .alerts ? Color.coinViewRouteButtonInactive : Color.coinViewRouteButtonActive)
                     }
                     .frame(width: 110)
                 }
@@ -129,11 +130,16 @@ struct AssetView: View {
     }
     
     private func containedView() -> AnyView {
-        switch self.route {
+        switch self.viewModel.route {
         case .value:
-            return AnyView(PortfolioLineChartView(type: .portfolio, viewModel: viewModel))
+            return AnyView(
+                LineChartsView(
+                    timeframe: $viewModel.selectedTimeframe,
+                    totalValue: $viewModel.totalValue,
+                    chartDataEntries: $viewModel.chartDataEntries)
+                )
         case .transactions:
-            return AnyView(TransactionsListView(asset: $asset))
+            return AnyView(TransactionsListView(coin: viewModel.asset.coin))
         case .alerts:
             return AnyView(AlertsListView())
         }
@@ -149,7 +155,15 @@ struct AssetView: View {
 #if DEBUG
 struct CoinDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        AssetView(asset: .constant(Asset(coin: Coin(code: "ETH", name: "Ethereum", icon: UIImage(imageLiteralResourceName: "iconEth")))))
+        AssetView(
+            asset: Asset(
+                coin: Coin(
+                    code: "ETH",
+                    name: "Ethereum",
+                    icon: UIImage(imageLiteralResourceName: "iconEth")
+                )
+            )
+        )
     }
 }
 #endif
