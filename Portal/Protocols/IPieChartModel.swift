@@ -18,7 +18,7 @@ extension IPieChartModel {
     var totalValueCurrency: UserCurrency { .usd }
     
     var totalPortfolioValue: Double {
-        assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency) }.reduce(0){ $0 + $1 }//.rounded(toPlaces: 2)
+        assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency) }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
     }
     
     func pieChartData() -> (entries: [PieChartDataEntry], colors: [UIColor]) {
