@@ -40,6 +40,7 @@ struct AssetItemView: View {
                     HStack() { EmptyView() }.frame(minWidth: 0, maxWidth: .infinity)
                     Text(viewModel.totalValue)
                         .font(Font.mainFont(size: 14))
+                        .foregroundColor(Color.white.opacity(0.6))
                 }
                 
                 HStack() {
@@ -70,9 +71,11 @@ struct AssetItemView: View {
 struct AssetItemView_Previews: PreviewProvider {
     static var previews: some View {
         AssetItemView(viewModel:
-            AssetItemViewModel(asset: Asset(coin: Coin(code: "BTC", name: "Bitcoin")))
+            AssetItemViewModel(asset: Asset(coin: Coin(code: "BTC", name: "Bitcoin", icon: UIImage(imageLiteralResourceName: "iconBtc"))))
         )
-        
+        .previewLayout(PreviewLayout.sizeThatFits)
+        .padding()
+        .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }
 #endif

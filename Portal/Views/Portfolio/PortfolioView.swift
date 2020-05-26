@@ -22,7 +22,13 @@ struct PortfolioView: View {
             
             VStack {
                 
-                LineChartsView(timeframe: $viewModel.selectedTimeframe, totalValue: $viewModel.totalValue, chartDataEntries: $viewModel.chartDataEntries)
+                MarketValueView(
+                    timeframe: $viewModel.selectedTimeframe,
+                    totalValue: $viewModel.totalValue,
+                    change: $viewModel.change,
+                    chartDataEntries: $viewModel.chartDataEntries,
+                    valueCurrencyViewSate: .constant(.fiat)
+                )
                             
                 HStack(spacing: 50) {
                     VStack(spacing: 10) {

@@ -26,7 +26,9 @@ struct RootView: View {
     var body: some View {
         NavigationView {
             if walletCoordinator.currentWallet != nil {
-                MainView().environmentObject(walletCoordinator)
+                MainView()
+                    .environmentObject(walletCoordinator)
+//                    .environmentObject(marketDataRepository)
             } else {
                 CreateWalletView()
                     .environmentObject(walletCoordinator)

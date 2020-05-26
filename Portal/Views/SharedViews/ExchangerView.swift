@@ -75,7 +75,11 @@ struct ExchangerView: View {
 #if DEBUG
 struct ExchangerView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangerView(asset: Asset(coin: Coin(code: "ETH", name: "Ethereum"))).padding()
+        ExchangerView(
+            asset: Asset(coin: Coin(code: "ETH", name: "Ethereum"))
+        )
+        .previewLayout(PreviewLayout.sizeThatFits)
+        .padding()
     }
 }
 #endif

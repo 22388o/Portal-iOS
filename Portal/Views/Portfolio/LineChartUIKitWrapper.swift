@@ -10,17 +10,22 @@ import SwiftUI
 import Charts
 
 struct LineChartUIKitWrapper: UIViewRepresentable {
-    
-    let chartDataEntries: [ChartDataEntry]
-    
-    init(chartDataEntries: [ChartDataEntry]) {
-        self.chartDataEntries = chartDataEntries
-    }
+    @Binding var chartDataEntries: [ChartDataEntry]
     
     func makeUIView(context: Context) -> LineChartView {
         let lineChart = LineChartView()
         lineChart.applyStandardSettings()
                 
+        updateChartData(lineChart: lineChart)
+        
+        return lineChart
+    }
+
+    func updateUIView(_ lineChart: LineChartView, context: Context) {
+        updateChartData(lineChart: lineChart)
+    }
+    
+    func updateChartData(lineChart: LineChartView) {
         let data = LineChartData()
         let dataSet = chartDataEntries.dataSet()
         
@@ -33,18 +38,19 @@ struct LineChartUIKitWrapper: UIViewRepresentable {
             lineChart.data = data
             lineChart.notifyDataSetChanged()
         }
-        
-        return lineChart
     }
-
-    func updateUIView(_ uiView: LineChartView, context: Context) {}
 }
 
 #if DEBUG
 struct LineChartUIKitWrapper_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartUIKitWrapper(chartDataEntries: [])
+        LineChartUIKitWrapper(
+            chartDataEntries: .constant([])
+        )
             .frame(width: UIScreen.main.bounds.width, height: 150)
+            .previewLayout(PreviewLayout.sizeThatFits)
+            .padding()
+            .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }
 #endif

@@ -36,7 +36,13 @@ struct Title: View {
 #if DEBUG
 struct Title_Previews: PreviewProvider {
     static var previews: some View {
-        Title(iconName: "iconSafe", title: "Title", subtitle: "Subtitle")
+        Title(
+            iconName: "iconSafe",
+            title: "Title",
+            subtitle: "Subtitle"
+        )
+        .previewLayout(PreviewLayout.sizeThatFits)
+        .padding()
     }
 }
 #endif

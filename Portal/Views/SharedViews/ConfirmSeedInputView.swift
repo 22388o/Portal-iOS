@@ -31,7 +31,12 @@ struct ConfirmSeedInputView: View {
 #if DEBUG
 struct ConfirmSeedInputView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfirmSeedInputView(inputString: .constant(""), wordIndex: .constant(1))
+        ConfirmSeedInputView(
+            inputString: .constant(""),
+            wordIndex: .constant(1)
+        )
+        .previewLayout(PreviewLayout.sizeThatFits)
+        .padding()
     }
 }
 #endif

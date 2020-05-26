@@ -36,8 +36,14 @@ struct AssetAllocationView: View {
 #if DEBUG
 struct AssetAllocationView_Previews: PreviewProvider {
     static var previews: some View {
-        AssetAllocationView(assets: WalletMock().assets, showTotalValue: true)
-            .frame(height: 200).background(Color.gray)
+        AssetAllocationView(
+            assets: WalletMock().assets,
+            showTotalValue: true
+        )
+        .frame(height: 200)
+        .previewLayout(PreviewLayout.sizeThatFits)
+        .padding()
+        .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }
 #endif

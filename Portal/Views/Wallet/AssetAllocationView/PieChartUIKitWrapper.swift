@@ -30,7 +30,10 @@ struct PieChartUIKitWrapper: UIViewRepresentable {
 struct PieChartUIKitWrapper_Previews: PreviewProvider  {
     static var previews: some View {
         PieChartUIKitWrapper()
+            .previewLayout(PreviewLayout.sizeThatFits)
             .frame(width: UIScreen.main.bounds.width, height: 200, alignment: .center)
+            .padding()
+            .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }
 #endif

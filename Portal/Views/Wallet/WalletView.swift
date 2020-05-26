@@ -14,7 +14,7 @@ struct WalletView: View {
         
     init(wallet: IWallet = WalletMock()) {
         print("WalletView init")
-        viewModel = .init(assets: wallet.assets)
+        self.viewModel = .init(assets: wallet.assets)
     }
     
     var body: some View {
@@ -34,12 +34,12 @@ struct WalletView: View {
                 QGrid(viewModel.adapters, columns: 1) { adapter in
                     AssetItemView(viewModel: adapter.viewModel)
                         .onTapGesture {
-                            self.viewModel.selectedAsset = adapter.asset
+                            self.viewModel.selectedAdapter = adapter
                     }
                 }
                 .padding(.bottom, -10)
                 .sheet(isPresented: self.$viewModel.showCoinView) {
-                    AssetView(asset: self.viewModel.selectedAsset)
+                    AssetView(asset: self.viewModel.selectedAdapter.asset)
                 }
             }
         }
