@@ -172,7 +172,7 @@ final class MarketDataUpdater: IHistoricalData {
                 competionHandler(.failure(.inconsistentBehavior))
             }
         }
-        hourDataTask?.resume()
+        monthDataTask?.resume()
     }
     
     private func fetchYearData(assets: String,  _ competionHandler: @escaping ((Result<HistoricalDataResponse, NetworkError>) -> Void)) {

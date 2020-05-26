@@ -10,15 +10,19 @@ import Foundation
 import SwiftUI
 import Combine
 
-final class MarketDataRepository: IMarketData  {
+final class MarketDataRepository  {    
+    typealias CoinCode = String
+    typealias CurrencyCode = String
+    typealias Rate = Double
+    
     private var marketDataUpdater = MarketDataUpdater()
     private var ratesUpdater = RatesDataUpdater(interval: 60)
     private var priceUpdater = PricesDataUpdater(interval: 60)
     
     private var cancellables: Set<AnyCancellable> = []
     
-    private var currencyRates = Synchronized([String : Double]())
-    private var marketData = Synchronized([String : CoinMarketData]())
+    private var currencyRates = Synchronized([CurrencyCode : Rate]())
+    private var marketData = Synchronized([CoinCode : CoinMarketData]())
         
     init() {
         bindServices()
@@ -47,7 +51,7 @@ final class MarketDataRepository: IMarketData  {
             .store(in: &cancellables)
     }
     
-    func marketData(for coin: String) -> CoinMarketData {
+    func data(for coin: String) -> CoinMarketData {
         marketData.value[coin] ?? CoinMarketData()
     }
 

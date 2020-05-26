@@ -24,13 +24,12 @@ struct StringFormatter {
         return formatter.string(from: NSNumber(value: value)) ?? "#"
     }
 
-    static func changeString(price: Double, change: Double, currency: UserCurrency, fiat: FiatCurrency? = nil) -> String {
+    static func changeString(price: Double, change: Double, currency: Currency) -> String {
         switch currency {
         case .btc, .eth:
             return changeString(price: price, change: change, currency: currency.stringValue())
-        case .usd:
-            guard let currency = fiat else { return "" }
-            return changeString(price: price * currency.rate, change: change, currency: currency.symbol!)
+        case .fiat(let currency):
+            return changeString(price: price * currency.rate, change: change, currency: currency.symbol ?? "$")
         }
     }
 
@@ -67,14 +66,13 @@ struct StringFormatter {
         return outputString + percentFormatted(change)
     }
 
-    static func totalValueString(value: Double, currency: UserCurrency, fiat: FiatCurrency? = nil) -> String {
+    static func totalValueString(value: Double, currency: Currency) -> String {
         switch currency {
         case .btc:
             return value.btcFormatted()
         case .eth:
             return value.ethFormatted()
-        case .usd:
-            guard let currency = fiat else { return "" }
+        case .fiat(let currency):
             return localizedValueString(value: value * currency.rate, symbol: currency.symbol)
         }
     }

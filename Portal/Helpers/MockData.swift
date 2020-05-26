@@ -11,6 +11,8 @@ import SwiftUI
 
 let btcMockAddress = "1HqwV7F9hpUpJXubLFomcrNMUqPLzeTVNd"
 
+let USD = FiatCurrency(code: "USD", name: "American Dollar")
+
 final class MockCoinKit: ICoinKit {
     var balance: Double {
         Double.random(in: 0.285..<2.567).rounded(toPlaces: 4)
