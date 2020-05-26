@@ -15,7 +15,9 @@ protocol IPieChartModel {
 }
 
 extension IPieChartModel {
-    var totalValueCurrency: UserCurrency { .usd }
+    var totalValueCurrency: Currency {
+        .fiat(USD)
+    }
     
     var totalPortfolioValue: Double {
         assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency) }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
