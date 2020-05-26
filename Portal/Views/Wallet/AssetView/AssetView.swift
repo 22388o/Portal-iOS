@@ -133,11 +133,14 @@ struct AssetView: View {
         switch self.viewModel.route {
         case .value:
             return AnyView(
-                LineChartsView(
+                MarketValueView(
                     timeframe: $viewModel.selectedTimeframe,
                     totalValue: $viewModel.totalValue,
-                    chartDataEntries: $viewModel.chartDataEntries)
+                    change: $viewModel.change,
+                    chartDataEntries: $viewModel.chartDataEntries,
+                    valueCurrencyViewSate: $viewModel.valueCurrencySwitchState
                 )
+            )
         case .transactions:
             return AnyView(TransactionsListView(coin: viewModel.asset.coin))
         case .alerts:
@@ -146,11 +149,6 @@ struct AssetView: View {
     }
     
 }
-//extension View {
-//    func pButtonStyle() -> some View {
-//        ModifiedContent(content: self, modifier: PButtonStyle())
-//    }
-//}
 
 #if DEBUG
 struct CoinDetailsView_Previews: PreviewProvider {
@@ -158,9 +156,9 @@ struct CoinDetailsView_Previews: PreviewProvider {
         AssetView(
             asset: Asset(
                 coin: Coin(
-                    code: "ETH",
-                    name: "Ethereum",
-                    icon: UIImage(imageLiteralResourceName: "iconEth")
+                    code: "BTC",
+                    name: "Bitcoin",
+                    icon: UIImage(imageLiteralResourceName: "iconBtc")
                 )
             )
         )
