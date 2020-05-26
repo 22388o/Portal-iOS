@@ -19,22 +19,19 @@ struct CoinMarketData {
     
     var hasData: Bool = true
     
-    func price(currency: UserCurrency) -> Double {
+    func price(currency: Currency) -> Double {
         return priceData?.price ?? 0.0
     }
     
-    func priceString(currency: UserCurrency, fiatCurrency: FiatCurrency? = nil) -> String {
+    func priceString(currency: Currency) -> String {
         switch currency {
         case .btc:
             return priceData?.price.btcFormatted() ?? 0.0.btcFormatted()
         case .eth:
             return priceData?.price.ethFormatted() ?? 0.0.ethFormatted()
-        case .usd:
-            guard let fiat = fiatCurrency else {
-                return priceData?.price.dollarFormatted() ?? 0.0.dollarFormatted()
-            }
-            let value = (priceData?.price ?? 0.0) * fiat.rate
-            return StringFormatter.localizedValueString(value: value, symbol: fiat.symbol ?? "$")
+        case .fiat(let currency):
+            let value = (priceData?.price ?? 0.0) * currency.rate
+            return StringFormatter.localizedValueString(value: value, symbol: currency.symbol)
         }
     }
     
@@ -55,11 +52,11 @@ struct CoinMarketData {
         }
     }
     
-    func changeString(for timeframe: Timeframe, currrency: UserCurrency, fiat: FiatCurrency) -> String {
+    func changeString(for timeframe: Timeframe, currrency: Currency) -> String {
         let price = self.price(currency: currrency)
         let change = self.changeInPercents(tf: timeframe)
 
-        return StringFormatter.changeString(price: price, change: change, currency: currrency, fiat: fiat)
+        return StringFormatter.changeString(price: price, change: change, currency: currrency)
     }
     
     var hourChange: Double {

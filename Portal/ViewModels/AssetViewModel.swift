@@ -11,8 +11,8 @@ import Combine
 import SwiftUI
 import Charts
 
-final class AssetViewModel: ObservableObject, IMarketDataMockable {
-    var asset: IAsset
+final class AssetViewModel: ObservableObject, IMarketData {
+    public var asset: IAsset
     
     let code: String
     let name: String
@@ -31,7 +31,19 @@ final class AssetViewModel: ObservableObject, IMarketDataMockable {
     @Published var selectedTimeframe: Timeframe = .hour
     
     @Published var chartDataEntries = [ChartDataEntry]()
-        
+    @Published var currency: Currency = .fiat(USD)
+    @Published var valueCurrencySwitchState: ValueCurrencySwitchState = .fiat
+    
+    private var subscriptions = Set<AnyCancellable>()
+            
+    var marketData: CoinMarketData {
+        marketData(for: code)
+    }
+    
+    var rate: Double {
+        marketRate(for: USD)
+    }
+    
     init(asset: IAsset) {
         print("Init \(asset.coin.code) viewModel")
         self.asset = asset
@@ -39,11 +51,26 @@ final class AssetViewModel: ObservableObject, IMarketDataMockable {
         code = asset.coin.code
         name = asset.coin.name
         icon = asset.coin.icon
+                
+        $selectedTimeframe
+            .removeDuplicates()
+            .sink { [weak self] timeframe in
+                self?.selectedTimeframe = timeframe
+                self?.updateValues()
+            }
+            .store(in: &subscriptions)
         
-        self.asset.marketData = mockedMarketData()["BTC"] ?? CoinMarketData()
-        self.chartDataEntries = portfolioChartDataEntries()
-        
-        updateValues()
+        $valueCurrencySwitchState.sink { state in
+            switch state {
+            case .fiat:
+                self.totalValue = asset.balanceProvider.totalValueString
+            case .btc:
+                self.totalValue = "0.0224 BTC"
+            case .eth:
+                self.totalValue = "1.62 ETH"
+            }
+        }
+        .store(in: &subscriptions)
     }
     
     deinit {
@@ -53,9 +80,10 @@ final class AssetViewModel: ObservableObject, IMarketDataMockable {
     private func updateValues() {
         print("Value updated")
         balance = asset.balanceProvider.balanceString
-        totalValue = asset.balanceProvider.totalValueString + "\(Int.random(in: 1...8))"
-        price = asset.balanceProvider.price + "\(Int.random(in: 1...8))"
-        change = asset.marketChangeProvider.changeString + "\(Int.random(in: 1...8))"
+        totalValue = asset.balanceProvider.totalValueString
+        price = asset.balanceProvider.price
+        change = asset.marketChangeProvider.changeString
+        chartDataEntries = portfolioChartDataEntries()
     }
     
     private func portfolioChartDataEntries() -> [ChartDataEntry] {
@@ -65,12 +93,22 @@ final class AssetViewModel: ObservableObject, IMarketDataMockable {
         let step = 4
         
         switch selectedTimeframe {
-        case .hour: points = asset.marketData.hourPoints
-        case .day: points = asset.marketData.dayPoints
-        case .week: points = asset.marketData.weekPoints.enumerated().compactMap { $0.offset % step == 0 ? $0.element : nil }
-        case .month: points = asset.marketData.monthPoints
-        case .year: points = asset.marketData.yearPoints.enumerated().compactMap { $0.offset % step == 0 ? $0.element : nil }
-        case .allTime: return []
+        case .hour:
+            points = marketData.hourPoints
+        case .day:
+            points = marketData.dayPoints
+        case .week:
+            points = marketData.weekPoints.enumerated().compactMap {
+                $0.offset % step == 0 ? $0.element : nil
+            }
+        case .month:
+            points = marketData.monthPoints
+        case .year:
+            points = marketData.yearPoints.enumerated().compactMap {
+                $0.offset % step == 0 ? $0.element : nil
+            }
+        case .allTime:
+            return []
         }
         
         let xIndexes = Array(0..<points.count).map { x in Double(x) }

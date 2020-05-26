@@ -24,7 +24,6 @@ protocol ITxProvider {}
 final class Asset: IAsset {
     var coin: Coin
     var kit: ICoinKit
-    var marketData: CoinMarketData
     var balanceProvider: IBalanceProvider
     var chartDataProvider: IChartDataProvider
     var marketChangeProvider: IMarketChangeProvider
@@ -33,7 +32,6 @@ final class Asset: IAsset {
     init(coin: Coin, data: Data = Data(), kit: ICoinKit = MockCoinKit()) {
         self.coin = coin
         self.kit = kit
-        self.marketData = CoinMarketData()
         self.balanceProvider = BalanceProvider(coin: coin, kit: kit)
         self.chartDataProvider = ChartDataProvider()
         self.marketChangeProvider = MarketChangeProvider()

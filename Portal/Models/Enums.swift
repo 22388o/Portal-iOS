@@ -31,16 +31,23 @@ enum MarketDataRange {
     case hour, day, week, month, year
 }
 
-enum UserCurrency: Int {
-    case usd
+enum AssetMarketValueViewType {
+    case portfolio, asset
+}
+
+enum Currency {
+    case fiat(_ currency: FiatCurrency)
     case btc
     case eth
     
     func stringValue() -> String {
         switch self {
-        case .usd: return "USD"
-        case .btc: return "BTC"
-        case .eth: return "ETH"
+        case .fiat(let currency):
+            return currency.code
+        case .btc:
+            return "BTC"
+        case .eth:
+            return "ETH"
         }
     }
 }

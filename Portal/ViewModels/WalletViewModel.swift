@@ -12,12 +12,12 @@ import Combine
 final class WalletViewModel: ObservableObject {
 //    private var subscription: AnyCancellable?
     
-    var adapters: [CoinAdapter]
+    @Published var adapters: [CoinAdapter]
     
     @Published var showPortfolioView = false
     @Published var showCoinView = false
     
-    @Published var selectedAsset: IAsset = Asset(coin: Coin(code: "BTC", name: "Bitcoin")) {
+    @Published var selectedAdapter = CoinAdapter(asset: Asset(coin: Coin(code: "BTC", name: "Bitcoin"))) {
         didSet {
             showCoinView.toggle()
         }

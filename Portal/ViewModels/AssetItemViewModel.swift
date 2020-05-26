@@ -10,24 +10,28 @@ import Foundation
 import SwiftUI
 import Combine
 
-final class AssetItemViewModel: ObservableObject {
-    
-    //    let marketData: MarketDataRepository
+final class AssetItemViewModel: ObservableObject, IMarketData {
+    let code: String
+    let name: String
+    let icon: UIImage
+            
+    @Published var balance = String()
+    @Published var totalValue = String()
+    @Published var price = String()
+    @Published var change = String()
+    @Published var selectedTimeframe: Timeframe = .hour
     
     private let asset: IAsset
     private let queue = DispatchQueue.main
     private var cancellable: Cancellable?
     
-    let code: String
-    let name: String
-    let icon: UIImage
-        
-    @Published var balance = String()
-    @Published var totalValue = String()
-    @Published var price = String()
-    @Published var change = String()
+    private var marketData: CoinMarketData {
+        marketData(for: code)
+    }
     
-    @Published var selectedTimeframe: Timeframe = .hour
+    private var rate: Double {
+        marketRate(for: USD)
+    }
     
     init(asset: IAsset) {
         print("Init \(asset.coin.code) item view model")
@@ -36,14 +40,13 @@ final class AssetItemViewModel: ObservableObject {
         code = asset.coin.code
         name = asset.coin.name
         icon = asset.coin.icon
-                
+                        
         updateValues()
         
         cancellable = queue.schedule(
             after: queue.now,
-            interval: .seconds(5)
+            interval: .seconds(60)
         ){ [weak self] in
-//            print("\(self?.code ?? "Unknown") market data is updated")
             self?.updateValues()
         }
     }
@@ -57,6 +60,6 @@ final class AssetItemViewModel: ObservableObject {
         balance = asset.balanceProvider.balanceString
         totalValue = asset.balanceProvider.totalValueString + "\(Int.random(in: 1...8))"
         price = asset.balanceProvider.price + "\(Int.random(in: 1...8))"
-        change = asset.marketChangeProvider.changeString + "\(Int.random(in: 1...8))%"
+        change = asset.marketChangeProvider.changeString
     }
 }

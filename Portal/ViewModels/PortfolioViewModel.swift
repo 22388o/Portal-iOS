@@ -17,6 +17,7 @@ final class PortfolioViewModel: ObservableObject, IMarketDataMockable {
     
     @Published var selectedTimeframe: Timeframe = .hour
     @Published var totalValue = String()
+    @Published var change: String = "-$423 (3.46%)"
     @Published var chartDataEntries = [ChartDataEntry]()
     
     init(assets: [IAsset], marketData: [String : CoinMarketData]) {
@@ -26,7 +27,9 @@ final class PortfolioViewModel: ObservableObject, IMarketDataMockable {
         self.marketData = marketData
         self.marketData = mockedMarketData()
         
-        totalValue = "$" + String(assets.map{ $0.balanceProvider.balance(currency: .usd) }.reduce(0){ $0 + $1 })
+        let currency: Currency = .fiat(USD)
+        
+        totalValue = "$" + String(assets.map{ $0.balanceProvider.balance(currency: currency) }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2))
         chartDataEntries = portfolioChartDataEntries()
     }
     

@@ -38,72 +38,28 @@ public class DBWallet: NSManagedObject, IWallet {
     }
     
     func setup(data: Data) {
-        let btc = Coin(code: "BTC", name: "Bitcoin", color: UIColor.green, icon: UIImage(imageLiteralResourceName: "iconBtc"))
-        let bch = Coin(code: "BCH", name: "Bitcoin Cash", color: UIColor.gray, icon: UIImage(imageLiteralResourceName: "iconBch"))
-        let eth = Coin(code: "ETH", name: "Ethereum", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconEth"))
-        let xlm = Coin(code: "XLM", name: "Stellar Lumens", color: UIColor.blue, icon: UIImage(imageLiteralResourceName: "iconXlm"))
-        let xtz = Coin(code: "XTZ", name: "Stellar Lumens", color: UIColor.brown, icon: UIImage(imageLiteralResourceName: "iconXtz"))
-        
-        let erz = Coin(code: "ERZ", name: "Eeeeee", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconEth"))
-        let mfk = Coin(code: "MFK", name: "EEEEEE", color: UIColor.blue, icon: UIImage(imageLiteralResourceName: "iconXlm"))
-        let ped = Coin(code: "PED", name: "PPPPPPe", color: UIColor.brown, icon: UIImage(imageLiteralResourceName: "iconXtz"))
-        
-        let las = Coin(code: "LAS", name: "LaaaaaaS", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconEth"))
-        let ndc = Coin(code: "NDC", name: "Nnnnnnn D", color: UIColor.blue, icon: UIImage(imageLiteralResourceName: "iconXlm"))
-        let ncb = Coin(code: "NCB", name: "NNNNNNNcf", color: UIColor.brown, icon: UIImage(imageLiteralResourceName: "iconXtz"))
-        
-        self.assets = [
-            Asset(coin: btc, data: data),
-            Asset(coin: bch, data: data),
-            Asset(coin: eth, data: data),
+        let sampleCoins = [
+            Coin(code: "BTC", name: "Bitcoin", color: UIColor.green, icon: UIImage(imageLiteralResourceName: "iconBtc")),
+            Coin(code: "BCH", name: "Bitcoin Cash", color: UIColor.gray, icon: UIImage(imageLiteralResourceName: "iconBch")),
+            Coin(code: "ETH", name: "Ethereum", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconEth")),
+            Coin(code: "XLM", name: "Stellar Lumens", color: UIColor.blue, icon: UIImage(imageLiteralResourceName: "iconXlm")),
+            Coin(code: "XTZ", name: "Stellar Lumens", color: UIColor.brown, icon: UIImage(imageLiteralResourceName: "iconXtz")),
             
-            Asset(coin: xlm, data: data),
-            Asset(coin: xtz, data: data),
-            
-            Asset(coin: erz, data: data),
-            Asset(coin: mfk, data: data),
-            Asset(coin: ped, data: data),
-            
-            Asset(coin: las, data: data),
-            Asset(coin: ndc, data: data),
-            Asset(coin: ncb, data: data),
-            
-            Asset(coin: xlm, data: data),
-            Asset(coin: xtz, data: data),
-            
-            Asset(coin: erz, data: data),
-            Asset(coin: mfk, data: data),
-            Asset(coin: ped, data: data),
-            
-            Asset(coin: las, data: data),
-            Asset(coin: ndc, data: data),
-            Asset(coin: ncb, data: data),
-            
-            Asset(coin: xlm, data: data),
-            Asset(coin: xtz, data: data)
-            
-//            Asset(coin: erz, data: data),
-//            Asset(coin: mfk, data: data),
-//            Asset(coin: ped, data: data),
-//
-//            Asset(coin: las, data: data),
-//            Asset(coin: ndc, data: data),
-//            Asset(coin: ncb, data: data),
-//
-//            Asset(coin: xlm, data: data),
-//            Asset(coin: xtz, data: data),
-//
-//            Asset(coin: erz, data: data),
-//            Asset(coin: mfk, data: data),
-//            Asset(coin: ped, data: data),
-//
-//            Asset(coin: las, data: data),
-//            Asset(coin: ndc, data: data),
-//            Asset(coin: ncb, data: data)
+            Coin(code: "ERZ", name: "Eeeeee", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconEth")),
+            Coin(code: "MFK", name: "EEEEEE", color: UIColor.blue, icon: UIImage(imageLiteralResourceName: "iconXlm")),
+            Coin(code: "PED", name: "PPPPPPe", color: UIColor.brown, icon: UIImage(imageLiteralResourceName: "iconXtz")),
+            Coin(code: "LAS", name: "LaaaaaaS", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconBtc")),
+            Coin(code: "NDC", name: "Nnnnnnn D", color: UIColor.blue, icon: UIImage(imageLiteralResourceName: "iconBch")),
+            Coin(code: "NCB", name: "NNNNNNNcf", color: UIColor.brown, icon: UIImage(imageLiteralResourceName: "iconXtz"))
         ]
         
-        for _ in 0...100 {
-            assets.append(Asset(coin: las, data: data))
-        }
+        self.assets = sampleCoins.prefix(5).map{ Asset(coin: $0, data: data) }
+        
+//        for _ in 0...95 {
+//            let randomIndex = Int.random(in: 5...sampleCoins.count - 1)
+//            let coin = sampleCoins[randomIndex]
+//            let asset = Asset(coin: coin, data: data)
+//            assets.append(asset)
+//        }
     }
 }
