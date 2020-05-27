@@ -27,7 +27,7 @@ struct PortfolioView: View {
                     totalValue: $viewModel.totalValue,
                     change: $viewModel.change,
                     chartDataEntries: $viewModel.chartDataEntries,
-                    valueCurrencyViewSate: .constant(.fiat)
+                    valueCurrencyViewSate: $viewModel.valueCurrencySwitchState
                 )
                             
                 HStack(spacing: 50) {

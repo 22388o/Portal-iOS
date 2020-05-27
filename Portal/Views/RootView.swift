@@ -11,11 +11,6 @@ import CoreData
 import Combine
 
 struct RootView: View {
-//    @FetchRequest(
-//        entity: DBWallet.entity(),
-//        sortDescriptors: [],
-//        predicate: NSPredicate(format: "current = %d", true)
-//    ) var currentWallet: FetchedResults<DBWallet>
     @EnvironmentObject var walletCoordinator: WalletCoordinator
     
     init() {
@@ -28,7 +23,6 @@ struct RootView: View {
             if walletCoordinator.currentWallet != nil {
                 MainView()
                     .environmentObject(walletCoordinator)
-//                    .environmentObject(marketDataRepository)
             } else {
                 CreateWalletView()
                     .environmentObject(walletCoordinator)

@@ -16,12 +16,13 @@ struct FiatCurrencyView: View {
     private let size: CGFloat = 16
     private let selectedBgColor = Color.white.opacity(0.78)
     private let bgColor = Color(red: 66.0/255.0, green: 73.0/255.0, blue: 84.0/255.0)
-    private let textColor = Color(red: 21.0/255.0, green: 52.0/255.0, blue: 66.0/255.0)
+    private let textColor = Color(red: 6.0/255.0, green: 42.0/255.0, blue: 60.0/255.0)
+    private let selectedTextColor = Color(red: 21.0/255.0, green: 52.0/255.0, blue: 66.0/255.0)
         
     var body: some View {
         Text(currencySymbol)
             .font(Font.mainFont(size: 12))
-            .foregroundColor(textColor)
+            .foregroundColor(state == .fiat ? selectedTextColor : textColor)
             .frame(width: size, height: size)
             .background(state == .fiat ? selectedBgColor : bgColor)
             .cornerRadius(size/2)
