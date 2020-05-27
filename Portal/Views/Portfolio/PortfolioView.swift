@@ -13,7 +13,7 @@ struct PortfolioView: View {
     
     init(assets: [IAsset]) {
         print("Portfolio init")
-        self.viewModel = .init(assets: assets, marketData: [String : CoinMarketData]())
+        self.viewModel = .init(assets: assets)
     }
     
     var body: some View {
