@@ -11,30 +11,43 @@ import Charts
 import SwiftUI
 import Combine
 
-final class PortfolioViewModel: ObservableObject, IMarketDataMockable {
+final class PortfolioViewModel: ObservableObject, IMarketData {
     var assets: [IAsset]
-    private var marketData: [String : CoinMarketData]
+//    private var marketData: [String : CoinMarketData]
     
     @Published var selectedTimeframe: Timeframe = .hour
     @Published var totalValue = String()
     @Published var change: String = "-$423 (3.46%)"
     @Published var chartDataEntries = [ChartDataEntry]()
     
-    init(assets: [IAsset], marketData: [String : CoinMarketData]) {
+    private var subscriptions = Set<AnyCancellable>()
+    
+    init(assets: [IAsset]) {
         print("Portfolio view model init")
         
         self.assets = assets
-        self.marketData = marketData
-        self.marketData = mockedMarketData()
+//        self.marketData = marketData
+//        self.marketData = mockedMarketData()
         
         let currency: Currency = .fiat(USD)
         
         totalValue = "$" + String(assets.map{ $0.balanceProvider.balance(currency: currency) }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2))
-        chartDataEntries = portfolioChartDataEntries()
+        
+        $selectedTimeframe
+        .removeDuplicates()
+        .sink { [weak self] timeframe in
+            self?.selectedTimeframe = timeframe
+            self?.updateCharts()
+        }
+        .store(in: &subscriptions)
     }
     
     deinit {
         print("Portfolio view model deinit")
+    }
+    
+    private func updateCharts() {
+        chartDataEntries = portfolioChartDataEntries()
     }
             
     private func portfolioChartDataEntries() -> [ChartDataEntry] {
@@ -44,15 +57,25 @@ final class PortfolioViewModel: ObservableObject, IMarketDataMockable {
 
         switch selectedTimeframe {
         case .hour:
-            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = assets.map {
+                $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).hourPoints)
+            }
         case .day:
-            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BCH"]?.hourPoints ?? []) }
+            valuesArray = assets.map {
+                $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).dayPoints)
+            }
         case .week:
-            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["ETH"]?.hourPoints ?? []) }
+            valuesArray = assets.map {
+                $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).weekPoints)
+            }
         case .month:
-            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = assets.map {
+                $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).monthPoints)
+            }
         case .year:
-            valuesArray = assets.map{ $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData["BTC"]?.hourPoints ?? []) }
+            valuesArray = assets.map {
+                $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).yearPoints)
+            }
         case .allTime: return [ChartDataEntry]()
         }
 
