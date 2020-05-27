@@ -36,36 +36,51 @@ struct ExchangerView: View {
         VStack(alignment: .leading) {
             Text("Amount to send")
                 .font(Font.mainFont())
-                .foregroundColor(Color.lightActiveLabel)
-                .opacity(0.6)
+                .foregroundColor(Color.white)
             
             VStack(spacing: 4) {
                 HStack(spacing: 8) {
                     Image(uiImage: asset.coin.icon)
                         .resizable()
                         .frame(width: 24, height: 24)
-                    TextField("0.0", text: $amountInCrypto)
-                        .textFieldStyle(PlainTextFieldStyle())
+                    TextField("", text: $amountInCrypto)
+                        .modifier(
+                            PlaceholderStyle(
+                                showPlaceHolder: amountInCrypto.isEmpty,
+                                placeholder: "0.0"
+                            )
+                        )
+                        .frame(height: 20)
                         .font(Font.mainFont(size: 16))
                         .keyboardType(.numberPad)
                     Text(asset.coin.code)
                         .font(Font.mainFont(size: 16))
-                        .foregroundColor(Color.lightActiveLabel).opacity(0.4)
+                        .foregroundColor(Color.lightActiveLabelNew)//.opacity(0.4)
                 }.modifier(TextFieldModifier())
                 Text("=")
                     .font(Font.mainFont(size: 16))
-                    .foregroundColor(Color.lightActiveLabel).opacity(0.4)
+                    .foregroundColor(Color.white)//.opacity(0.4)
                 HStack(spacing: 8) {
-                    Image("usdAssetIcon")
-                        .resizable()
+                    FiatCurrencyView(
+                        size: 24,
+                        currencySymbol: .constant("$"),
+                        state: .constant(.fiat),
+                        currency: .constant(.fiat(USD))
+                    )
                         .frame(width: 24, height: 24)
-                    TextField("0.0", text: $amountInFiat)
-                        .textFieldStyle(PlainTextFieldStyle())
+                    TextField("", text: $amountInFiat)
+                        .modifier(
+                            PlaceholderStyle(
+                                showPlaceHolder: amountInCrypto.isEmpty,
+                                placeholder: "0.0"
+                            )
+                        )
+                        .frame(height: 20)
                         .font(Font.mainFont(size: 16))
                         .keyboardType(.numberPad)
                     Text("USD")
                         .font(Font.mainFont(size: 16))
-                        .foregroundColor(Color.lightActiveLabel).opacity(0.4)
+                        .foregroundColor(Color.lightActiveLabelNew)
                 }.modifier(TextFieldModifier())
             }
         }
@@ -76,10 +91,17 @@ struct ExchangerView: View {
 struct ExchangerView_Previews: PreviewProvider {
     static var previews: some View {
         ExchangerView(
-            asset: Asset(coin: Coin(code: "ETH", name: "Ethereum"))
+            asset: Asset(
+                coin: Coin(
+                    code: "ETH",
+                    name: "Ethereum",
+                    icon:  UIImage(imageLiteralResourceName: "iconEth")
+                )
+            )
         )
         .previewLayout(PreviewLayout.sizeThatFits)
         .padding()
+        .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }
 #endif

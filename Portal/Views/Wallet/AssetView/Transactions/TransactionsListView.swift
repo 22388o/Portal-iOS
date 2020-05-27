@@ -17,6 +17,12 @@ struct TransactionItem: Identifiable {
 }
 
 struct TransactionsListView: View {
+    @FetchRequest(
+        entity: DBWallet.entity(),
+        sortDescriptors: [],
+        predicate: NSPredicate(format: "current = %d", true)
+    ) var currentWallet: FetchedResults<DBWallet>
+    
     private let coin: Coin
     @State private var showTxInfo: Bool = false
     
