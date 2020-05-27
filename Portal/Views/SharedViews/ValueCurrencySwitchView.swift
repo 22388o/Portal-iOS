@@ -18,7 +18,12 @@ struct ValueCurrencySwitchView: View {
     
     var body: some View {
         HStack(spacing: 4) {
-            FiatCurrencyView(currencySymbol: $currencySymbol, state: $state, currency: .constant(.fiat(USD)))
+            FiatCurrencyView(
+                size: 16,
+                currencySymbol: $currencySymbol,
+                state: $state,
+                currency: .constant(.fiat(USD))
+            )
             Image(state == .btc ? "btcIconLight" : "btcIcon")
                 .resizable()
                 .frame(width: 16, height: 16)
