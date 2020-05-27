@@ -9,6 +9,25 @@
 import SwiftUI
 import Combine
 
+public struct PlaceholderStyle: ViewModifier {
+    var showPlaceHolder: Bool
+    var placeholder: String
+
+    public func body(content: Content) -> some View {
+        ZStack(alignment: .leading) {
+            if showPlaceHolder {
+                Text(placeholder)
+                    .foregroundColor(Color.lightActiveLabelNew)
+                    .font(Font.mainFont(size: 16))
+                    .padding(.horizontal, 5)
+            }
+            content
+                .foregroundColor(Color.white)
+                .padding(5.0)
+        }
+    }
+}
+
 public struct NavigationBarHider: ViewModifier {
     @State var isHidden: Bool = false
 
@@ -26,14 +45,14 @@ struct PButtonEnabledStyle: ViewModifier {
         content
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding(8)
-            .background(enabled ? Color.assetViewButton : Color.pButtonDisableBackground)
+            .background(enabled ? Color.assetViewButton : Color.pButtonDisableBackground.opacity(0.125))
             .cornerRadius(18)
             .font(Font.mainFont(size: 16))
             .foregroundColor(.white)
-            .overlay(
-                RoundedRectangle(cornerRadius: 18)
-                    .stroke(enabled ? Color.assetViewButton : Color.pButtonDisableBackground, lineWidth: 1)
-            )
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 18)
+//                    .stroke(enabled ? Color.assetViewButton : Color.pButtonDisableBackground, lineWidth: 1)
+//            )
     }
 }
 
@@ -41,12 +60,12 @@ struct TextFieldModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding()
-            .background(Color.exchangerFieldBackground)
+            .background(Color.exchangerFieldBackgroundNew)
             .cornerRadius(26)
-            .overlay(
-                RoundedRectangle(cornerRadius: 26)
-                .stroke(Color.exchangerFieldBorder, lineWidth: 1)
-            )
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 26)
+//                .stroke(Color.exchangerFieldBackgroundNew, lineWidth: 1)
+//            )
     }
 }
 
