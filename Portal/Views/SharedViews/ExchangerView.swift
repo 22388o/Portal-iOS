@@ -23,13 +23,16 @@ struct Background<Content: View>: View {
 }
 
 struct ExchangerView: View {
-    @State var amountInCrypto: String = ""
-    @State var amountInFiat: String = ""
+//    @State var asset: Coin
+//    @Binding var assetValue: String
+//
+//    @State var fiat: FiatCurrency
+//    @Binding var fiatValue: String
     
-    private let asset: IAsset
+    @ObservedObject var viewModel: ExchangerViewModel
     
-    init(asset: IAsset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))) {
-        self.asset = asset
+    init(viewModel: ExchangerViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
@@ -40,20 +43,20 @@ struct ExchangerView: View {
             
             VStack(spacing: 4) {
                 HStack(spacing: 8) {
-                    Image(uiImage: asset.coin.icon)
+                    Image(uiImage: viewModel.asset.icon)
                         .resizable()
                         .frame(width: 24, height: 24)
-                    TextField("", text: $amountInCrypto)
+                    TextField("", text: $viewModel.assetValue)
                         .modifier(
                             PlaceholderStyle(
-                                showPlaceHolder: amountInCrypto.isEmpty,
+                                showPlaceHolder: viewModel.assetValue.isEmpty,
                                 placeholder: "0.0"
                             )
                         )
                         .frame(height: 20)
                         .font(Font.mainFont(size: 16))
                         .keyboardType(.numberPad)
-                    Text(asset.coin.code)
+                    Text(viewModel.asset.code)
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.lightActiveLabelNew)//.opacity(0.4)
                 }.modifier(TextFieldModifier())
@@ -63,22 +66,22 @@ struct ExchangerView: View {
                 HStack(spacing: 8) {
                     FiatCurrencyView(
                         size: 24,
-                        currencySymbol: .constant("$"),
+                        currencySymbol: .constant(viewModel.fiat.symbol ?? ""),
                         state: .constant(.fiat),
                         currency: .constant(.fiat(USD))
                     )
                         .frame(width: 24, height: 24)
-                    TextField("", text: $amountInFiat)
+                    TextField("", text: $viewModel.fiatValue)
                         .modifier(
                             PlaceholderStyle(
-                                showPlaceHolder: amountInCrypto.isEmpty,
+                                showPlaceHolder: viewModel.fiatValue.isEmpty,
                                 placeholder: "0.0"
                             )
                         )
                         .frame(height: 20)
                         .font(Font.mainFont(size: 16))
                         .keyboardType(.numberPad)
-                    Text("USD")
+                    Text(viewModel.fiat.code)
                         .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.lightActiveLabelNew)
                 }.modifier(TextFieldModifier())
@@ -91,14 +94,12 @@ struct ExchangerView: View {
 struct ExchangerView_Previews: PreviewProvider {
     static var previews: some View {
         ExchangerView(
-            asset: Asset(
-                coin: Coin(
-                    code: "ETH",
-                    name: "Ethereum",
-                    icon:  UIImage(imageLiteralResourceName: "iconEth")
-                )
+            viewModel: .init(asset: Coin(
+                code: "ETH",
+                name: "Ethereum",
+                icon:  UIImage(imageLiteralResourceName: "iconEth")
             )
-        )
+            , fiat: USD))
         .previewLayout(PreviewLayout.sizeThatFits)
         .padding()
         .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
