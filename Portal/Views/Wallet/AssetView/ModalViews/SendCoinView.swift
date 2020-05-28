@@ -9,11 +9,10 @@
 import SwiftUI
 
 struct SendCoinView: View {
-    private let asset: IAsset
-    @State var sendToAddress: String = ""
+    @ObservedObject var viewModel: SendCoinViewModel
     
-    init(asset: IAsset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))) {
-        self.asset = asset
+    init(asset: IAsset) {
+        self.viewModel = .init(asset: asset)
     }
     
     private func endEditing() {
@@ -29,13 +28,13 @@ struct SendCoinView: View {
                     Spacer()
                         .frame(height: 8)
                     VStack {
-                        Image(uiImage: self.asset.coin.icon)
+                        Image(uiImage: self.viewModel.asset.coin.icon)
                             .resizable()
-                            .frame(width: 80, height: 80)
-                        Text("Send \(self.asset.coin.name)")
+                            .frame(width: 60, height: 60)
+                        Text("Send \(self.viewModel.asset.coin.name)")
                             .font(Font.mainFont(size: 23))
                             .foregroundColor(Color.white)
-                        Text("Instantly send to any \(self.asset.coin.code) address")
+                        Text("Instantly send to any \(self.viewModel.asset.coin.code) address")
                             .font(Font.mainFont())
                             .foregroundColor(Color.white)
                             .opacity(0.6)
@@ -49,12 +48,12 @@ struct SendCoinView: View {
                             .foregroundColor(Color.white)
                             .opacity(0.6)
                         
-                        Text("\(self.asset.balanceProvider.balanceString) \(self.asset.coin.code)")
+                        Text("\(self.viewModel.asset.balanceProvider.balanceString) \(self.viewModel.asset.coin.code)")
                             .font(Font.mainFont(size: 14))
                             .foregroundColor(Color.white)
                         
                         Button("send all") {
-                            
+                            self.viewModel.sendAll()
                         }
                             .padding([.trailing, .leading], 8)
                             .padding([.top, .bottom], 4)
@@ -66,7 +65,7 @@ struct SendCoinView: View {
                     
                     Spacer().frame(height: 16)
                     
-                    ExchangerView(asset: self.asset)
+                    ExchangerView(viewModel: self.viewModel.exchangerViewModel)
                     
                     Spacer().frame(height: 16)
                     
@@ -78,25 +77,33 @@ struct SendCoinView: View {
                         Spacer().frame(height: 16)
                         
                         VStack {
-                            TextField("", text: self.$sendToAddress)
+                            TextField("", text: self.$viewModel.receiverAddress)
                                 .modifier(
                                     PlaceholderStyle(
-                                        showPlaceHolder: self.sendToAddress.isEmpty,
-                                        placeholder: "Enter \(self.asset.coin.code) address..."
+                                        showPlaceHolder: self.viewModel.receiverAddress.isEmpty,
+                                        placeholder: "Enter \(self.viewModel.asset.coin.code) address..."
                                     )
                                 )
                                 .frame(height: 20)
                                 .font(Font.mainFont(size: 16))
                         }
                         .modifier(TextFieldModifier())
+                        
+//                        Picker("TxFee", selection: self.$viewModel.selctionIndex) {
+//                            ForEach(0 ..< BtcAddressFormat.allCases.count) { index in
+//                                Text(BtcAddressFormat.allCases[index].description).tag(index)
+//                            }
+//                        }
+//                        .pickerStyle(SegmentedPickerStyle())
                     }
 
                     Spacer()
                     
                     Button("Send") {
-                        
+                        print("SEND")
                     }
-                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                    .modifier(PButtonEnabledStyle(enabled: self.$viewModel.formIsValid))
+                    .disabled(!self.viewModel.formIsValid)
                 }
             }.onTapGesture {
                 self.endEditing()

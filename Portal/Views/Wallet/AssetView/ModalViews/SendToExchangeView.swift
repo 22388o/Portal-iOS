@@ -79,7 +79,7 @@ struct SendToExchangeView: View {
                 
                 Spacer().frame(height: 24)
                 
-                ExchangerView(asset: self.asset)
+                ExchangerView(viewModel: .init(asset: self.asset.coin, fiat: USD))
                 
                 Spacer().frame(height: 16)
                 

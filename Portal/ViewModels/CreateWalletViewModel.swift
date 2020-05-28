@@ -18,7 +18,7 @@ final class CreateWalletViewModel: ObservableObject {
         
     func setup() {
         subscription = $name
-        .debounce(for: .seconds(0.25), scheduler: DispatchQueue.main)
+//        .debounce(for: .seconds(0.25), scheduler: DispatchQueue.main)
         .sink { [weak self] name in
             self?.walletDataValidated = name.count > 3
         }

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1B5D4645ED8B867348E63D53 /* Pods_Portal_PortalUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */; };
 		699170B47959AC03046904DC /* Pods_PortalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 208D6013569144022A61A0CB /* Pods_PortalTests.framework */; };
+		7550BD86247FCF4C007FB199 /* ExchangerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7550BD85247FCF4C007FB199 /* ExchangerViewModel.swift */; };
+		7550BD88247FCF70007FB199 /* SendCoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7550BD87247FCF70007FB199 /* SendCoinViewModel.swift */; };
 		755158F0246C44A900C9EAF0 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 755158EF246C44A900C9EAF0 /* KeychainAccess */; };
 		755158F4246D886900C9EAF0 /* DBWallet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755158F2246D886900C9EAF0 /* DBWallet+CoreDataClass.swift */; };
 		755158F5246D886900C9EAF0 /* DBWallet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755158F3246D886900C9EAF0 /* DBWallet+CoreDataProperties.swift */; };
@@ -133,6 +135,8 @@
 		2560AA559CB382BE426B8341 /* Pods-Portal-PortalUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal-PortalUITests.release.xcconfig"; path = "Target Support Files/Pods-Portal-PortalUITests/Pods-Portal-PortalUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2A4759DB4F7D821F4AF0322A /* Pods-PortalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PortalTests.debug.xcconfig"; path = "Target Support Files/Pods-PortalTests/Pods-PortalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6068F2B744BD8F6270795EC0 /* Pods-PortalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PortalTests.release.xcconfig"; path = "Target Support Files/Pods-PortalTests/Pods-PortalTests.release.xcconfig"; sourceTree = "<group>"; };
+		7550BD85247FCF4C007FB199 /* ExchangerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangerViewModel.swift; sourceTree = "<group>"; };
+		7550BD87247FCF70007FB199 /* SendCoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCoinViewModel.swift; sourceTree = "<group>"; };
 		755158F2246D886900C9EAF0 /* DBWallet+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DBWallet+CoreDataClass.swift"; sourceTree = "<group>"; };
 		755158F3246D886900C9EAF0 /* DBWallet+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DBWallet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		755158F6246D8FC500C9EAF0 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
@@ -303,6 +307,8 @@
 				75BA2BC32473E8A200DAABDD /* PortfolioViewModel.swift */,
 				75BA2BC52475437900DAABDD /* AssetItemViewModel.swift */,
 				75BA2BC72476BA0500DAABDD /* AssetViewModel.swift */,
+				7550BD85247FCF4C007FB199 /* ExchangerViewModel.swift */,
+				7550BD87247FCF70007FB199 /* SendCoinViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -904,9 +910,11 @@
 				755158F7246D8FC500C9EAF0 /* KeychainStorage.swift in Sources */,
 				7551CB902473E0B900ECD2C0 /* Asset.swift in Sources */,
 				7551CBA52473E2D300ECD2C0 /* IMarketCHangeProvider.swift in Sources */,
+				7550BD88247FCF70007FB199 /* SendCoinViewModel.swift in Sources */,
 				756A75F12445F51500C66739 /* IMarketData.swift in Sources */,
 				7582D41B2418C7A9008ECAB0 /* ReceiveCoinView.swift in Sources */,
 				7582D3F32414B0A1008ECAB0 /* PieChartUIKitWrapper.swift in Sources */,
+				7550BD86247FCF4C007FB199 /* ExchangerViewModel.swift in Sources */,
 				75C7D463242B2AEC00BED668 /* ExchangerView.swift in Sources */,
 				75BA2BC42473E8A200DAABDD /* PortfolioViewModel.swift in Sources */,
 				7582D41F2418C7DB008ECAB0 /* WithdrawCoinView.swift in Sources */,
