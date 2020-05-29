@@ -11,6 +11,7 @@
 		699170B47959AC03046904DC /* Pods_PortalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 208D6013569144022A61A0CB /* Pods_PortalTests.framework */; };
 		7550BD86247FCF4C007FB199 /* ExchangerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7550BD85247FCF4C007FB199 /* ExchangerViewModel.swift */; };
 		7550BD88247FCF70007FB199 /* SendCoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7550BD87247FCF70007FB199 /* SendCoinViewModel.swift */; };
+		7550BD8B2480EA18007FB199 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 7550BD8A2480EA18007FB199 /* CodeScanner */; };
 		755158F0246C44A900C9EAF0 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 755158EF246C44A900C9EAF0 /* KeychainAccess */; };
 		755158F4246D886900C9EAF0 /* DBWallet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755158F2246D886900C9EAF0 /* DBWallet+CoreDataClass.swift */; };
 		755158F5246D886900C9EAF0 /* DBWallet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755158F3246D886900C9EAF0 /* DBWallet+CoreDataProperties.swift */; };
@@ -250,6 +251,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7550BD8B2480EA18007FB199 /* CodeScanner in Frameworks */,
 				7582D425241BDCA4008ECAB0 /* QGrid in Frameworks */,
 				AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */,
 				755158F0246C44A900C9EAF0 /* KeychainAccess in Frameworks */,
@@ -631,6 +633,7 @@
 			packageProductDependencies = (
 				7582D424241BDCA4008ECAB0 /* QGrid */,
 				755158EF246C44A900C9EAF0 /* KeychainAccess */,
+				7550BD8A2480EA18007FB199 /* CodeScanner */,
 			);
 			productName = Portal;
 			productReference = 7582D3A124123184008ECAB0 /* Portal.app */;
@@ -710,6 +713,7 @@
 			packageReferences = (
 				7582D423241BDCA4008ECAB0 /* XCRemoteSwiftPackageReference "QGrid" */,
 				755158EE246C44A900C9EAF0 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				7550BD892480EA18007FB199 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 7582D3A224123184008ECAB0 /* Products */;
 			projectDirPath = "";
@@ -1282,6 +1286,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7550BD892480EA18007FB199 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.6;
+			};
+		};
 		755158EE246C44A900C9EAF0 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -1301,6 +1313,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7550BD8A2480EA18007FB199 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7550BD892480EA18007FB199 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
 		755158EF246C44A900C9EAF0 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 755158EE246C44A900C9EAF0 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
