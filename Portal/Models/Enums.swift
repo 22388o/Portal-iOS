@@ -27,6 +27,38 @@ enum BtcAddressFormat: Int, CustomStringConvertible, CaseIterable {
     }
 }
 
+enum TxSpeed: Int, CustomStringConvertible, CaseIterable {
+    case low
+    case mid
+    case fast
+    
+    var title: String {
+        get {
+            switch self {
+            case .low:
+                return "Low"
+            case .mid:
+                return "Mid"
+            case .fast:
+                return "Fast"
+            }
+        }
+    }
+    
+    var description: String {
+        get {
+            switch self {
+            case .low:
+                return "Less than 24 hours"
+            case .mid:
+                return "Less than 2 hours"
+            case .fast:
+                return "Less than 20 minutes"
+            }
+        }
+    }
+}
+
 enum MarketDataRange {
     case hour, day, week, month, year
 }
