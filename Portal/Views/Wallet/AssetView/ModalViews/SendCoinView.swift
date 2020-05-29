@@ -25,8 +25,6 @@ struct SendCoinView: View {
             
             Background {
                 VStack {
-                    Spacer()
-                        .frame(height: 8)
                     VStack {
                         Image(uiImage: self.viewModel.asset.coin.icon)
                             .resizable()
@@ -39,9 +37,7 @@ struct SendCoinView: View {
                             .foregroundColor(Color.white)
                             .opacity(0.6)
                     }
-                    
-                    Spacer().frame(height: 8)
-                    
+                                        
                     HStack {
                         Text("You have")
                             .font(Font.mainFont())
@@ -55,48 +51,66 @@ struct SendCoinView: View {
                         Button("send all") {
                             self.viewModel.sendAll()
                         }
-                            .padding([.trailing, .leading], 8)
-                            .padding([.top, .bottom], 4)
-                            .background(Color.assetViewButton)
-                            .cornerRadius(12)
-                            .font(Font.mainFont(size: 12))
-                            .foregroundColor(.white)
+                            .modifier(SmallButtonModifier())
                     }
                     
-                    Spacer().frame(height: 16)
+                    Spacer().frame(height: 15)
                     
                     ExchangerView(viewModel: self.viewModel.exchangerViewModel)
                     
-                    Spacer().frame(height: 16)
+                    Spacer().frame(height: 20)
                     
-                    VStack(alignment: .leading) {
-                        Text("Send to...")
-                            .font(Font.mainFont())
-                            .foregroundColor(Color.white)
-                        
-                        Spacer().frame(height: 16)
-                        
-                        VStack {
-                            TextField("", text: self.$viewModel.receiverAddress)
-                                .modifier(
-                                    PlaceholderStyle(
-                                        showPlaceHolder: self.viewModel.receiverAddress.isEmpty,
-                                        placeholder: "Enter \(self.viewModel.asset.coin.code) address..."
-                                    )
-                                )
-                                .frame(height: 20)
-                                .font(Font.mainFont(size: 16))
+                    VStack(spacing: 20) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Send to...")
+                                .font(Font.mainFont())
+                                .foregroundColor(Color.white)
+                                                    
+                            HStack() {
+                                Text(self.viewModel.receiverAddress.isEmpty ? "Address" : self.viewModel.receiverAddress)
+                                    .font(Font.mainFont(size: 16))
+                                    .foregroundColor(self.viewModel.receiverAddress.isEmpty ? Color.lightActiveLabelNew : Color.white)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Button("Scan") {
+                                    self.viewModel.sendAll()
+                                }
+                                    .modifier(SmallButtonModifier())
+                                Button("Paste") {
+                                    self.viewModel.sendAll()
+                                }
+                                    .modifier(SmallButtonModifier())
+                            }
+                            .modifier(TextFieldModifier())
                         }
-                        .modifier(TextFieldModifier())
-                        
-//                        Picker("TxFee", selection: self.$viewModel.selctionIndex) {
-//                            ForEach(0 ..< BtcAddressFormat.allCases.count) { index in
-//                                Text(BtcAddressFormat.allCases[index].description).tag(index)
-//                            }
-//                        }
-//                        .pickerStyle(SegmentedPickerStyle())
-                    }
 
+                                            
+                        VStack(spacing: 18) {
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("Transaction fee")
+                                        .font(Font.mainFont())
+                                        .foregroundColor(Color.white)
+                                    Spacer()
+                                    Text(self.viewModel.txFee)
+                                        .font(Font.mainFont())
+                                        .foregroundColor(Color.white)
+                                }
+                                Picker("TxFee", selection: self.$viewModel.selctionIndex) {
+                                    ForEach(0 ..< 3) { index in
+                                        Text(TxSpeed.allCases[index].title).tag(index)
+                                    }
+                                }.pickerStyle(SegmentedPickerStyle())
+                            }
+                            
+                            VStack {
+                                Text(TxSpeed.allCases[self.viewModel.selctionIndex].description)
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.white)
+                                    .opacity(0.6)
+                            }
+                        }
+                    }
+                    
                     Spacer()
                     
                     Button("Send") {
@@ -108,7 +122,7 @@ struct SendCoinView: View {
             }.onTapGesture {
                 self.endEditing()
             }
-    
+            .keyboardResponsive()
         }
     }
 }

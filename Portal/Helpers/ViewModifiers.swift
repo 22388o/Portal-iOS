@@ -1,5 +1,5 @@
 //
-//  StyleModifiers.swift
+//  ViewModifiers.swift
 //  Portal
 //
 //  Created by Farid on 25.03.2020.
@@ -39,16 +39,28 @@ public struct NavigationBarHider: ViewModifier {
     }
 }
 
+struct SmallButtonModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .padding([.trailing, .leading], 8)
+            .padding([.top, .bottom], 4)
+            .background(Color.assetViewButton)
+            .cornerRadius(12)
+            .font(Font.mainFont(size: 12))
+            .foregroundColor(.white)
+    }
+}
+
 struct PButtonEnabledStyle: ViewModifier {
     @Binding var enabled: Bool
     func body(content: Content) -> some View {
         content
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding(8)
-            .background(enabled ? Color.assetViewButton : Color.pButtonDisableBackground.opacity(0.125))
+            .background(enabled ? Color.assetViewButton : Color.pButtonDisableBackground.opacity(0.35))
             .cornerRadius(18)
             .font(Font.mainFont(size: 16))
-            .foregroundColor(.white)
+            .foregroundColor(enabled ? .white : Color.white.opacity(0.35))
 //            .overlay(
 //                RoundedRectangle(cornerRadius: 18)
 //                    .stroke(enabled ? Color.assetViewButton : Color.pButtonDisableBackground, lineWidth: 1)

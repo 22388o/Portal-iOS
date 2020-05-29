@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 final class SendCoinViewModel: ObservableObject {
     let asset: IAsset
@@ -15,8 +16,9 @@ final class SendCoinViewModel: ObservableObject {
     @ObservedObject var exchangerViewModel: ExchangerViewModel
     
     @Published var receiverAddress = String()
+    @Published var txFee = String()
     @Published var formIsValid = false
-    @Published var selctionIndex = 0
+    @Published var selctionIndex = 1
     
     private var subscriptions = Set<AnyCancellable>()
     
@@ -32,6 +34,20 @@ final class SendCoinViewModel: ObservableObject {
                 address.count > 8 && Double(amount) ?? 0.0 > 0.0
             }
             .sink { [weak self] in self?.formIsValid = $0 }
+            .store(in: &subscriptions)
+        
+        self.$selctionIndex
+            .combineLatest(exchangerViewModel.$assetValue)
+            .sink {  [weak self] (selectionIndex, amount) in
+                switch selectionIndex {
+                case 0:
+                    self?.txFee = Double(amount) ?? 0 > 0 ? "0.0001 \(self?.asset.coin.code ?? "")" : ""
+                case 1:
+                    self?.txFee = Double(amount) ?? 0 > 0 ? "0.0003 \(self?.asset.coin.code ?? "")" : ""
+                default:
+                    self?.txFee = Double(amount) ?? 0 > 0 ? "0.0005 \(self?.asset.coin.code ?? "")" : ""
+                }
+            }
             .store(in: &subscriptions)
     }
     

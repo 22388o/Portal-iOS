@@ -101,7 +101,7 @@
 		75BA2BD0247CE2B000DAABDD /* ValueCurrencySwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA2BCF247CE2B000DAABDD /* ValueCurrencySwitchView.swift */; };
 		75BA2BD2247CF14B00DAABDD /* TimeframeButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA2BD1247CF14B00DAABDD /* TimeframeButtonsView.swift */; };
 		75C7D463242B2AEC00BED668 /* ExchangerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D462242B2AEC00BED668 /* ExchangerView.swift */; };
-		75C7D465242B2F4500BED668 /* StyleModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D464242B2F4500BED668 /* StyleModifiers.swift */; };
+		75C7D465242B2F4500BED668 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D464242B2F4500BED668 /* ViewModifiers.swift */; };
 		75C7D46E2431D97F00BED668 /* CreateWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D46D2431D97F00BED668 /* CreateWalletView.swift */; };
 		75C7D4712431F73D00BED668 /* SeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D4702431F73D00BED668 /* SeedView.swift */; };
 		75C7D4732433498300BED668 /* TestSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7D4722433498300BED668 /* TestSeedView.swift */; };
@@ -231,7 +231,7 @@
 		75BA2BCF247CE2B000DAABDD /* ValueCurrencySwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueCurrencySwitchView.swift; sourceTree = "<group>"; };
 		75BA2BD1247CF14B00DAABDD /* TimeframeButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeframeButtonsView.swift; sourceTree = "<group>"; };
 		75C7D462242B2AEC00BED668 /* ExchangerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangerView.swift; sourceTree = "<group>"; };
-		75C7D464242B2F4500BED668 /* StyleModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleModifiers.swift; sourceTree = "<group>"; };
+		75C7D464242B2F4500BED668 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		75C7D46D2431D97F00BED668 /* CreateWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletView.swift; sourceTree = "<group>"; };
 		75C7D4702431F73D00BED668 /* SeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedView.swift; sourceTree = "<group>"; };
 		75C7D4722433498300BED668 /* TestSeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSeedView.swift; sourceTree = "<group>"; };
@@ -452,9 +452,9 @@
 			isa = PBXGroup;
 			children = (
 				7582D3D824123240008ECAB0 /* WalletView.swift */,
-				7582D3FD24162062008ECAB0 /* AssetAllocationView */,
-				7582D3E2241256D9008ECAB0 /* AssetItemView */,
 				7582D4172418C618008ECAB0 /* AssetView */,
+				7582D3E2241256D9008ECAB0 /* AssetItemView */,
+				7582D3FD24162062008ECAB0 /* AssetAllocationView */,
 				75C7D46F2431DD4E00BED668 /* Create wallet */,
 			);
 			path = Wallet;
@@ -527,7 +527,7 @@
 			children = (
 				7582D3DE24125641008ECAB0 /* MockData.swift */,
 				7568D2AB2449D6A4000217D9 /* MarketDataServerResponseMock.swift */,
-				75C7D464242B2F4500BED668 /* StyleModifiers.swift */,
+				75C7D464242B2F4500BED668 /* ViewModifiers.swift */,
 				7582D40C24167A87008ECAB0 /* StringFormatter.swift */,
 				756A75ED2444571600C66739 /* Syncronized.swift */,
 				7576ED992472541B00B3222E /* RepeatingTimer.swift */,
@@ -933,7 +933,7 @@
 				7551CBA12473E29900ECD2C0 /* IBalanceProvider.swift in Sources */,
 				7582D3A724123184008ECAB0 /* SceneDelegate.swift in Sources */,
 				7576ED9A2472541B00B3222E /* RepeatingTimer.swift in Sources */,
-				75C7D465242B2F4500BED668 /* StyleModifiers.swift in Sources */,
+				75C7D465242B2F4500BED668 /* ViewModifiers.swift in Sources */,
 				75BA2BD0247CE2B000DAABDD /* ValueCurrencySwitchView.swift in Sources */,
 				7582D42B241FDA87008ECAB0 /* AlertsListView.swift in Sources */,
 				7582D3F924161ABA008ECAB0 /* PieChart+Extension.swift in Sources */,
