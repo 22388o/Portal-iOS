@@ -147,7 +147,7 @@ struct AssetView: View {
                     self.containedView()
                         .frame(maxHeight: .infinity)
                 }
-                .padding(.top, 25)
+                .padding(.top, geometry.size.height < 700 ? 0 : 25)
             }
         }
     }
