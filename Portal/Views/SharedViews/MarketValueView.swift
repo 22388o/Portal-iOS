@@ -22,77 +22,82 @@ struct MarketValueView: View {
     @Binding var valueCurrencyViewSate: ValueCurrencySwitchState
     
     @State var type: AssetMarketValueViewType = .portfolio
+    
+    @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
+
 
     var body: some View {
-        VStack {
-            TimeframeButtonsView(type: $type, timeframe: $timeframe)
-            
+        GeometryReader { geometry in
             VStack {
-                VStack(spacing: 4) {
-                    Text(type == .asset ? "Current value" : "Total value")
-                        .font(Font.mainFont())
-                        .foregroundColor(type == .asset ? Color.lightInactiveLabel : Color.white.opacity(0.5))
-                    
-                    ValueCurrencySwitchView(
-                        state: $valueCurrencyViewSate,
-                        currencySymbol: .constant("$")
-                    )
-                    
-                    HStack {
-                        Button(action: {
-                            self.previousCurrency()
-                        }) {
-                            Image("arrowLeftLight")
+                TimeframeButtonsView(type: self.$type, timeframe: self.$timeframe)
+                
+                VStack {
+                    VStack(spacing: 4) {
+                        Text(self.type == .asset ? "Current value" : "Total value")
+                            .font(Font.mainFont())
+                            .foregroundColor(self.type == .asset ? Color.lightInactiveLabel : Color.white.opacity(0.5))
+                        
+                        ValueCurrencySwitchView(
+                            state: self.$valueCurrencyViewSate,
+                            currencySymbol: .constant("$")
+                        )
+                        
+                        HStack {
+                            Button(action: {
+                                self.previousCurrency()
+                            }) {
+                                Image("arrowLeftLight")
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            Spacer()
+                            Text(self.totalValue).font(.largeTitle)
+                                .font(Font.mainFont(size: 28))
+                                .foregroundColor(self.type == .asset ? Color.assetValueLabel : Color.white.opacity(0.8))
+                            Spacer()
+                            Button(action: {
+                                self.nextCurrency()
+                            }) {
+                                Image("arrowRightLight")
+                            }
+                            .buttonStyle(PlainButtonStyle())
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        Spacer()
-                        Text(totalValue).font(.largeTitle)
-                            .font(Font.mainFont(size: 28))
-                            .foregroundColor(type == .asset ? Color.assetValueLabel : Color.white.opacity(0.8))
-                        Spacer()
-                        Button(action: {
-                            self.nextCurrency()
-                        }) {
-                            Image("arrowRightLight")
-                        }
-                        .buttonStyle(PlainButtonStyle())
+                        .padding([.leading, .trailing])
+                        Text(self.change)
+                            .font(Font.mainFont(size: 15))
+                            .foregroundColor(Color(red: 228.0/255.0, green: 136.0/255.0, blue: 37.0/255.0))
                     }
-                    .padding([.leading, .trailing])
-                    Text(change)
-                        .font(Font.mainFont(size: 15))
-                        .foregroundColor(Color(red: 228.0/255.0, green: 136.0/255.0, blue: 37.0/255.0))
-                }
-            }
-            .padding()
-            
-            LineChartUIKitWrapper(chartDataEntries: $chartDataEntries)
-                .frame(height: 150)
-                .padding([.leading, .trailing])
-            
-            HStack(spacing: 80) {
-                VStack(spacing: 10) {
-                    Text("High")
-                        .font(Font.mainFont())
-                        .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
-                    Text("$0.0")
-                        .font(Font.mainFont(size: 15))
-                        .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
                 }
                 .padding()
                 
-                VStack(spacing: 10) {
-                    Text("Low")
-                        .font(Font.mainFont())
-                        .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
-                    Text("$0.0")
-                        .font(Font.mainFont(size: 15))
-                        .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
+                LineChartUIKitWrapper(chartDataEntries: self.$chartDataEntries)
+                    .frame(height: geometry.size.height > 500 ? 250 : 150)
+                    .padding([.leading, .trailing])
+                
+                HStack(spacing: 80) {
+                    VStack(spacing: 10) {
+                        Text("High")
+                            .font(Font.mainFont())
+                            .foregroundColor(self.type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
+                        Text("$0.0")
+                            .font(Font.mainFont(size: 15))
+                            .foregroundColor(self.type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
+                    }
+                    .padding()
+                    
+                    VStack(spacing: 10) {
+                        Text("Low")
+                            .font(Font.mainFont())
+                            .foregroundColor(self.type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
+                        Text("$0.0")
+                            .font(Font.mainFont(size: 15))
+                            .foregroundColor(self.type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
 
+                    }
+                    .padding()
                 }
-                .padding()
             }
+            .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity)
     }
     
     private func previousCurrency() {
@@ -153,7 +158,7 @@ struct LineChartsView_Previews: PreviewProvider {
             valueCurrencyViewSate: .constant(.fiat)
         )
             .previewLayout(PreviewLayout.sizeThatFits)
-            .padding()
+//            .padding()
             .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }
