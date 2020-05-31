@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import QGrid
 
 struct WalletView: View {
     @ObservedObject var viewModel: WalletViewModel
@@ -15,6 +14,10 @@ struct WalletView: View {
     init(wallet: IWallet = WalletMock()) {
         print("WalletView init")
         self.viewModel = .init(assets: wallet.assets)
+        
+        UITableView.appearance().separatorStyle = .none
+        UITableViewCell.appearance().backgroundColor = .clear
+        UITableView.appearance().backgroundColor = .clear
     }
     
     var body: some View {
@@ -31,13 +34,15 @@ struct WalletView: View {
                 .sheet(isPresented: $viewModel.showPortfolioView) {
                     PortfolioView(assets: self.viewModel.adapters.map{$0.asset})
                 }
-                QGrid(viewModel.adapters, columns: 1) { adapter in
+                List(viewModel.adapters) { adapter in
                     AssetItemView(viewModel: adapter.viewModel)
                         .onTapGesture {
                             self.viewModel.selectedAdapter = adapter
                     }
+                        .padding([.leading, .trailing], -5)
+                        .padding(.bottom, -2.5)
+
                 }
-                .padding(.bottom, -10)
                 .sheet(isPresented: self.$viewModel.showCoinView) {
                     AssetView(asset: self.viewModel.selectedAdapter.asset)
                 }

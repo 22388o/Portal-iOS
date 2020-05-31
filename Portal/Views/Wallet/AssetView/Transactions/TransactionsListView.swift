@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import QGrid
 
 struct TransactionItem: Identifiable {
     var id: String
@@ -17,11 +16,11 @@ struct TransactionItem: Identifiable {
 }
 
 struct TransactionsListView: View {
-    @FetchRequest(
-        entity: DBWallet.entity(),
-        sortDescriptors: [],
-        predicate: NSPredicate(format: "current = %d", true)
-    ) var currentWallet: FetchedResults<DBWallet>
+//    @FetchRequest(
+//        entity: DBWallet.entity(),
+//        sortDescriptors: [],
+//        predicate: NSPredicate(format: "current = %d", true)
+//    ) var currentWallet: FetchedResults<DBWallet>
     
     private let coin: Coin
     @State private var showTxInfo: Bool = false
@@ -42,7 +41,7 @@ struct TransactionsListView: View {
         ZStack {
             Color.clear
             
-            QGrid(txs, columns: 1, hSpacing: 0) { adapter in
+            List(txs) { _ in
                 TransactionListItemView(symbol: self.coin.code)
                     .onTapGesture {
                         self.showTxInfo.toggle()

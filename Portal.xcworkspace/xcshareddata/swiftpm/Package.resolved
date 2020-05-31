@@ -18,15 +18,6 @@
           "revision": "3d0ea2c0806791abcc5d7f0d9f62f1cfd4a7264d",
           "version": "4.2.0"
         }
-      },
-      {
-        "package": "QGrid",
-        "repositoryURL": "https://github.com/Q-Mobile/QGrid",
-        "state": {
-          "branch": null,
-          "revision": "40607aec336a8097c94bcadb81762592d89073ac",
-          "version": "0.1.3"
-        }
       }
     ]
   },
