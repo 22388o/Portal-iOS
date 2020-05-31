@@ -58,12 +58,12 @@ struct AssetItemView: View {
         }
         .background(Color.black.opacity(0.25))
         .cornerRadius(16)
-//        .onAppear(perform: {
-//            print("\(self.viewModel.code) on Appear")
-//        })
-//        .onDisappear(perform: {
-//            print("\(self.viewModel.code) on Disappear")
-//        })
+        .onAppear(perform: {
+            print("\(self.viewModel.code) on Appear")
+        })
+        .onDisappear(perform: {
+            print("\(self.viewModel.code) on Disappear")
+        })
     }
 }
 

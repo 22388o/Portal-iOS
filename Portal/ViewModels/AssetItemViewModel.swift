@@ -45,7 +45,7 @@ final class AssetItemViewModel: ObservableObject, IMarketData {
         
         cancellable = queue.schedule(
             after: queue.now,
-            interval: .seconds(60)
+            interval: .seconds(1)
         ){ [weak self] in
             self?.updateValues()
         }
