@@ -9,6 +9,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import CodeScanner
 
 final class SendCoinViewModel: ObservableObject {
     let asset: IAsset
@@ -17,7 +18,10 @@ final class SendCoinViewModel: ObservableObject {
     
     @Published var receiverAddress = String()
     @Published var txFee = String()
+    
     @Published var formIsValid = false
+    @Published var isShowingScanner = false
+    
     @Published var selctionIndex = 1
     
     private var subscriptions = Set<AnyCancellable>()
@@ -55,8 +59,30 @@ final class SendCoinViewModel: ObservableObject {
         print("SendCoinViewModel deinit")
     }
     
+    func send()  {
+        
+    }
+    
     func sendAll() {
         exchangerViewModel.assetValue = asset.balanceProvider.balanceString
+    }
+    
+    func pasteFromClipboard() {
+        guard let clipboard = UIPasteboard.general.string else {
+            return
+        }
+        receiverAddress = clipboard
+    }
+    
+    func handleScanResults(result: Result<String, CodeScannerView.ScanError>) {
+       self.isShowingScanner = false
+       switch result {
+       case .success(let data):
+            print("Scanned address: \(data)")
+            receiverAddress = data
+       case .failure(let error):
+            print("Scanning failed \(error)")
+       }
     }
 }
 

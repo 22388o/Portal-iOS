@@ -7,9 +7,13 @@
 //
 
 import SwiftUI
+import CodeScanner
 
 struct SendCoinView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @ObservedObject var viewModel: SendCoinViewModel
+    
+    @State private var showingAlert = false
     
     init(asset: IAsset) {
         self.viewModel = .init(asset: asset)
@@ -72,11 +76,14 @@ struct SendCoinView: View {
                                     .foregroundColor(self.viewModel.receiverAddress.isEmpty ? Color.lightActiveLabelNew : Color.white)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 Button("Scan") {
-                                    self.viewModel.sendAll()
+                                    self.viewModel.isShowingScanner.toggle()
                                 }
-                                    .modifier(SmallButtonModifier())
+                                .modifier(SmallButtonModifier())
+                                .sheet(isPresented: self.$viewModel.isShowingScanner) {
+                                    CodeScannerView(codeTypes: [.qr], simulatedData: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2", completion: self.viewModel.handleScanResults)
+                                }
                                 Button("Paste") {
-                                    self.viewModel.sendAll()
+                                    self.viewModel.pasteFromClipboard()
                                 }
                                     .modifier(SmallButtonModifier())
                             }
@@ -115,6 +122,16 @@ struct SendCoinView: View {
                     
                     Button("Send") {
                         print("SEND")
+                        self.showingAlert.toggle()
+                    }
+                    .alert(isPresented: self.$showingAlert) {
+                        Alert(
+                            title: Text("\(self.viewModel.exchangerViewModel.assetValue) \(self.viewModel.asset.coin.code) sent to"),
+                            message: Text("\(self.viewModel.receiverAddress)"),
+                            dismissButton: Alert.Button.default(
+                                Text("Dismiss"), action: { self.presentationMode.wrappedValue.dismiss() }
+                            )
+                        )
                     }
                     .modifier(PButtonEnabledStyle(enabled: self.$viewModel.formIsValid))
                     .disabled(!self.viewModel.formIsValid)
@@ -130,16 +147,61 @@ struct SendCoinView: View {
 #if DEBUG
 struct SendCoinsView_Previews: PreviewProvider {
     static var previews: some View {
-        SendCoinView(
-            asset: Asset(
-                coin: Coin(
-                    code: "ETH",
-                    name: "Ethereum",
-                    color: UIColor.yellow,
-                    icon: UIImage(imageLiteralResourceName: "iconEth")
+        Group {
+            SendCoinView(
+                asset: Asset(
+                    coin: Coin(
+                        code: "BTC",
+                        name: "Bitcoin",
+                        color: UIColor.yellow,
+                        icon: UIImage(imageLiteralResourceName: "iconBtc")
+                    )
                 )
             )
-        )
+            .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+            .previewDisplayName("iPhone SE")
+            
+            
+            SendCoinView(
+                asset: Asset(
+                    coin: Coin(
+                        code: "ETH",
+                        name: "Ethereum",
+                        color: UIColor.yellow,
+                        icon: UIImage(imageLiteralResourceName: "iconEth")
+                    )
+                )
+            )
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro"))
+            .previewDisplayName("iPhone 11 Pro")
+            
+            SendCoinView(
+                asset: Asset(
+                    coin: Coin(
+                        code: "XTZ",
+                        name: "Stellar Lumens",
+                        color: UIColor.yellow,
+                        icon: UIImage(imageLiteralResourceName: "iconXtz")
+                    )
+                )
+            )
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
+            .previewDisplayName("iPhone 11")
+            
+            SendCoinView(
+                asset: Asset(
+                    coin: Coin(
+                        code: "ETH",
+                        name: "Ethereum",
+                        color: UIColor.yellow,
+                        icon: UIImage(imageLiteralResourceName: "iconEth")
+                    )
+                )
+            )
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+            .previewDisplayName("iPhone 11 Pro Max")
+            
+        }
     }
 }
 #endif
