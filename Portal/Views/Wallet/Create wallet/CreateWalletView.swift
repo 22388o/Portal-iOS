@@ -100,7 +100,20 @@ struct CreateWalletView: View {
 #if DEBUG
 struct CreateWalletView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateWalletView()
+        Group {
+            CreateWalletView()//.environment(\.colorScheme, .dark)
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("iPhone SE")
+            
+            CreateWalletView()
+                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro"))
+                .previewDisplayName("iPhone 11 Pro")
+            
+            CreateWalletView()
+                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+                .previewDisplayName("iPhone 11 Pro Max")
+        }
+        
     }
 }
 #endif

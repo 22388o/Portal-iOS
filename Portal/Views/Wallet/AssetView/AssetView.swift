@@ -1,5 +1,5 @@
 //
-//  CoinDetailsView.swift
+//  AssetView.swift
 //  Portal
 //
 //  Created by Farid on 06.03.2020.
@@ -151,17 +151,45 @@ struct AssetView: View {
 }
 
 #if DEBUG
-struct CoinDetailsView_Previews: PreviewProvider {
+struct AssetView_Previews: PreviewProvider {
     static var previews: some View {
-        AssetView(
-            asset: Asset(
-                coin: Coin(
-                    code: "BTC",
-                    name: "Bitcoin",
-                    icon: UIImage(imageLiteralResourceName: "iconBtc")
+        Group {
+            AssetView(
+                asset: Asset(
+                    coin: Coin(
+                        code: "BTC",
+                        name: "Bitcoin",
+                        icon: UIImage(imageLiteralResourceName: "iconBtc")
+                    )
                 )
             )
-        )
+            .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+            .previewDisplayName("iPhone SE")
+            
+            AssetView(
+                asset: Asset(
+                    coin: Coin(
+                        code: "BTC",
+                        name: "Bitcoin",
+                        icon: UIImage(imageLiteralResourceName: "iconBtc")
+                    )
+                )
+            )
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro"))
+            .previewDisplayName("iPhone 11 Pro")
+            
+            AssetView(
+                asset: Asset(
+                    coin: Coin(
+                        code: "BTC",
+                        name: "Bitcoin",
+                        icon: UIImage(imageLiteralResourceName: "iconBtc")
+                    )
+                )
+            )
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+            .previewDisplayName("iPhone 11 Pro Max")
+        }
     }
 }
 #endif

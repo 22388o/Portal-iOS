@@ -49,7 +49,19 @@ struct WalletView: View {
 #if DEBUG
 struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletView(wallet: WalletMock())
+        Group {
+            WalletView(wallet: WalletMock())
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("iPhone SE")
+            
+            WalletView(wallet: WalletMock())
+                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro"))
+                .previewDisplayName("iPhone 11 Pro")
+            
+            WalletView(wallet: WalletMock())
+                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+                .previewDisplayName("iPhone 11 Pro Max")
+        }
     }
 }
 #endif

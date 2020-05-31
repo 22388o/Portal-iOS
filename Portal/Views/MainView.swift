@@ -48,10 +48,22 @@ struct MainView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
-            .environmentObject(
-                WalletCoordinator(mockedWallet: WalletMock())
-            )
+        Group {
+            MainView()
+                .environmentObject(WalletCoordinator(mockedWallet: WalletMock()))
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("iPhone SE")
+            
+            MainView()
+                .environmentObject(WalletCoordinator(mockedWallet: WalletMock()))
+                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro"))
+                .previewDisplayName("iPhone 11 Pro")
+            
+            MainView()
+                .environmentObject(WalletCoordinator(mockedWallet: WalletMock()))
+                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+                .previewDisplayName("iPhone 11 Pro Max")
+        }
     }
 }
 #endif

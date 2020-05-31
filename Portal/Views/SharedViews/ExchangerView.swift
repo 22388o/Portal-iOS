@@ -8,27 +8,7 @@
 
 import SwiftUI
 
-struct Background<Content: View>: View {
-    private var content: Content
-
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content()
-    }
- 
-    var body: some View {
-        Color.clear
-            .overlay(content)
-            .padding()
-    }
-}
-
 struct ExchangerView: View {
-//    @State var asset: Coin
-//    @Binding var assetValue: String
-//
-//    @State var fiat: FiatCurrency
-//    @Binding var fiatValue: String
-    
     @ObservedObject var viewModel: ExchangerViewModel
     
     init(viewModel: ExchangerViewModel) {
