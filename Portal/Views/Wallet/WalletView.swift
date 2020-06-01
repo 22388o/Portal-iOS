@@ -14,10 +14,6 @@ struct WalletView: View {
     init(wallet: IWallet = WalletMock()) {
         print("WalletView init")
         self.viewModel = .init(assets: wallet.assets)
-        
-        UITableView.appearance().separatorStyle = .none
-        UITableViewCell.appearance().backgroundColor = .clear
-        UITableView.appearance().backgroundColor = .clear
     }
     
     var body: some View {

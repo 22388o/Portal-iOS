@@ -15,7 +15,11 @@ struct RootView: View {
     
     init() {
         print("RootView init")
+        
         UITabBar.appearance().barTintColor = UIColor(white: 0, alpha: 0.1)
+        UITableView.appearance().separatorStyle = .none
+        UITableViewCell.appearance().backgroundColor = .clear
+        UITableView.appearance().backgroundColor = .clear
     }
     
     var body: some View {
