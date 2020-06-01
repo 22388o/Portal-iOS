@@ -45,7 +45,8 @@ struct TransactionsListView: View {
                 TransactionListItemView(symbol: self.coin.code)
                     .onTapGesture {
                         self.showTxInfo.toggle()
-                }.padding([.top, .bottom], 6)
+                }
+                .padding([.top, .bottom], 6)
             }
             .padding(.top, -8)
             .sheet(isPresented: self.$showTxInfo) {
@@ -59,6 +60,7 @@ struct TransactionsListView: View {
 struct TransactionsPreviewView_Previews: PreviewProvider {
     static var previews: some View {
         TransactionsListView(coin: Coin(code: "ETH", name: "Ethereum"))
+            .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }
 #endif
