@@ -24,21 +24,20 @@ struct SeedView: View {
             ) {
               EmptyView()
             }
-            .hidden()
-            .onAppear() {
-                self.showTestSeedView = false
-            }
+                .hidden()
+                .onAppear() {
+                    self.showTestSeedView = false
+                }
             
             HStack {
                 Image("iconSafe")
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Save your seed")
                         .font(Font.mainFont(size: 23))
-                        .foregroundColor(Color.createWalletLabel)
                     Text("Store the seed")
                         .font(Font.mainFont(size: 15))
-                        .foregroundColor(Color.createWalletLabel)
                 }
+                    .foregroundColor(Color.createWalletLabel)
             }
             Text("Make 100% sure you have all the words, in that same order, and continue when you’re ready.")
                 .font(Font.mainFont(size: 15))
@@ -46,7 +45,8 @@ struct SeedView: View {
             SeedContainerView(seed: newWalletModel.seed)
             Button("Next"){
                 self.showTestSeedView = true
-            }.modifier(PButtonEnabledStyle(enabled: .constant(true)))
+            }
+                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
         }
         .hideNavigationBar()
         .padding()

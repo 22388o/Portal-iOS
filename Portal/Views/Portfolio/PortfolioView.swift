@@ -29,7 +29,8 @@ struct PortfolioView: View {
                             change: self.$viewModel.change,
                             chartDataEntries: self.$viewModel.chartDataEntries,
                             valueCurrencyViewSate: self.$viewModel.valueCurrencySwitchState
-                        ).padding(.top, 10)
+                        )
+                            .padding(.top, 10)
                                 
                         if geometry.size.height > 700 {
                             HStack(spacing: 50) {
@@ -53,7 +54,7 @@ struct PortfolioView: View {
 
                                 }
                             }
-                            .padding()
+                                .padding()
                         }
                         
                         Divider()
@@ -72,14 +73,15 @@ struct PortfolioView: View {
                         }
                         
                     }
-                    .padding(6)
-                    .onAppear {
-                        print("On appear")
-                    }.onDisappear {
-                        print("On dissapear")
-                    }
+                        .padding(6)
+                        .onAppear {
+                            print("On appear")
+                        }
+                        .onDisappear {
+                            print("On dissapear")
+                        }
                 }
-                .edgesIgnoringSafeArea(.all)
+                    .edgesIgnoringSafeArea(.all)
             }
         }
 }

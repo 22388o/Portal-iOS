@@ -23,7 +23,8 @@ final class WalletCoordinator: ObservableObject {
             return keychainStorage.string(for: WalletCoordinator.currentWalletIDKey)
         }
         set {
-            self.keychainStorage.save(string: newValue!, for: WalletCoordinator.currentWalletIDKey)
+            guard let value = newValue else { return }
+            self.keychainStorage.save(string: value, for: WalletCoordinator.currentWalletIDKey)
         }
     }
     

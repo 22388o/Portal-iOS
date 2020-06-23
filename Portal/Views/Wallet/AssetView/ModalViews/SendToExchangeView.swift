@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SendToExchangeView: View {
     private let asset: IAsset
-    @State var sendToAddress: String = ""
+    @State private var sendToAddress = String()
     
     init(asset: IAsset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))) {
         self.asset = asset
@@ -31,12 +31,11 @@ struct SendToExchangeView: View {
                         .frame(width: 80, height: 80)
                     Text("Send \(self.asset.coin.name) to exchange")
                         .font(Font.mainFont(size: 23))
-                        .foregroundColor(Color.lightActiveLabel)
                     Text("Transfer \(self.asset.coin.code) into exchange balance to trade with.")
                         .font(Font.mainFont())
-                        .foregroundColor(Color.lightActiveLabel)
                         .opacity(0.6)
                 }
+                    .foregroundColor(Color.lightActiveLabel)
                 
                 Spacer().frame(height: 16)
                 
@@ -45,12 +44,10 @@ struct SendToExchangeView: View {
                     HStack {
                         Text("Avaliable in wallet")
                             .font(Font.mainFont())
-                            .foregroundColor(Color.lightActiveLabel)
                             .opacity(0.6)
                         
                         Text("\(self.asset.balanceProvider.balanceString) \(self.asset.coin.code)")
                             .font(Font.mainFont(size: 14))
-                            .foregroundColor(Color.lightActiveLabel)
                         
                         Button("send all") {
                             
@@ -62,18 +59,20 @@ struct SendToExchangeView: View {
                             .font(Font.mainFont(size: 12))
                             .foregroundColor(.white)
                     }
+                        .foregroundColor(Color.lightActiveLabel)
+
                     Divider()
                     HStack {
                         Text("Currently in exchange")
                             .font(Font.mainFont())
-                            .foregroundColor(Color.lightActiveLabel)
                             .opacity(0.6)
                         
                         Text("0.0 \(self.asset.coin.code) ($0.0)")
                             .font(Font.mainFont(size: 14))
-                            .foregroundColor(Color.lightActiveLabel)
                         
                     }
+                        .foregroundColor(Color.lightActiveLabel)
+                    
                     Divider()
                 }
                 
@@ -95,7 +94,8 @@ struct SendToExchangeView: View {
                         TextField("Enter \(self.asset.coin.code) address...", text: self.$sendToAddress)
                         .textFieldStyle(PlainTextFieldStyle())
                         .font(Font.mainFont(size: 16))
-                    }.modifier(TextFieldModifier())
+                    }
+                        .modifier(TextFieldModifier())
                 }
 
                 Spacer()
@@ -103,7 +103,7 @@ struct SendToExchangeView: View {
                 Button("Send") {
                     
                 }
-                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
             }
         }.onTapGesture {
             self.endEditing()

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct CreateWalletView: View {
-    @State var showSeedView: Bool = false
+    @State private var showSeedView: Bool = false
     
     @ObservedObject var viewModel: CreateWalletViewModel
     
@@ -27,7 +27,7 @@ struct CreateWalletView: View {
             ) {
               EmptyView()
             }
-            .hidden()
+                .hidden()
                         
             VStack(spacing: 20) {
                 Title(
@@ -69,18 +69,19 @@ struct CreateWalletView: View {
                                 Text(BtcAddressFormat.allCases[index].description).tag(index)
                             }
                         }
-                        .pickerStyle(SegmentedPickerStyle())
+                            .pickerStyle(SegmentedPickerStyle())
                     }
                     Spacer()
-            }.frame(maxHeight: .infinity)
+            }
+                .frame(maxHeight: .infinity)
         }
         Spacer()
             VStack(spacing: 12) {
                 Button("Create") {
                     self.showSeedView.toggle()
                 }
-                .modifier(PButtonEnabledStyle(enabled: $viewModel.walletDataValidated))
-                .disabled(!viewModel.walletDataValidated)
+                    .modifier(PButtonEnabledStyle(enabled: $viewModel.walletDataValidated))
+                    .disabled(!viewModel.walletDataValidated)
                 
                 HStack {
                     Text("Already have a wallet?")

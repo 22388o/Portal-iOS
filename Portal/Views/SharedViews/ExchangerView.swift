@@ -34,15 +34,14 @@ struct ExchangerView: View {
                             )
                         )
                         .frame(height: 20)
-                        .font(Font.mainFont(size: 16))
                         .keyboardType(.numberPad)
                     Text(viewModel.asset.code)
-                        .font(Font.mainFont(size: 16))
                         .foregroundColor(Color.lightActiveLabelNew)//.opacity(0.4)
-                }.modifier(TextFieldModifier())
-                Text("=")
-                    .font(Font.mainFont(size: 16))
-                    .foregroundColor(Color.white)//.opacity(0.4)
+                }
+                    .modifier(TextFieldModifier())
+                
+                Text("=").foregroundColor(Color.white)
+                
                 HStack(spacing: 8) {
                     FiatCurrencyView(
                         size: 24,
@@ -51,6 +50,7 @@ struct ExchangerView: View {
                         currency: .constant(.fiat(USD))
                     )
                         .frame(width: 24, height: 24)
+                    
                     TextField("", text: $viewModel.fiatValue)
                         .modifier(
                             PlaceholderStyle(
@@ -59,13 +59,13 @@ struct ExchangerView: View {
                             )
                         )
                         .frame(height: 20)
-                        .font(Font.mainFont(size: 16))
                         .keyboardType(.numberPad)
-                    Text(viewModel.fiat.code)
-                        .font(Font.mainFont(size: 16))
-                        .foregroundColor(Color.lightActiveLabelNew)
-                }.modifier(TextFieldModifier())
+                    
+                    Text(viewModel.fiat.code).foregroundColor(Color.lightActiveLabelNew)
+                }
+                    .modifier(TextFieldModifier())
             }
+                .font(Font.mainFont(size: 16))
         }
     }
 }

@@ -35,28 +35,26 @@ struct SendCoinView: View {
                             .frame(width: 60, height: 60)
                         Text("Send \(self.viewModel.asset.coin.name)")
                             .font(Font.mainFont(size: 23))
-                            .foregroundColor(Color.white)
                         Text("Instantly send to any \(self.viewModel.asset.coin.code) address")
                             .font(Font.mainFont())
-                            .foregroundColor(Color.white)
                             .opacity(0.6)
                     }
+                        .foregroundColor(Color.white)
                                         
                     HStack {
                         Text("You have")
                             .font(Font.mainFont())
-                            .foregroundColor(Color.white)
                             .opacity(0.6)
                         
                         Text("\(self.viewModel.asset.balanceProvider.balanceString) \(self.viewModel.asset.coin.code)")
                             .font(Font.mainFont(size: 14))
-                            .foregroundColor(Color.white)
                         
                         Button("send all") {
                             self.viewModel.sendAll()
                         }
                             .modifier(SmallButtonModifier())
                     }
+                        .foregroundColor(Color.white)
                     
                     Spacer().frame(height: 15)
                     
@@ -70,7 +68,7 @@ struct SendCoinView: View {
                                 .font(Font.mainFont())
                                 .foregroundColor(Color.white)
                                                     
-                            HStack() {
+                            HStack {
                                 Text(self.viewModel.receiverAddress.isEmpty ? "Address" : self.viewModel.receiverAddress)
                                     .font(Font.mainFont(size: 16))
                                     .foregroundColor(self.viewModel.receiverAddress.isEmpty ? Color.lightActiveLabelNew : Color.white)
@@ -95,18 +93,18 @@ struct SendCoinView: View {
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("Transaction fee")
-                                        .font(Font.mainFont())
-                                        .foregroundColor(Color.white)
                                     Spacer()
                                     Text(self.viewModel.txFee)
-                                        .font(Font.mainFont())
-                                        .foregroundColor(Color.white)
                                 }
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.white)
+                                
                                 Picker("TxFee", selection: self.$viewModel.selctionIndex) {
                                     ForEach(0 ..< 3) { index in
                                         Text(TxSpeed.allCases[index].title).tag(index)
                                     }
-                                }.pickerStyle(SegmentedPickerStyle())
+                                }
+                                    .pickerStyle(SegmentedPickerStyle())
                             }
                             
                             VStack {
@@ -139,7 +137,7 @@ struct SendCoinView: View {
             }.onTapGesture {
                 self.endEditing()
             }
-            .keyboardResponsive()
+                .keyboardResponsive()
         }
     }
 }

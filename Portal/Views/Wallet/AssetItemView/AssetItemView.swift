@@ -15,6 +15,13 @@ struct AssetItemView: View {
         self.viewModel = viewModel
     }
     
+    private var emptyView: some View {
+        HStack {
+            EmptyView()
+        }
+            .frame(minWidth: 0, maxWidth: .infinity)
+    }
+    
     var body: some View {
         HStack(alignment: .center) {
             Image(uiImage: viewModel.icon)
@@ -23,47 +30,42 @@ struct AssetItemView: View {
                 .padding([.leading])
             
             VStack(spacing: 6) {
-                HStack() {
+                HStack {
                     Text(viewModel.code)
-                        .font(Font.mainFont(size: 18))
-                        .foregroundColor(Color.white)
-                    HStack() { EmptyView() }.frame(minWidth: 0, maxWidth: .infinity)
+                    emptyView
                     Text(viewModel.balance)
-                        .font(Font.mainFont(size: 18))
-                        .foregroundColor(Color.white)
                 }
+                    .font(Font.mainFont(size: 18))
+                    .foregroundColor(Color.white)
                 
-                HStack() {
+                HStack {
                     Text(viewModel.name)
-                        .font(Font.mainFont(size: 14))
-                        .foregroundColor(Color.white.opacity(0.6))
-                    HStack() { EmptyView() }.frame(minWidth: 0, maxWidth: .infinity)
+                    emptyView
                     Text(viewModel.totalValue)
-                        .font(Font.mainFont(size: 14))
-                        .foregroundColor(Color.white.opacity(0.6))
                 }
+                    .font(Font.mainFont(size: 14))
+                    .foregroundColor(Color.white.opacity(0.6))
+
                 
-                HStack() {
+                HStack {
                     Text(viewModel.price)
-                        .font(Font.mainFont(size: 14))
-                        .foregroundColor(Color.white.opacity(0.6))
-                    HStack() { EmptyView() }.frame(minWidth: 0, maxWidth: .infinity)
+                    emptyView
                     Text(viewModel.change)
-                        .font(Font.mainFont(size: 14))
-                        .foregroundColor(Color.white.opacity(0.6))
                 }
+                    .font(Font.mainFont(size: 14))
+                    .foregroundColor(Color.white.opacity(0.6))
             }
-            .padding([.trailing, .top, .bottom], 15)
-            .padding(.leading, 5)
+                .padding([.trailing, .top, .bottom], 15)
+                .padding(.leading, 5)
         }
-        .background(Color.black.opacity(0.25))
-        .cornerRadius(16)
-        .onAppear(perform: {
-            print("\(self.viewModel.code) on Appear")
-        })
-        .onDisappear(perform: {
-            print("\(self.viewModel.code) on Disappear")
-        })
+            .background(Color.black.opacity(0.25))
+            .cornerRadius(16)
+            .onAppear(perform: {
+                print("\(self.viewModel.code) on Appear")
+            })
+            .onDisappear(perform: {
+                print("\(self.viewModel.code) on Disappear")
+            })
     }
 }
 
@@ -71,11 +73,19 @@ struct AssetItemView: View {
 struct AssetItemView_Previews: PreviewProvider {
     static var previews: some View {
         AssetItemView(viewModel:
-            AssetItemViewModel(asset: Asset(coin: Coin(code: "BTC", name: "Bitcoin", icon: UIImage(imageLiteralResourceName: "iconBtc"))))
+            AssetItemViewModel(asset:
+                Asset(
+                    coin: Coin(
+                        code: "BTC",
+                        name: "Bitcoin",
+                        icon: UIImage(imageLiteralResourceName: "iconBtc")
+                    )
+                )
+            )
         )
-        .previewLayout(PreviewLayout.sizeThatFits)
-        .padding()
-        .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
+            .previewLayout(PreviewLayout.sizeThatFits)
+            .padding()
+            .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }
 #endif

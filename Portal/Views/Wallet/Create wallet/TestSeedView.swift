@@ -32,7 +32,7 @@ struct TestSeedView: View {
             ) {
               EmptyView()
             }
-            .hidden()
+                .hidden()
 
             Title(
                 iconName: "iconSafe",
@@ -68,19 +68,19 @@ struct TestSeedView: View {
                     }
                 }
             }
-            .padding()
+                .padding()
         }
-        .hideNavigationBar()
-        .keyboardResponsive()
-        .onAppear {
-            self.viewModel.setup()
-            self.updateIndices()
-            print("Test solved: \(self.viewModel.testSolved)")
-        }
-        .onReceive(walletCoordinator.$currentWallet, perform: { newWallet in
-            guard newWallet != nil else { return }
-            self.walletCreated.toggle()
-        })
+            .hideNavigationBar()
+            .keyboardResponsive()
+            .onAppear {
+                self.viewModel.setup()
+                self.updateIndices()
+                print("Test solved: \(self.viewModel.testSolved)")
+            }
+            .onReceive(walletCoordinator.$currentWallet, perform: { newWallet in
+                guard newWallet != nil else { return }
+                self.walletCreated.toggle()
+            })
     }
     
     private func updateIndices() {

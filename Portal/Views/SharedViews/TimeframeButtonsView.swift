@@ -13,7 +13,7 @@ struct TimeframeButtonsView: View {
     @Binding var timeframe: Timeframe
 
     var body: some View {
-        HStack() {
+        HStack {
             Button(action: {
                 self.timeframe = .hour
             }) {

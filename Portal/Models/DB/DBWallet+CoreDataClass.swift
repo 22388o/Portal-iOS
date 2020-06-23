@@ -55,7 +55,7 @@ public class DBWallet: NSManagedObject, IWallet {
         
         self.assets = sampleCoins.prefix(5).map{ Asset(coin: $0, data: data) }
         
-        for _ in 0...95 {
+        for _ in 0...295 {
             let randomIndex = Int.random(in: 5...sampleCoins.count - 1)
             let coin = sampleCoins[randomIndex]
             let asset = Asset(coin: coin, data: data)

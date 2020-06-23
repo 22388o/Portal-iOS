@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 final class CreateWalletViewModel: ObservableObject {
-    @Published var name: String = ""
+    @Published var name = String()
     @Published var walletDataValidated = false
     @Published var selectorIndex = BtcAddressFormat.segwit.rawValue
     

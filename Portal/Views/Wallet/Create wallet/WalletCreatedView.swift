@@ -20,7 +20,7 @@ struct WalletCreatedView: View {
                 isActive: self.$showWallet) {
               EmptyView()
             }
-            .hidden()
+                .hidden()
             
             Title(
                 iconName: "iconSafe",
@@ -35,8 +35,8 @@ struct WalletCreatedView: View {
                 .multilineTextAlignment(.center)
             VStack(spacing: 8) {
                 Text("Bitcoin")
-                .font(Font.mainFont(size: 32))
-                .foregroundColor(Color.coinViewRouteButtonActive)
+                    .font(Font.mainFont(size: 32))
+                    .foregroundColor(Color.coinViewRouteButtonActive)
                 Image(uiImage: asset.qrCodeProvider.qrCode(address: btcMockAddress))
                     .resizable()
                     .frame(width: 200.0, height: 200.0, alignment: .center)
@@ -52,43 +52,40 @@ struct WalletCreatedView: View {
                         .foregroundColor(Color.lightActiveLabel)
                 }
             }
-            .frame(maxHeight: .infinity)
+                .frame(maxHeight: .infinity)
             
             VStack {
                 HStack {
                     Text("Balance")
-                        .font(Font.mainFont(size: 16))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
                         .opacity(0.85)
                     Text("0.0000000 \(asset.coin.code)")
-                        .font(Font.mainFont(size: 16))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
                 }
+                    .font(Font.mainFont(size: 16))
+                    .foregroundColor(Color.coinViewRouteButtonActive)
                 HStack {
                     Text("Pending")
-                        .font(Font.mainFont(size: 16))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
                         .opacity(0.85)
                     Text("0.0000000 \(asset.coin.code)")
-                        .font(Font.mainFont(size: 16))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
                 }
+                    .font(Font.mainFont(size: 16))
+                    .foregroundColor(Color.coinViewRouteButtonActive)
                 HStack {
                     Text("Syncing")
-                        .font(Font.mainFont(size: 16))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
                         .opacity(0.85)
                     Text("0.63%")
-                        .font(Font.mainFont(size: 16))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
                 }
-            }.padding()
+                    .font(Font.mainFont(size: 16))
+                    .foregroundColor(Color.coinViewRouteButtonActive)
+                
+            }
+                .padding()
             
-            Button("Open wallet"){
-                self.showWallet.toggle()
-            }.modifier(PButtonEnabledStyle(enabled: .constant(true)))
-            
-            }.padding().hideNavigationBar()
+                Button("Open wallet") {
+                    self.showWallet.toggle()
+                }
+                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+            }
+                .padding().hideNavigationBar()
     }
 }
 

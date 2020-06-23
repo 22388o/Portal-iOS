@@ -43,8 +43,7 @@ final class TestSeedViewModel: ObservableObject {
     }
     
     private func bindInputs() {
-        cancalable = $testString1
-            .combineLatest($testString2, $testString3, $testString4)
+        cancalable = $testString1.combineLatest($testString2, $testString3, $testString4)
             .sink(receiveValue: { output in
                 self.formIsValid = self.testSolved == [output.0, output.1, output.2, output.3]
             })

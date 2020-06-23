@@ -27,21 +27,22 @@ struct WalletView: View {
                     .onTapGesture {
                         self.viewModel.showPortfolioView.toggle()
                 }
-                .sheet(isPresented: $viewModel.showPortfolioView) {
-                    PortfolioView(assets: self.viewModel.adapters.map{$0.asset})
-                }
+                    .sheet(isPresented: $viewModel.showPortfolioView) {
+                        PortfolioView(assets: self.viewModel.adapters.map{$0.asset})
+                    }
                 List(viewModel.adapters) { adapter in
                     AssetItemView(viewModel: adapter.viewModel)
                         .onTapGesture {
                             self.viewModel.selectedAdapter = adapter
                     }
+//                        .aspectRatio(10/2, contentMode: .fit)
                         .padding([.leading, .trailing], -5)
                         .padding(.bottom, -2.5)
 
                 }
-                .sheet(isPresented: self.$viewModel.showCoinView) {
-                    AssetView(asset: self.viewModel.selectedAdapter.asset)
-                }
+                    .sheet(isPresented: self.$viewModel.showCoinView) {
+                        AssetView(asset: self.viewModel.selectedAdapter.asset)
+                    }
             }
         }
     }
