@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct WalletView: View {
-    @ObservedObject var viewModel: WalletViewModel
         
     init(wallet: IWallet = WalletMock()) {
         print("WalletView init")

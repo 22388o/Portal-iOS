@@ -5,6 +5,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 def portal_pods
   pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :commit => '97587d04ed51f4e38e3057da51867d8805995a56'
+  pod 'BitcoinCore.swift'
+  pod 'BitcoinKit.swift'
 end
 
 def test_pods
