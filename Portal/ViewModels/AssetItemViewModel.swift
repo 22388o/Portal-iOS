@@ -11,6 +11,7 @@ import SwiftUI
 import Combine
 
 final class AssetItemViewModel: ObservableObject, IMarketData {
+
     let code: String
     let name: String
     let icon: UIImage

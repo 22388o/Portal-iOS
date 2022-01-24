@@ -29,7 +29,7 @@ public struct PlaceholderStyle: ViewModifier {
 }
 
 public struct NavigationBarHider: ViewModifier {
-    @State var isHidden: Bool = false
+    @State private var isHidden: Bool = false
 
     public func body(content: Content) -> some View {
         content
@@ -72,12 +72,12 @@ struct TextFieldModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding()
-            .background(Color.exchangerFieldBackgroundNew)
+//            .background(Color.exchangerFieldBackgroundNew)
             .cornerRadius(26)
-//            .overlay(
-//                RoundedRectangle(cornerRadius: 26)
-//                .stroke(Color.exchangerFieldBackgroundNew, lineWidth: 1)
-//            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 26)
+                .stroke(Color.exchangerFieldBackgroundNew, lineWidth: 1)
+            )
     }
 }
 
@@ -103,7 +103,7 @@ struct TimeframeButton: ViewModifier {
 }
 
 struct KeyboardResponsive: ViewModifier {
-    @State var currentHeight: CGFloat = 0
+    @State private var currentHeight: CGFloat = 0
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in

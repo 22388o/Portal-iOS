@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AtomicBridgeView: View {
     var body: some View {
-        Text("Atomic Bridge")
+        Text("Swap")
     }
 }
 

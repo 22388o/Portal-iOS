@@ -30,14 +30,14 @@ struct MainView: View {
                     .tabItem {
                         VStack {
                             Image(systemName: "2.square.fill")
-                            Text("Atomic Bridge")
+                            Text("Swap")
                         }
                     }
                     .tag(1)
                 .hideNavigationBar()
             }
         }
-        .hideNavigationBar()
+//        .hideNavigationBar()
 //        .onReceive(walletCoordinator.$currentWallet, perform: { newWallet in
 //            guard newWallet != nil else { return }
 //            self.wallet = newWallet!

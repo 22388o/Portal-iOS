@@ -23,7 +23,7 @@ struct WalletCreatedView: View {
                 .hidden()
             
             Title(
-                iconName: "iconSafe",
+                icon: "iconSafe",
                 title: "Wallet created!",
                 subtitle: "Add assets to your wallet (in at least 1 currency.)"
             )

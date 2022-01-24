@@ -9,7 +9,13 @@
 import SwiftUI
 
 struct ExchangerView: View {
-    @ObservedObject var viewModel: ExchangerViewModel
+    @ObservedObject private var viewModel: ExchangerViewModel
+    
+    private let textHeight: CGFloat = 20
+    private let textFieldsVerticalStackSpacing: CGFloat = 4
+    private let textFieldHorizontalStackSpacing: CGFloat = 8
+    private let iconSize: CGFloat = 24
+    private let textFieldFont = Font.mainFont(size: 16)
     
     init(viewModel: ExchangerViewModel) {
         self.viewModel = viewModel
@@ -21,11 +27,11 @@ struct ExchangerView: View {
                 .font(Font.mainFont())
                 .foregroundColor(Color.white)
             
-            VStack(spacing: 4) {
-                HStack(spacing: 8) {
+            VStack(spacing: textFieldsVerticalStackSpacing) {
+                HStack(spacing: textFieldHorizontalStackSpacing) {
                     Image(uiImage: viewModel.asset.icon)
                         .resizable()
-                        .frame(width: 24, height: 24)
+                        .frame(width: iconSize, height: iconSize)
                     TextField("", text: $viewModel.assetValue)
                         .modifier(
                             PlaceholderStyle(
@@ -33,23 +39,23 @@ struct ExchangerView: View {
                                 placeholder: "0.0"
                             )
                         )
-                        .frame(height: 20)
+                        .frame(height: textHeight)
                         .keyboardType(.numberPad)
                     Text(viewModel.asset.code)
-                        .foregroundColor(Color.lightActiveLabelNew)//.opacity(0.4)
+                        .foregroundColor(Color.lightActiveLabelNew)
                 }
                     .modifier(TextFieldModifier())
                 
                 Text("=").foregroundColor(Color.white)
                 
-                HStack(spacing: 8) {
+                HStack(spacing: textFieldHorizontalStackSpacing) {
                     FiatCurrencyView(
-                        size: 24,
+                        size: iconSize,
                         currencySymbol: .constant(viewModel.fiat.symbol ?? ""),
                         state: .constant(.fiat),
                         currency: .constant(.fiat(USD))
                     )
-                        .frame(width: 24, height: 24)
+                        .frame(width: iconSize, height: iconSize)
                     
                     TextField("", text: $viewModel.fiatValue)
                         .modifier(
@@ -58,14 +64,14 @@ struct ExchangerView: View {
                                 placeholder: "0.0"
                             )
                         )
-                        .frame(height: 20)
+                        .frame(height: textHeight)
                         .keyboardType(.numberPad)
                     
                     Text(viewModel.fiat.code).foregroundColor(Color.lightActiveLabelNew)
                 }
                     .modifier(TextFieldModifier())
             }
-                .font(Font.mainFont(size: 16))
+                .font(textFieldFont)
         }
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 import SwiftUI
-import CodeScanner
+//import CodeScanner
 
 final class SendCoinViewModel: ObservableObject {
     let asset: IAsset
@@ -21,6 +21,7 @@ final class SendCoinViewModel: ObservableObject {
     
     @Published var formIsValid = false
     @Published var isShowingScanner = false
+    @Published var showingAlert = false
     
     @Published var selctionIndex = 1
     
@@ -74,7 +75,7 @@ final class SendCoinViewModel: ObservableObject {
         receiverAddress = clipboard
     }
     
-    func handleScanResults(result: Result<String, CodeScannerView.ScanError>) {
+    func handleScanResults(result: Result<String, Error>) {
        self.isShowingScanner = false
        switch result {
        case .success(let data):

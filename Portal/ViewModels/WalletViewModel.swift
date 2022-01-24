@@ -10,8 +10,6 @@ import Foundation
 import Combine
 
 final class WalletViewModel: ObservableObject {
-//    private var subscription: AnyCancellable?
-    
     @Published var adapters: [CoinAdapter]
     
     @Published var showPortfolioView = false
@@ -26,11 +24,5 @@ final class WalletViewModel: ObservableObject {
     init(assets: [IAsset]) {
         print("WalletViewModel init")
         self.adapters = assets.map{ CoinAdapter(asset: $0) }
-//        self.viewModels = self.assets.map{ AssetItemViewModel(asset: $0) }
-//        subscription = wallet
-//            .unwrap()
-//            .sink { [weak self] currentWallet in
-//                self?.assets = currentWallet.assets
-//            }
     }
 }

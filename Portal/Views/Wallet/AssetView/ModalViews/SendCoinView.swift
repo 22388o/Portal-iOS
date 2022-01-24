@@ -7,13 +7,23 @@
 //
 
 import SwiftUI
-import CodeScanner
+//import CodeScanner
 
 struct SendCoinView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @ObservedObject var viewModel: SendCoinViewModel
+    @ObservedObject private var viewModel: SendCoinViewModel
+        
+    private let textFiledForegroundColor = Color.white
     
-    @State private var showingAlert = false
+    private let mainFont = Font.mainFont()
+    private let titleFont = Font.mainFont(size: 23)
+    private let totalAmountFont = Font.mainFont(size: 14)
+    private let addressFont = Font.mainFont(size: 16)
+    
+    private let iconSize: CGFloat = 60
+    private let bottomStackSpacing: CGFloat = 18
+    private let horizontalSpacerHeight: CGFloat = 20
+    private let subtitleFontOpacity: Double = 0.6
     
     init(asset: IAsset) {
         self.viewModel = .init(asset: asset)
@@ -32,54 +42,57 @@ struct SendCoinView: View {
                     VStack {
                         Image(uiImage: self.viewModel.asset.coin.icon)
                             .resizable()
-                            .frame(width: 60, height: 60)
+                            .frame(width: self.iconSize, height: self.iconSize)
                         Text("Send \(self.viewModel.asset.coin.name)")
-                            .font(Font.mainFont(size: 23))
+                            .font(self.titleFont)
                         Text("Instantly send to any \(self.viewModel.asset.coin.code) address")
-                            .font(Font.mainFont())
-                            .opacity(0.6)
+                            .font(self.mainFont)
+                            .opacity(self.subtitleFontOpacity)
                     }
-                        .foregroundColor(Color.white)
+                        .foregroundColor(self.textFiledForegroundColor)
                                         
                     HStack {
                         Text("You have")
-                            .font(Font.mainFont())
-                            .opacity(0.6)
+                            .font(self.mainFont)
+                            .opacity(self.subtitleFontOpacity)
                         
                         Text("\(self.viewModel.asset.balanceProvider.balanceString) \(self.viewModel.asset.coin.code)")
-                            .font(Font.mainFont(size: 14))
+                            .font(self.totalAmountFont)
                         
                         Button("send all") {
                             self.viewModel.sendAll()
                         }
                             .modifier(SmallButtonModifier())
                     }
-                        .foregroundColor(Color.white)
+                        .foregroundColor(self.textFiledForegroundColor)
                     
-                    Spacer().frame(height: 15)
+                    Spacer().frame(height: self.horizontalSpacerHeight)
                     
                     ExchangerView(viewModel: self.viewModel.exchangerViewModel)
                     
-                    Spacer().frame(height: 20)
+                    Spacer().frame(height: self.horizontalSpacerHeight)
                     
-                    VStack(spacing: 20) {
+                    VStack(spacing: self.bottomStackSpacing) {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Send to...")
-                                .font(Font.mainFont())
-                                .foregroundColor(Color.white)
+                                .font(self.mainFont)
+                                .foregroundColor(self.textFiledForegroundColor)
                                                     
                             HStack {
                                 Text(self.viewModel.receiverAddress.isEmpty ? "Address" : self.viewModel.receiverAddress)
-                                    .font(Font.mainFont(size: 16))
-                                    .foregroundColor(self.viewModel.receiverAddress.isEmpty ? Color.lightActiveLabelNew : Color.white)
+                                    .font(self.addressFont)
+                                    .foregroundColor(self.viewModel.receiverAddress.isEmpty ? Color.lightActiveLabelNew : self.textFiledForegroundColor)
                                     .frame(maxWidth: .infinity, alignment: .leading)
+                                
                                 Button("Scan") {
                                     self.viewModel.isShowingScanner.toggle()
                                 }
-                                .modifier(SmallButtonModifier())
-                                .sheet(isPresented: self.$viewModel.isShowingScanner) {
-                                    CodeScannerView(codeTypes: [.qr], simulatedData: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2", completion: self.viewModel.handleScanResults)
-                                }
+                                    .modifier(SmallButtonModifier())
+                                    .sheet(isPresented: self.$viewModel.isShowingScanner) {
+                                        EmptyView()
+//                                        CodeScannerView(codeTypes: [.qr], simulatedData: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2", completion: self.viewModel.handleScanResults)
+                                    }
+                                
                                 Button("Paste") {
                                     self.viewModel.pasteFromClipboard()
                                 }
@@ -89,18 +102,18 @@ struct SendCoinView: View {
                         }
 
                                             
-                        VStack(spacing: 18) {
+                        VStack(spacing: self.bottomStackSpacing) {
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("Transaction fee")
                                     Spacer()
                                     Text(self.viewModel.txFee)
                                 }
-                                    .font(Font.mainFont())
-                                    .foregroundColor(Color.white)
+                                .font(self.mainFont)
+                                .foregroundColor(self.textFiledForegroundColor)
                                 
                                 Picker("TxFee", selection: self.$viewModel.selctionIndex) {
-                                    ForEach(0 ..< 3) { index in
+                                    ForEach(0 ..< TxSpeed.allCases.count) { index in
                                         Text(TxSpeed.allCases[index].title).tag(index)
                                     }
                                 }
@@ -109,9 +122,9 @@ struct SendCoinView: View {
                             
                             VStack {
                                 Text(TxSpeed.allCases[self.viewModel.selctionIndex].description)
-                                    .font(Font.mainFont())
-                                    .foregroundColor(Color.white)
-                                    .opacity(0.6)
+                                    .font(self.mainFont)
+                                    .foregroundColor(self.textFiledForegroundColor)
+                                    .opacity(self.subtitleFontOpacity)
                             }
                         }
                     }
@@ -120,9 +133,9 @@ struct SendCoinView: View {
                     
                     Button("Send") {
                         print("SEND")
-                        self.showingAlert.toggle()
+                        self.viewModel.showingAlert.toggle()
                     }
-                    .alert(isPresented: self.$showingAlert) {
+                    .alert(isPresented: self.$viewModel.showingAlert) {
                         Alert(
                             title: Text("\(self.viewModel.exchangerViewModel.assetValue) \(self.viewModel.asset.coin.code) sent to"),
                             message: Text("\(self.viewModel.receiverAddress)"),

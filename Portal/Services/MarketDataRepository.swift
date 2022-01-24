@@ -15,9 +15,9 @@ final class MarketDataRepository  {
     typealias CurrencyCode = String
     typealias Rate = Double
     
-    private var marketDataUpdater = MarketDataUpdater()
+    private var marketDataUpdater: IHistoricalData = MarketDataUpdater()
     private var ratesUpdater = RatesDataUpdater(interval: 60)
-    private var priceUpdater = PricesDataUpdater(interval: 60)
+    private var priceUpdater: IPricesData = PricesDataUpdater(interval: 60)
     
     private var cancellables: Set<AnyCancellable> = []
     

@@ -35,7 +35,7 @@ struct TestSeedView: View {
                 .hidden()
 
             Title(
-                iconName: "iconSafe",
+                icon: "iconSafe",
                 title: "Confirm the seed",
                 subtitle: "Let’s see if you wrote the seed correctly: enter the following words from your seed."
             )

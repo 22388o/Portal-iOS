@@ -13,18 +13,18 @@ final class WalletCoordinator: ObservableObject {
     @Published var currentWallet: IWallet?
     var wallets: [IWallet]?
     
-    private let keychainStorage: KeychainStorage
+    private let defaults = UserDefaults.standard
     private var context: NSManagedObjectContext?
 
     static private let currentWalletIDKey = "CURRENT_WALLET_ID"
     
     private var currentWalletID: String? {
         get {
-            return keychainStorage.string(for: WalletCoordinator.currentWalletIDKey)
+            return defaults.string(forKey: WalletCoordinator.currentWalletIDKey)
         }
         set {
             guard let value = newValue else { return }
-            self.keychainStorage.save(string: value, for: WalletCoordinator.currentWalletIDKey)
+            self.defaults.set(value, forKey: WalletCoordinator.currentWalletIDKey)
         }
     }
     
@@ -35,8 +35,6 @@ final class WalletCoordinator: ObservableObject {
     
     init(context: NSManagedObjectContext? = nil) {
         //context is optional for tests
-        self.keychainStorage = KeychainStorage()
-        
         guard context != nil else { return }
         
         self.context = context
@@ -61,16 +59,10 @@ final class WalletCoordinator: ObservableObject {
     }
     
     private func saveSeed(data: Data, key: String) {
-        if Device.hasSecureEnclave {
-            keychainStorage.save(data: data, key: key)
-//            fatalError("Not implemented yet")
-        } else {
-            keychainStorage.save(data: data, key: key)
-        }
+        defaults.set(data, forKey: key)
     }
     
     private func clearWallets(wallets: [DBWallet]) {
-        try? keychainStorage.clear()
         for wallet in wallets {
             context?.delete(wallet)
             try? context?.save()
@@ -85,12 +77,12 @@ extension WalletCoordinator: IWalletCoordinator {
             
             guard
                 let key = (currentWallet as? DBWallet)?.key,
-                let data = keychainStorage.data(for: key) else { return }
+                let data = defaults.data(forKey: key) else { return }
             
             (currentWallet as? DBWallet)?.setup(data: data)
-        } else {
+        } /*else {
             fatalError("Wallet with id \(id) isn't exist")
-        }
+        }*/
     }
     
     func createWallet(model: NewWalletModel) {

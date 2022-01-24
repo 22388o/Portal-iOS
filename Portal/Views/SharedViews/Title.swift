@@ -9,19 +9,19 @@
 import SwiftUI
 
 struct Title: View {
-    private var iconName: String = "iconSafe"
-    private var title: String = "Title"
-    private var subtitle: String = "Subtitle"
+    private var icon: String
+    private var title: String
+    private var subtitle: String
     
-    init(iconName: String, title: String, subtitle: String) {
-        self.iconName = iconName
+    init(icon: String, title: String, subtitle: String) {
+        self.icon = icon
         self.title = title
         self.subtitle = subtitle
     }
     
     var body: some View {
         VStack(spacing: 8) {
-            Image(iconName)
+            Image(icon)
             Text(title)
                 .font(Font.mainFont(size: 30))
                 .foregroundColor(Color.createWalletLabel)
@@ -37,7 +37,7 @@ struct Title: View {
 struct Title_Previews: PreviewProvider {
     static var previews: some View {
         Title(
-            iconName: "iconSafe",
+            icon: "iconSafe",
             title: "Title",
             subtitle: "Subtitle"
         )
