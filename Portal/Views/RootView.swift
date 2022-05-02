@@ -16,29 +16,20 @@ struct RootView: View {
     init() {
         print("RootView init")
         
-        UITabBar.appearance().backgroundColor = .black
-        UITableView.appearance().separatorStyle = .none
-        
-        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.white
-        if #available(iOS 14.0, *) {
-            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.lightActiveLabel)], for: .normal)
-        } else {
-            // Fallback on earlier versions
-        }
-        UITableViewCell.appearance().backgroundColor = .clear
+        UITabBar.appearance().barTintColor = UIColor(white: 0, alpha: 0.1)
+//        UITableView.appearance().separatorStyle = .none
+//        UITableViewCell.appearance().backgroundColor = .clear
         UITableView.appearance().backgroundColor = .clear
     }
     
     var body: some View {
-        NavigationView {
-            if walletCoordinator.currentWallet != nil {
-                MainView()
-                    .environmentObject(walletCoordinator)
-            } else {
-                CreateWalletView()
-                    .environmentObject(walletCoordinator)
-                    .hideNavigationBar()
-            }
+        if walletCoordinator.currentWallet != nil {
+            MainView()
+                .environmentObject(walletCoordinator)
+        } else {
+            CreateWalletView()
+                .environmentObject(walletCoordinator)
+                .hideNavigationBar()
         }
     }
 }

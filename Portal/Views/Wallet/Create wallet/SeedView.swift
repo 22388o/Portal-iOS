@@ -65,24 +65,24 @@ struct SeedContainerView: View {
     var body: some View {
         HStack {
             VStack(spacing: 16) {
-                ForEach(0 ..< seed.count/2) { index in
+                ForEach(1 ..< 13) { index in
                     HStack {
-                        Text("\(index + 1))")
+                        Text("\(index))")
                             .font(Font.mainFont(size: 16))
                             .foregroundColor(Color.blush)
-                        Text(self.seed[index])
+                        Text(self.seed[index - 1])
                             .font(Font.mainFont(size: 16))
                             .foregroundColor(Color.brownishOrange)
                     }
                 }
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
             VStack(spacing: 16) {
-                ForEach(seed.count/2 ..< seed.count) { index in
+                ForEach(13 ..< 25) { index in
                     HStack {
-                        Text("\(index + 1))")
+                        Text("\(index))")
                             .font(Font.mainFont(size: 16))
                             .foregroundColor(Color.blush)
-                        Text(self.seed[index])
+                        Text(self.seed[index - 1])
                             .font(Font.mainFont(size: 16))
                             .foregroundColor(Color.brownishOrange)
                     }

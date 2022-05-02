@@ -12,7 +12,7 @@ import SwiftUI
 struct TransactionView: View {
     let coin: Coin
     
-    init(coin: Coin = Coin(code: "ETH", name: "Ethereum")) {
+    init(coin: Coin = Coin.ethereum()) {
         self.coin = coin
     }
     
@@ -23,7 +23,7 @@ struct TransactionView: View {
             VStack {
                 Spacer().frame(height: 8)
                 VStack {
-                    Image(uiImage: coin.icon)
+                    Image(uiImage: UIImage(imageLiteralResourceName: "iconBtc"))
                         .resizable()
                         .frame(width: 80, height: 80)
                     Text("Transaction details")
@@ -90,7 +90,7 @@ struct TransactionView: View {
 #if DEBUG
 struct TransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionView(coin: Coin(code: "BTC", name: "Bitcoin", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconBtc")))
+        TransactionView(coin: Coin.ethereum())
 //            .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }

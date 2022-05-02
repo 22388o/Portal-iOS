@@ -9,15 +9,9 @@
 import SwiftUI
 
 struct WalletView: View {
+    @ObservedObject var viewModel: WalletViewModel
+    @StateObject var channelsViewModel: ChannelsViewModel = .init()
     
-    private let verticalSpacing: CGFloat = 20
-    private let assetAllocationViewHeight: CGFloat = 180
-    private let assetAllocationViewBottomOffset: CGFloat = -20
-    private let listSideOffset: CGFloat = -10
-    private let listBottomOffset: CGFloat = -2.5
-    
-    @ObservedObject private var viewModel: WalletViewModel
-        
     init(wallet: IWallet = WalletMock()) {
         print("WalletView init")
         self.viewModel = .init(assets: wallet.assets)
@@ -27,29 +21,29 @@ struct WalletView: View {
         ZStack {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
             
-            VStack(spacing: verticalSpacing) {
+            VStack(spacing: 20) {
                 AssetAllocationView(assets: viewModel.adapters.map{$0.asset})
-                    .frame(width: UIScreen.main.bounds.width, height: assetAllocationViewHeight)
-                    .padding(.bottom, assetAllocationViewBottomOffset)
+                    .frame(width: UIScreen.main.bounds.width, height: 180.0)
+                    .padding(.bottom, -20)
                     .onTapGesture {
                         self.viewModel.showPortfolioView.toggle()
-                }
+                    }
                     .sheet(isPresented: $viewModel.showPortfolioView) {
                         PortfolioView(assets: self.viewModel.adapters.map{$0.asset})
                     }
+                
                 List(viewModel.adapters) { adapter in
-                    AssetItemView(adapter.viewModel)
+                    AssetItemView(viewModel: adapter.viewModel)
                         .onTapGesture {
                             self.viewModel.selectedAdapter = adapter
-                    }
-                    .listRowBackground(Color.clear)
-
+                        }
+                        .listRowBackground(Color.clear)
+                        .padding([.leading, .trailing], -20)
+                    
                 }
-                .padding([.leading, .trailing], self.listSideOffset)
-                .padding(.bottom, self.listBottomOffset)
-                    .sheet(isPresented: self.$viewModel.showCoinView) {
-                        AssetView(asset: self.viewModel.selectedAdapter.asset)
-                    }
+                .sheet(isPresented: self.$viewModel.showCoinView) {
+                    AssetView(asset: self.viewModel.selectedAdapter.asset, channelsVM: channelsViewModel)
+                }
             }
         }
     }
@@ -60,16 +54,16 @@ struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             WalletView(wallet: WalletMock())
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("iPhone SE")
+            
+            WalletView(wallet: WalletMock())
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro"))
                 .previewDisplayName("iPhone 11 Pro")
             
             WalletView(wallet: WalletMock())
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
                 .previewDisplayName("iPhone 11 Pro Max")
-            
-            WalletView(wallet: WalletMock())
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("iPhone SE")
         }
     }
 }

@@ -59,7 +59,7 @@ struct TransactionsListView: View {
 #if DEBUG
 struct TransactionsPreviewView_Previews: PreviewProvider {
     static var previews: some View {
-        TransactionsListView(coin: Coin(code: "ETH", name: "Ethereum"))
+        TransactionsListView(coin: Coin.ethereum())
             .background(Color.portalBackground.edgesIgnoringSafeArea(.all))
     }
 }

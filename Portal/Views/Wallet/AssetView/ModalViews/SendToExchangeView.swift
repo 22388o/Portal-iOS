@@ -12,7 +12,7 @@ struct SendToExchangeView: View {
     private let asset: IAsset
     @State private var sendToAddress = String()
     
-    init(asset: IAsset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))) {
+    init(asset: IAsset = Asset(coin: Coin.ethereum())) {
         self.asset = asset
     }
     
@@ -26,7 +26,7 @@ struct SendToExchangeView: View {
                 Spacer()
                     .frame(height: 8)
                 VStack {
-                    Image(uiImage: self.asset.coin.icon)
+                    Image(uiImage: UIImage(imageLiteralResourceName: "iconBtc"))
                         .resizable()
                         .frame(width: 80, height: 80)
                     Text("Send \(self.asset.coin.name) to exchange")
@@ -114,7 +114,7 @@ struct SendToExchangeView: View {
 #if DEBUG
 struct SendToExchangeView_Previews: PreviewProvider {
     static var previews: some View {
-        SendToExchangeView(asset: Asset(coin: Coin(code: "ETH", name: "Ethereum")))
+        SendToExchangeView(asset: Asset(coin: Coin.ethereum()))
     }
 }
 #endif

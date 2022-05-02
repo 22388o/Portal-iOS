@@ -7,23 +7,13 @@
 //
 
 import SwiftUI
-//import CodeScanner
+import CodeScanner
 
 struct SendCoinView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @ObservedObject private var viewModel: SendCoinViewModel
-        
-    private let textFiledForegroundColor = Color.white
+    @ObservedObject var viewModel: SendCoinViewModel
     
-    private let mainFont = Font.mainFont()
-    private let titleFont = Font.mainFont(size: 23)
-    private let totalAmountFont = Font.mainFont(size: 14)
-    private let addressFont = Font.mainFont(size: 16)
-    
-    private let iconSize: CGFloat = 60
-    private let bottomStackSpacing: CGFloat = 18
-    private let horizontalSpacerHeight: CGFloat = 20
-    private let subtitleFontOpacity: Double = 0.6
+    @State private var showingAlert = false
     
     init(asset: IAsset) {
         self.viewModel = .init(asset: asset)
@@ -40,59 +30,56 @@ struct SendCoinView: View {
             Background {
                 VStack {
                     VStack {
-                        Image(uiImage: self.viewModel.asset.coin.icon)
+                        Image(uiImage: UIImage(imageLiteralResourceName: "iconBtc"))
                             .resizable()
-                            .frame(width: self.iconSize, height: self.iconSize)
+                            .frame(width: 60, height: 60)
                         Text("Send \(self.viewModel.asset.coin.name)")
-                            .font(self.titleFont)
+                            .font(Font.mainFont(size: 23))
                         Text("Instantly send to any \(self.viewModel.asset.coin.code) address")
-                            .font(self.mainFont)
-                            .opacity(self.subtitleFontOpacity)
+                            .font(Font.mainFont())
+                            .opacity(0.6)
                     }
-                        .foregroundColor(self.textFiledForegroundColor)
+                        .foregroundColor(Color.white)
                                         
                     HStack {
                         Text("You have")
-                            .font(self.mainFont)
-                            .opacity(self.subtitleFontOpacity)
+                            .font(Font.mainFont())
+                            .opacity(0.6)
                         
                         Text("\(self.viewModel.asset.balanceProvider.balanceString) \(self.viewModel.asset.coin.code)")
-                            .font(self.totalAmountFont)
+                            .font(Font.mainFont(size: 14))
                         
                         Button("send all") {
                             self.viewModel.sendAll()
                         }
                             .modifier(SmallButtonModifier())
                     }
-                        .foregroundColor(self.textFiledForegroundColor)
+                        .foregroundColor(Color.white)
                     
-                    Spacer().frame(height: self.horizontalSpacerHeight)
+                    Spacer().frame(height: 15)
                     
                     ExchangerView(viewModel: self.viewModel.exchangerViewModel)
                     
-                    Spacer().frame(height: self.horizontalSpacerHeight)
+                    Spacer().frame(height: 20)
                     
-                    VStack(spacing: self.bottomStackSpacing) {
+                    VStack(spacing: 20) {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Send to...")
-                                .font(self.mainFont)
-                                .foregroundColor(self.textFiledForegroundColor)
+                                .font(Font.mainFont())
+                                .foregroundColor(Color.white)
                                                     
                             HStack {
                                 Text(self.viewModel.receiverAddress.isEmpty ? "Address" : self.viewModel.receiverAddress)
-                                    .font(self.addressFont)
-                                    .foregroundColor(self.viewModel.receiverAddress.isEmpty ? Color.lightActiveLabelNew : self.textFiledForegroundColor)
+                                    .font(Font.mainFont(size: 16))
+                                    .foregroundColor(self.viewModel.receiverAddress.isEmpty ? Color.lightActiveLabelNew : Color.white)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                
                                 Button("Scan") {
                                     self.viewModel.isShowingScanner.toggle()
                                 }
-                                    .modifier(SmallButtonModifier())
-                                    .sheet(isPresented: self.$viewModel.isShowingScanner) {
-                                        EmptyView()
-//                                        CodeScannerView(codeTypes: [.qr], simulatedData: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2", completion: self.viewModel.handleScanResults)
-                                    }
-                                
+                                .modifier(SmallButtonModifier())
+                                .sheet(isPresented: self.$viewModel.isShowingScanner) {
+                                    CodeScannerView(codeTypes: [.qr], simulatedData: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2", completion: self.viewModel.handleScanResults)
+                                }
                                 Button("Paste") {
                                     self.viewModel.pasteFromClipboard()
                                 }
@@ -102,18 +89,18 @@ struct SendCoinView: View {
                         }
 
                                             
-                        VStack(spacing: self.bottomStackSpacing) {
+                        VStack(spacing: 18) {
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("Transaction fee")
                                     Spacer()
                                     Text(self.viewModel.txFee)
                                 }
-                                .font(self.mainFont)
-                                .foregroundColor(self.textFiledForegroundColor)
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.white)
                                 
                                 Picker("TxFee", selection: self.$viewModel.selctionIndex) {
-                                    ForEach(0 ..< TxSpeed.allCases.count) { index in
+                                    ForEach(0 ..< 3) { index in
                                         Text(TxSpeed.allCases[index].title).tag(index)
                                     }
                                 }
@@ -122,9 +109,9 @@ struct SendCoinView: View {
                             
                             VStack {
                                 Text(TxSpeed.allCases[self.viewModel.selctionIndex].description)
-                                    .font(self.mainFont)
-                                    .foregroundColor(self.textFiledForegroundColor)
-                                    .opacity(self.subtitleFontOpacity)
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.white)
+                                    .opacity(0.6)
                             }
                         }
                     }
@@ -133,9 +120,9 @@ struct SendCoinView: View {
                     
                     Button("Send") {
                         print("SEND")
-                        self.viewModel.showingAlert.toggle()
+                        self.showingAlert.toggle()
                     }
-                    .alert(isPresented: self.$viewModel.showingAlert) {
+                    .alert(isPresented: self.$showingAlert) {
                         Alert(
                             title: Text("\(self.viewModel.exchangerViewModel.assetValue) \(self.viewModel.asset.coin.code) sent to"),
                             message: Text("\(self.viewModel.receiverAddress)"),
@@ -161,12 +148,7 @@ struct SendCoinsView_Previews: PreviewProvider {
         Group {
             SendCoinView(
                 asset: Asset(
-                    coin: Coin(
-                        code: "BTC",
-                        name: "Bitcoin",
-                        color: UIColor.yellow,
-                        icon: UIImage(imageLiteralResourceName: "iconBtc")
-                    )
+                    coin: Coin.bitcoin()
                 )
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
@@ -175,12 +157,7 @@ struct SendCoinsView_Previews: PreviewProvider {
             
             SendCoinView(
                 asset: Asset(
-                    coin: Coin(
-                        code: "ETH",
-                        name: "Ethereum",
-                        color: UIColor.yellow,
-                        icon: UIImage(imageLiteralResourceName: "iconEth")
-                    )
+                    coin: Coin.ethereum()
                 )
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro"))
@@ -188,12 +165,7 @@ struct SendCoinsView_Previews: PreviewProvider {
             
             SendCoinView(
                 asset: Asset(
-                    coin: Coin(
-                        code: "XTZ",
-                        name: "Stellar Lumens",
-                        color: UIColor.yellow,
-                        icon: UIImage(imageLiteralResourceName: "iconXtz")
-                    )
+                    coin: Coin.bitcoin()
                 )
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
@@ -201,12 +173,7 @@ struct SendCoinsView_Previews: PreviewProvider {
             
             SendCoinView(
                 asset: Asset(
-                    coin: Coin(
-                        code: "ETH",
-                        name: "Ethereum",
-                        color: UIColor.yellow,
-                        icon: UIImage(imageLiteralResourceName: "iconEth")
-                    )
+                    coin: Coin.ethereum()
                 )
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))

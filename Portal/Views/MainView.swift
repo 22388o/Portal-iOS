@@ -24,7 +24,7 @@ struct MainView: View {
                         }
                     }
                     .tag(0)
-                    .hideNavigationBar()
+//                    .hideNavigationBar()
 
                 AtomicBridgeView()
                     .tabItem {
@@ -34,7 +34,7 @@ struct MainView: View {
                         }
                     }
                     .tag(1)
-                .hideNavigationBar()
+//                .hideNavigationBar()
             }
         }
 //        .hideNavigationBar()

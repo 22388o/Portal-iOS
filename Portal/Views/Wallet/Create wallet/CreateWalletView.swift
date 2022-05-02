@@ -11,7 +11,7 @@ import SwiftUI
 struct CreateWalletView: View {
     @State private var showSeedView: Bool = false
     
-    @ObservedObject private var viewModel: CreateWalletViewModel
+    @ObservedObject var viewModel: CreateWalletViewModel
     
     init() {
         self.viewModel = CreateWalletViewModel()
@@ -31,7 +31,7 @@ struct CreateWalletView: View {
                         
             VStack(spacing: 20) {
                 Title(
-                    icon: "iconSafe",
+                    iconName: "iconSafe",
                     title: "Create a wallet",
                     subtitle: "Store more than 2000 different currencies locally. Only you hold your private keys. Secure and private."
                 )

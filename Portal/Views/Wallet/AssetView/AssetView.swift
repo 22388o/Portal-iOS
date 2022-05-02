@@ -7,23 +7,20 @@
 //
 
 import SwiftUI
-//import Charts
+import Charts
 
 enum CoinViewRoute {
     case value, transactions, alerts
 }
 
 struct AssetView: View {
-    private let dividerOffset: CGFloat = 50
-    private let minimumHeight: CGFloat = 700
-    private let topOffset: CGFloat = 25
-    private let sideOffset: CGFloat = 20
+    @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
+    @ObservedObject var viewModel: AssetViewModel
+    @ObservedObject var channelsViewModel: ChannelsViewModel
     
-    @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
-    @ObservedObject private var viewModel: AssetViewModel
-    
-    init(asset: IAsset) {
+    init(asset: IAsset, channelsVM: ChannelsViewModel) {
         viewModel = .init(asset: asset)
+        self.channelsViewModel = channelsVM
     }
     
     var body: some View {
@@ -37,20 +34,126 @@ struct AssetView: View {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
             
             VStack {
-                AssetTitleView(viewModel: viewModel, smallSize: isSmallView(size: size))
-                    .padding([.leading, .trailing], sideOffset)
+                VStack(alignment: .leading, spacing: 10) {
+                    if size.height < 700 {
+                        HStack {
+                            HStack {
+                                Image(uiImage: UIImage(imageLiteralResourceName: "iconBtc"))
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                Text("\(viewModel.name)")
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel)
+                            }
+                            
+                            Spacer()
+                            
+                            Text("\(viewModel.balance)")
+                                .font(Font.mainFont(size: 28))
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+                        }
+                        .frame(height: 35)
+                    } else {
+                        VStack(alignment: .leading, spacing: 0.0) {
+                            HStack {
+                                Image(uiImage: UIImage(imageLiteralResourceName: "iconBtc"))
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                Text("\(viewModel.name)")
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel)
+                            }
+                            
+                            Text("\(viewModel.balance)")
+                                .font(Font.mainFont(size: 28))
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+                        }
+                        .frame(height: 75)
+                    }
+                                    
+                    VStack(spacing: 8) {
+                        HStack {
+                            Spacer()
+                            Button("Send") {
+                                self.viewModel.showSendView.toggle()
+                            }
+                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                            .sheet(isPresented: $viewModel.showSendView) {
+                                SendCoinView(asset: self.viewModel.asset)
+                            }
+                            Spacer()
+                            Button("Receive") {
+                                self.viewModel.showReceiveView.toggle()
+                            }
+                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                            .sheet(isPresented: $viewModel.showReceiveView) {
+                                ReceiveCoinView(asset: self.viewModel.asset)
+                            }
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Spacer()
+                            Button("Send to exchange") {
+                                self.viewModel.showSendToExchangeView.toggle()
+                            }
+                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                            .sheet(isPresented: $viewModel.showSendToExchangeView) {
+                                SendToExchangeView(asset: self.viewModel.asset)
+                            }
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Spacer()
+                            Button("Lightning channels") {
+                                self.viewModel.showWithdrawView.toggle()
+                            }
+                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                            .shadow(color: .white, radius: 2)
+                            .sheet(isPresented: $viewModel.showWithdrawView) {
+                                WithdrawCoinView(viewModel: channelsViewModel)
+                            }
+                            Spacer()
+                        }
+
+                    }
+                    .padding([.leading, .trailing], -10)
+                    
+                }
+                .padding([.leading, .trailing], 20)
                 
                 Spacer()
-                
-                AssetViewRouteControls(route: $viewModel.route)
+                            
+                HStack(alignment: .center) {
+                    Group {
+                        Button(action: { self.viewModel.route = .value }) {
+                            Text("Value")
+                                .foregroundColor(viewModel.route == .value ? Color.coinViewRouteButtonInactive : Color.coinViewRouteButtonActive)
+                        }
+                        
+                        Button(action: { self.viewModel.route = .transactions }) {
+                            Text("Transactions")
+                                .foregroundColor(viewModel.route == .transactions ?  Color.coinViewRouteButtonInactive : Color.coinViewRouteButtonActive)
+                        }
+                        
+                        Button(action: { self.viewModel.route = .alerts }) {
+                            Text("Alerts")
+                                .foregroundColor(viewModel.route == .alerts ? Color.coinViewRouteButtonInactive : Color.coinViewRouteButtonActive)
+                        }
+                    }
+                        .frame(width: 110)
+                }
+                    .font(Font.mainFont(size: 15))
+                    .padding(.top, 12)
                 
                 Divider()
-                    .frame(width: size.width - dividerOffset)
-                
+                    .frame(width: UIScreen.main.bounds.width - 50)
+                            
                 self.containedView()
                     .frame(maxHeight: .infinity)
             }
-            .padding(.top, isSmallView(size: size) ? 0 : topOffset)
+            .padding(.top, size.height < 700 ? 0 : 25)
         }
     }
     
@@ -73,9 +176,6 @@ struct AssetView: View {
         }
     }
     
-    private func isSmallView(size: CGSize) -> Bool {
-        size.height < minimumHeight
-    }
 }
 
 #if DEBUG
@@ -84,36 +184,24 @@ struct AssetView_Previews: PreviewProvider {
         Group {
             AssetView(
                 asset: Asset(
-                    coin: Coin(
-                        code: "BTC",
-                        name: "Bitcoin",
-                        icon: UIImage(imageLiteralResourceName: "iconBtc")
-                    )
-                )
+                    coin: Coin.bitcoin()
+                ), channelsVM: .init()
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
             .previewDisplayName("iPhone SE")
             
             AssetView(
                 asset: Asset(
-                    coin: Coin(
-                        code: "BTC",
-                        name: "Bitcoin",
-                        icon: UIImage(imageLiteralResourceName: "iconBtc")
-                    )
-                )
+                    coin: Coin.ethereum()
+                ), channelsVM: .init()
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro"))
             .previewDisplayName("iPhone 11 Pro")
             
             AssetView(
                 asset: Asset(
-                    coin: Coin(
-                        code: "BTC",
-                        name: "Bitcoin",
-                        icon: UIImage(imageLiteralResourceName: "iconBtc")
-                    )
-                )
+                    coin: Coin.portal()
+                ), channelsVM: .init()
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
             .previewDisplayName("iPhone 11 Pro Max")

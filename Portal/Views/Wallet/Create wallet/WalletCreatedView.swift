@@ -12,7 +12,7 @@ struct WalletCreatedView: View {
     @EnvironmentObject private var walletCoordinator: WalletCoordinator
     @State private var showWallet = false
 
-    let asset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))
+    let asset = Asset(coin: Coin.ethereum())
     var body: some View {
         VStack {
             NavigationLink(
@@ -23,7 +23,7 @@ struct WalletCreatedView: View {
                 .hidden()
             
             Title(
-                icon: "iconSafe",
+                iconName: "iconSafe",
                 title: "Wallet created!",
                 subtitle: "Add assets to your wallet (in at least 1 currency.)"
             )

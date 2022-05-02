@@ -9,19 +9,10 @@
 import SwiftUI
 
 struct AssetItemView: View {
-    
-    private let iconSize: CGFloat = 24
-    private let verticalSpacing: CGFloat = 6
-    private let titleFont: Font = .mainFont(size: 18)
-    private let subtitleFont: Font = .mainFont(size: 14)
-    private let subtitleForegroundColor = Color.white.opacity(0.6)
-    private let backgroundColor = Color.black.opacity(0.25)
-    private let cornerRadius: CGFloat = 16
-    
-    @ObservedObject private var asset: AssetItemViewModel
+    @ObservedObject var viewModel: AssetItemViewModel
             
-    init(_ viewModel: AssetItemViewModel) {
-        self.asset = viewModel
+    init(viewModel: AssetItemViewModel) {
+        self.viewModel = viewModel
     }
     
     private var emptyView: some View {
@@ -33,48 +24,47 @@ struct AssetItemView: View {
     
     var body: some View {
         HStack(alignment: .center) {
-            Image(uiImage: asset.icon)
+            Image(uiImage: UIImage(imageLiteralResourceName: "iconBtc"))
                 .resizable()
-                .frame(width: iconSize, height: iconSize)
+                .frame(width: 24, height: 24)
                 .padding([.leading])
             
-            VStack(spacing: verticalSpacing) {
+            VStack(spacing: 6) {
                 HStack {
-                    Text(asset.code)
+                    Text(viewModel.code)
                     emptyView
-                    Text(asset.balance)
+                    Text(viewModel.balance)
                 }
-                    .font(titleFont)
+                    .font(Font.mainFont(size: 18))
                     .foregroundColor(Color.white)
                 
                 HStack {
-                    Text(asset.name)
+                    Text(viewModel.name)
                     emptyView
-                    Text(asset.totalValue)
-
+                    Text(viewModel.totalValue)
                 }
-                    .font(subtitleFont)
-                .foregroundColor(subtitleForegroundColor)
+                    .font(Font.mainFont(size: 14))
+                    .foregroundColor(Color.white.opacity(0.6))
 
                 
                 HStack {
-                    Text(asset.price)
+                    Text(viewModel.price)
                     emptyView
-                    Text(asset.change)
+                    Text(viewModel.change)
                 }
-                    .font(subtitleFont)
-                    .foregroundColor(subtitleForegroundColor)
+                    .font(Font.mainFont(size: 14))
+                    .foregroundColor(Color.white.opacity(0.6))
             }
                 .padding([.trailing, .top, .bottom], 15)
                 .padding(.leading, 5)
         }
-        .background(backgroundColor)
-        .cornerRadius(cornerRadius)
+            .background(Color.black.opacity(0.25))
+            .cornerRadius(16)
             .onAppear(perform: {
-                print("\(self.asset.code) on Appear")
+                print("\(self.viewModel.code) on Appear")
             })
             .onDisappear(perform: {
-                print("\(self.asset.code) on Disappear")
+                print("\(self.viewModel.code) on Disappear")
             })
     }
 }
@@ -82,14 +72,10 @@ struct AssetItemView: View {
 #if DEBUG
 struct AssetItemView_Previews: PreviewProvider {
     static var previews: some View {
-        AssetItemView(
+        AssetItemView(viewModel:
             AssetItemViewModel(asset:
                 Asset(
-                    coin: Coin(
-                        code: "BTC",
-                        name: "Bitcoin",
-                        icon: UIImage(imageLiteralResourceName: "iconBtc")
-                    )
+                    coin: Coin.bitcoin()
                 )
             )
         )

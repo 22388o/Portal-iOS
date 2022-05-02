@@ -15,15 +15,6 @@ struct TimeframeButtonsView: View {
     var body: some View {
         HStack {
             Button(action: {
-                self.timeframe = .hour
-            }) {
-                Text("Hour")
-                    .modifier(
-                        TimeframeButton(type: type, isSelected: timeframe == .hour)
-                )
-            }
-            
-            Button(action: {
                 self.timeframe = .day
             }) {
                 Text("Day")
@@ -57,14 +48,6 @@ struct TimeframeButtonsView: View {
                         TimeframeButton(type: type, isSelected: timeframe == .year)
                 )
             }
-            
-            Button(action: {
-                self.timeframe = .allTime
-            }) {
-                Text("All time")
-                    .modifier(TimeframeButton(type: type, isSelected: timeframe == .allTime)
-                )
-            }
         }
         .padding([.leading, .trailing])
     }
@@ -75,7 +58,7 @@ struct TimeframeButtonsView_Previews: PreviewProvider {
     static var previews: some View {
         TimeframeButtonsView(
             type: .constant(.portfolio),
-            timeframe: .constant(.hour)
+            timeframe: .constant(.day)
         )
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

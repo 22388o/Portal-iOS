@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PortfolioView: View {
-    @ObservedObject private var viewModel: PortfolioViewModel
+    @ObservedObject var viewModel: PortfolioViewModel
     
     init(assets: [IAsset]) {
         print("Portfolio init")
@@ -24,11 +24,11 @@ struct PortfolioView: View {
                     VStack {
                         
                         MarketValueView(
-                            timeframe: self.$viewModel.selectedTimeframe,
-                            totalValue: self.$viewModel.totalValue,
-                            change: self.$viewModel.change,
-                            chartDataEntries: self.$viewModel.chartDataEntries,
-                            valueCurrencyViewSate: self.$viewModel.valueCurrencySwitchState
+                            timeframe: $viewModel.selectedTimeframe,
+                            totalValue: $viewModel.totalValue,
+                            change: $viewModel.change,
+                            chartDataEntries: $viewModel.chartDataEntries,
+                            valueCurrencyViewSate: $viewModel.valueCurrencySwitchState
                         )
                             .padding(.top, 10)
                                 

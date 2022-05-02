@@ -11,7 +11,7 @@ import SwiftUI
 struct ReceiveCoinView: View {
     let asset: IAsset
     
-    init(asset: IAsset = Asset(coin: Coin(code: "ETH", name: "Ethereum"))) {
+    init(asset: IAsset = Asset(coin: Coin.ethereum())) {
         self.asset = asset
     }
     
@@ -23,7 +23,7 @@ struct ReceiveCoinView: View {
                 Spacer()
                     .frame(height: 8)
                 VStack {
-                    Image(uiImage: asset.coin.icon)
+                    Image(uiImage: UIImage(imageLiteralResourceName: "iconBtc"))
                         .resizable()
                         .frame(width: 80, height: 80)
                     Text("Receive \(asset.coin.name)")
@@ -65,7 +65,7 @@ struct ReceiveCoinView: View {
 #if DEBUG
 struct ReceiveCoinView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiveCoinView(asset: Asset(coin: Coin(code: "BTC", name: "Bitcoin", icon: UIImage(imageLiteralResourceName: "iconBtc"))))
+        ReceiveCoinView(asset: Asset(coin: Coin.bitcoin()))
     }
 }
 #endif
