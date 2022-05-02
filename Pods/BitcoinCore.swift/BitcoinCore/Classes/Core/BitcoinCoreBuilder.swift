@@ -10,7 +10,6 @@ public class BitcoinCoreBuilder {
 
     // required parameters
     private var seed: Data?
-    private var words: [String]?
     private var bip: Bip = .bip44
     private var network: INetwork?
     private var paymentAddressParser: IPaymentAddressParser?
@@ -33,11 +32,6 @@ public class BitcoinCoreBuilder {
 
     public func set(seed: Data) -> BitcoinCoreBuilder {
         self.seed = seed
-        return self
-    }
-
-    public func set(words: [String]) -> BitcoinCoreBuilder {
-        self.words = words
         return self
     }
 
@@ -118,8 +112,6 @@ public class BitcoinCoreBuilder {
         let seed: Data
         if let selfSeed = self.seed {
            seed = selfSeed
-        } else if let words = self.words {
-            seed = Mnemonic.seed(mnemonic: words)
         } else {
             throw BuildError.noSeedData
         }
@@ -164,13 +156,13 @@ public class BitcoinCoreBuilder {
         let publicKeyManager = PublicKeyManager.instance(storage: storage, hdWallet: hdWallet, restoreKeyConverter: restoreKeyConverterChain)
         let pendingOutpointsProvider = PendingOutpointsProvider(storage: storage)
 
-        let myOutputsCache = OutputsCache.instance(storage: storage)
+        let transactionMetadataExtractor = TransactionMetadataExtractor(storage: storage)
         let irregularOutputFinder = IrregularOutputFinder(storage: storage)
         let transactionInputExtractor = TransactionInputExtractor(storage: storage, scriptConverter: scriptConverter, addressConverter: addressConverter, logger: logger)
         let transactionKeySetter = TransactionPublicKeySetter(storage: storage)
         let transactionOutputExtractor = TransactionOutputExtractor(transactionKeySetter: transactionKeySetter, pluginManager: pluginManager, logger: logger)
         let transactionAddressExtractor = TransactionOutputAddressExtractor(storage: storage, addressConverter: addressConverter)
-        let transactionExtractor = TransactionExtractor(outputExtractor: transactionOutputExtractor, inputExtractor: transactionInputExtractor, outputsCache: myOutputsCache, outputAddressExtractor: transactionAddressExtractor)
+        let transactionExtractor = TransactionExtractor(outputExtractor: transactionOutputExtractor, inputExtractor: transactionInputExtractor, metaDataExtractor: transactionMetadataExtractor, outputAddressExtractor: transactionAddressExtractor)
         let transactionInvalidator = TransactionInvalidator(storage: storage, transactionInfoConverter: transactionInfoConverter, listener: dataProvider)
         let transactionConflictResolver = TransactionConflictsResolver(storage: storage)
         let transactionsProcessorQueue = DispatchQueue(label: "io.horizontalsystems.bitcoin-core.transaction-processor", qos: .background)
@@ -226,7 +218,6 @@ public class BitcoinCoreBuilder {
         let syncManager = SyncManager(reachabilityManager: reachabilityManager, initialSyncer: initialSyncer, peerGroup: peerGroup, apiSyncStateManager: stateManager, bestBlockHeight: blockSyncer.localDownloadedBestBlockHeight)
 
         let bitcoinCore = BitcoinCore(storage: storage,
-                cache: myOutputsCache,
                 dataProvider: dataProvider,
                 peerGroup: peerGroup,
                 initialBlockDownload: initialBlockDownload,

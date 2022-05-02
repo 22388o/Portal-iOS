@@ -1,6 +1,7 @@
 import BigInt
 import RxSwift
 import HsToolKit
+import NIO
 
 enum BlockValidatorType { case header, bits, legacy, testNet, EDA, DAA, DGW }
 
@@ -27,6 +28,9 @@ protocol IHDWallet {
     var gapLimit: Int { get }
     func publicKey(account: Int, index: Int, external: Bool) throws -> PublicKey
     func publicKeys(account: Int, indices: Range<UInt32>, external: Bool) throws -> [PublicKey]
+}
+
+protocol IPrivateHDWallet {
     func privateKeyData(account: Int, index: Int, external: Bool) throws -> Data
 }
 
@@ -53,14 +57,18 @@ protocol IBlockDiscovery {
     func discoverBlockHashes(account: Int) -> Single<([PublicKey], [BlockHash])>
 }
 
-public protocol IStorage {
+public protocol IOutputStorage {
+    func previousOutput(ofInput: Input) -> Output?
+    func outputsWithPublicKeys() -> [OutputWithPublicKey]
+}
+
+public protocol IStorage: IOutputStorage {
     var initialRestored: Bool? { get }
     func set(initialRestored: Bool)
 
     func leastScoreFastestPeerAddress(excludingIps: [String]) -> PeerAddress?
     func peerAddressExist(address: String) -> Bool
     func save(peerAddresses: [PeerAddress])
-    func increasePeerAddressScore(ip: String)
     func deletePeerAddress(byIp ip: String)
     func set(connectionTime: Double, toPeerAddress: String)
 
@@ -112,16 +120,14 @@ public protocol IStorage {
     func update(transaction: FullTransaction) throws
     func update(transaction: Transaction) throws
     func fullInfo(forTransactions: [TransactionWithBlock]) -> [FullTransactionForInfo]
-    func validOrInvalidTransactionsFullInfo(fromTimestamp: Int?, fromOrder: Int?, limit: Int?) -> [FullTransactionForInfo]
+    func validOrInvalidTransactionsFullInfo(fromTimestamp: Int?, fromOrder: Int?, type: TransactionFilterType?, limit: Int?) -> [FullTransactionForInfo]
     func transactionFullInfo(byHash hash: Data) -> FullTransactionForInfo?
     func moveTransactionsTo(invalidTransactions: [InvalidTransaction]) throws
     func move(invalidTransaction: InvalidTransaction, toTransactions: FullTransaction) throws
 
-    func outputsWithPublicKeys() -> [OutputWithPublicKey]
     func unspentOutputs() -> [UnspentOutput]
     func inputs(transactionHash: Data) -> [Input]
     func outputs(transactionHash: Data) -> [Output]
-    func previousOutput(ofInput: Input) -> Output?
     func inputsUsingOutputs(withTransactionHash: Data) -> [Input]
     func inputsUsing(previousOutputTxHash: Data, previousOutputIndex: Int) -> [Input]
 
@@ -168,6 +174,7 @@ public protocol IPeerGroup: class {
 
     func start()
     func stop()
+    func reconnectPeers()
 
     func isReady(peer: IPeer) -> Bool
 }
@@ -224,7 +231,7 @@ public protocol IPeerTaskDelegate: class {
 protocol IPeerConnection: class {
     var delegate: PeerConnectionDelegate? { get set }
     var host: String { get }
-    var port: UInt32 { get }
+    var port: Int { get }
     var logName: String { get }
     func connect()
     func disconnect(error: Error?)
@@ -251,14 +258,14 @@ protocol IPeerAddressManagerDelegate: class {
 
 protocol IPeerDiscovery {
     var peerAddressManager: IPeerAddressManager? { get set }
-    func lookup(dnsSeed: String)
+    func lookup(dnsSeeds: [String])
 }
 
 protocol IFactory {
     func block(withHeader header: BlockHeader, previousBlock: Block) -> Block
     func block(withHeader header: BlockHeader, height: Int) -> Block
     func blockHash(withHeaderHash headerHash: Data, height: Int, order: Int) -> BlockHash
-    func peer(withHost host: String, logger: Logger?) -> IPeer
+    func peer(withHost host: String, eventLoopGroup: MultiThreadedEventLoopGroup, logger: Logger?) -> IPeer
     func transaction(version: Int, lockTime: Int) -> Transaction
     func inputToSign(withPreviousOutput: UnspentOutput, script: Data, sequence: Int) -> InputToSign
     func output(withIndex index: Int, address: Address, value: Int, publicKey: PublicKey?) -> Output
@@ -318,8 +325,8 @@ protocol IScriptExtractor: class {
 }
 
 protocol IOutputsCache: class {
-    func addMineOutputs(from outputs: [Output])
-    func hasOutputs(forInputs inputs: [Input]) -> Bool
+    func add(outputs: [Output])
+    func valueSpent(by input: Input) -> Int?
     func clear()
 }
 
@@ -350,16 +357,12 @@ protocol ITransactionExtractor {
     func extract(transaction: FullTransaction)
 }
 
-protocol ITransactionOutputAddressExtractor {
-    func extractOutputAddresses(transaction: FullTransaction)
-}
-
 protocol ITransactionLinker {
     func handle(transaction: FullTransaction)
 }
 
 protocol ITransactionPublicKeySetter {
-    func set(output: Output) -> Bool
+    func set(output: Output)
 }
 
 public protocol ITransactionSyncer: class {
@@ -449,7 +452,7 @@ protocol ISyncManagerDelegate: class {
 }
 
 public protocol ITransactionInfo: class {
-    init(uid: String, transactionHash: String, transactionIndex: Int, inputs: [TransactionInputInfo], outputs: [TransactionOutputInfo], fee: Int?, blockHeight: Int?, timestamp: Int, status: TransactionStatus, conflictingHash: String?)
+    init(uid: String, transactionHash: String, transactionIndex: Int, inputs: [TransactionInputInfo], outputs: [TransactionOutputInfo], amount: Int, type: TransactionType, fee: Int?, blockHeight: Int?, timestamp: Int, status: TransactionStatus, conflictingHash: String?)
 }
 
 public protocol ITransactionInfoConverter {
@@ -463,7 +466,7 @@ protocol IDataProvider {
     var lastBlockInfo: BlockInfo? { get }
     var balance: BalanceInfo { get }
     func debugInfo(network: INetwork, scriptType: ScriptType, addressConverter: IAddressConverter) -> String
-    func transactions(fromUid: String?, limit: Int?) -> Single<[TransactionInfo]>
+    func transactions(fromUid: String?, type: TransactionFilterType?, limit: Int?) -> Single<[TransactionInfo]>
     func transaction(hash: String) -> TransactionInfo?
 
     func rawTransaction(transactionHash: String) -> String?
@@ -487,7 +490,7 @@ public protocol INetwork: class {
     var xPubKey: UInt32 { get }
     var xPrivKey: UInt32 { get }
     var magic: UInt32 { get }
-    var port: UInt32 { get }
+    var port: Int { get }
     var dnsSeeds: [String] { get }
     var dustRelayTxFee: Int { get }
     var bip44Checkpoint: Checkpoint { get }

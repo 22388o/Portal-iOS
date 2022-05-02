@@ -6,7 +6,6 @@ import RxSwift
 
 public class BitcoinCore {
     private let storage: IStorage
-    private let cache: OutputsCache
     private var dataProvider: IDataProvider
     private let publicKeyManager: IPublicKeyManager
     private let watchedTransactionManager: IWatchedTransactionManager
@@ -82,7 +81,7 @@ public class BitcoinCore {
     public var delegateQueue = DispatchQueue(label: "io.horizontalsystems.bitcoin-core.bitcoin-core-delegate-queue")
     public weak var delegate: BitcoinCoreDelegate?
 
-    init(storage: IStorage, cache: OutputsCache, dataProvider: IDataProvider,
+    init(storage: IStorage, dataProvider: IDataProvider,
          peerGroup: IPeerGroup, initialBlockDownload: IInitialBlockDownload, bloomFilterLoader: BloomFilterLoader, transactionSyncer: ITransactionSyncer,
          publicKeyManager: IPublicKeyManager, addressConverter: AddressConverterChain, restoreKeyConverterChain: RestoreKeyConverterChain,
          unspentOutputSelector: UnspentOutputSelectorChain,
@@ -91,7 +90,6 @@ public class BitcoinCore {
          syncManager: SyncManager, pluginManager: IPluginManager, watchedTransactionManager: IWatchedTransactionManager, bip: Bip,
          peerManager: IPeerManager) {
         self.storage = storage
-        self.cache = cache
         self.dataProvider = dataProvider
         self.peerGroup = peerGroup
         self.initialBlockDownload = initialBlockDownload
@@ -145,8 +143,8 @@ extension BitcoinCore {
         syncManager.syncState
     }
 
-    public func transactions(fromUid: String? = nil, limit: Int? = nil) -> Single<[TransactionInfo]> {
-        dataProvider.transactions(fromUid: fromUid, limit: limit)
+    public func transactions(fromUid: String? = nil, type: TransactionFilterType?, limit: Int? = nil) -> Single<[TransactionInfo]> {
+        dataProvider.transactions(fromUid: fromUid, type: type, limit: limit)
     }
 
     public func transaction(hash: String) -> TransactionInfo? {
