@@ -10,7 +10,8 @@ import Foundation
 import Combine
 
 final class MarketDataUpdater: IHistoricalData {
-    var onUpdatePublisher = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
+    var onUpdatePublisher = PassthroughSubject<(MarketDataRange, HistoricalTickerPrice), Never>()
+    private(set) var onUpdateHistoricalData = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
     
     private let marketDataQueue = DispatchQueue(label: "com.portal.market.data.queue", attributes: .concurrent)
     private let jsonDecoder: JSONDecoder
@@ -28,18 +29,10 @@ final class MarketDataUpdater: IHistoricalData {
     
     func fetchHistoricalData(assets: String) {
         marketDataQueue.async { [weak self] in
-            self?.fetchHourData(assets: assets) { result in
-                switch result {
-                case let .success(data):
-                    self?.onUpdatePublisher.send((.hour, data))
-                case let .failure(error):
-                    print(error.localizedDescription)
-                }
-            }
             self?.fetchDayData(assets: assets) { result in
                 switch result {
                 case let .success(data):
-                self?.onUpdatePublisher.send((.day, data))
+                self?.onUpdateHistoricalData.send((.day, data))
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -47,7 +40,7 @@ final class MarketDataUpdater: IHistoricalData {
             self?.fetchWeekData(assets: assets) { result in
                 switch result {
                 case let .success(data):
-                self?.onUpdatePublisher.send((.week, data))
+                self?.onUpdateHistoricalData.send((.week, data))
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -55,7 +48,7 @@ final class MarketDataUpdater: IHistoricalData {
             self?.fetchMonthData(assets: assets) { result in
                 switch result {
                 case let .success(data):
-                self?.onUpdatePublisher.send((.month, data))
+                self?.onUpdateHistoricalData.send((.month, data))
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -63,7 +56,7 @@ final class MarketDataUpdater: IHistoricalData {
             self?.fetchYearData(assets: assets) { result in
                 switch result {
                 case let .success(data):
-                self?.onUpdatePublisher.send((.year, data))
+                self?.onUpdateHistoricalData.send((.year, data))
                 case let .failure(error):
                     print(error.localizedDescription)
                 }

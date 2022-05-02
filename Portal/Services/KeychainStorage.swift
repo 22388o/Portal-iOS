@@ -7,32 +7,33 @@
 //
 
 import Foundation
-//import KeychainAccess
+import KeychainAccess
 
 final class KeychainStorage: IKeyChainStorage {
-//    private let keychain: Keychain
+    private let keychain: Keychain
     
     init() {
-        //keychain = Keychain(service: "com.portal.keychain.service").accessibility(.whenPasscodeSetThisDeviceOnly)
+        keychain = Keychain(service: "com.portal.keychain.service").accessibility(.whenPasscodeSetThisDeviceOnly)
+        print(keychain["CURRENT_WALLET_ID"])
     }
     
     func string(for key: String) -> String? {
-        ""//keychain[key]
+        keychain[key]
     }
     
     func save(string: String, for key: String) {
-        //keychain[key] = string
+        keychain[key] = string
     }
     
     func data(for key: String) -> Data? {
-        nil//keychain[data: key]
+        keychain[data: key]
     }
     
     func save(data: Data, key: String) {
-        //keychain[data: key] = data
+        keychain[data: key] = data
     }
     
     func clear() throws {
-        //try keychain.removeAll()
+        try keychain.removeAll()
     }
 }

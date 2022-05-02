@@ -15,9 +15,9 @@ final class MarketDataRepository  {
     typealias CurrencyCode = String
     typealias Rate = Double
     
-    private var marketDataUpdater: IHistoricalData = MarketDataUpdater()
+    private var marketDataUpdater = MarketDataUpdater()
     private var ratesUpdater = RatesDataUpdater(interval: 60)
-    private var priceUpdater: IPricesData = PricesDataUpdater(interval: 60)
+    private var priceUpdater = PricesDataUpdater(interval: 60)
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -72,25 +72,18 @@ final class MarketDataRepository  {
 }
 
 extension MarketDataRepository {
-    private func update(_ range: MarketDataRange, _ data: HistoricalDataResponse) {
+    private func update(_ range: MarketDataRange, _ data: HistoricalTickerPrice) {
         for points in data {
-            if self.marketData.value[points.key] == nil {
-                self.marketData.writer({ (data) in
-                    data[points.key] = CoinMarketData()
-                })
-            }
-            self.marketData.writer({ (data) in
+            marketData.writer({ (data) in
                 switch range {
-                case .hour:
-                    data[points.key]?.hourPoints = points.value
                 case .day:
-                    data[points.key]?.dayPoints = points.value
+                    data[points.key, default: CoinMarketData()].dayPoints = points.value
                 case .week:
-                    data[points.key]?.weekPoints = points.value
+                    data[points.key, default: CoinMarketData()].weekPoints = points.value
                 case .month:
-                    data[points.key]?.monthPoints = points.value
+                    data[points.key, default: CoinMarketData()].monthPoints = points.value
                 case .year:
-                    data[points.key]?.yearPoints = points.value
+                    data[points.key, default: CoinMarketData()].yearPoints = points.value
                 }
             })
         }
