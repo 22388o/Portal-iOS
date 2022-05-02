@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="21A559" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AccountRecord" representedClassName="AccountRecord" syncable="YES">
+        <attribute name="btcBipFormat" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="btcNetwork" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="coins" optional="YES" attributeType="Transformable"/>
+        <attribute name="confirmationThreshold" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="ethNetwork" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fiatCurrency" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="DBTransaction" representedClassName="DBTransaction" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="walletID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -10,7 +20,8 @@
         <attribute name="name" attributeType="String"/>
     </entity>
     <elements>
-        <element name="DBWallet" positionX="-63" positionY="-18" width="128" height="88"/>
         <element name="DBTransaction" positionX="-63" positionY="9" width="128" height="73"/>
+        <element name="DBWallet" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="AccountRecord" positionX="-63" positionY="18" width="128" height="149"/>
     </elements>
 </model>
