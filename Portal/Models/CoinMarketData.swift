@@ -8,37 +8,44 @@
 
 import Foundation
 
+struct PricePoint {
+    let timestamp: Date
+    let price: Decimal
+}
+
+
 struct CoinMarketData {
+    
     var priceData: MarketPrice?
     
-    var hourPoints = [MarketSnapshot]()
-    var dayPoints = [MarketSnapshot]()
-    var weekPoints = [MarketSnapshot]()
-    var monthPoints = [MarketSnapshot]()
-    var yearPoints = [MarketSnapshot]()
+    var hourPoints = [PricePoint]()
+    var dayPoints = [PricePoint]()
+    var weekPoints = [PricePoint]()
+    var monthPoints = [PricePoint]()
+    var yearPoints = [PricePoint]()
+    
+    var dayOhlc = [MarketSnapshot]()
     
     var hasData: Bool = true
     
-    func price(currency: Currency) -> Double {
-        return priceData?.price ?? 0.0
+    func price(currency: Currency) -> Decimal {
+        return 0.0
     }
     
     func priceString(currency: Currency) -> String {
         switch currency {
         case .btc:
-            return priceData?.price.btcFormatted() ?? 0.0.btcFormatted()
+            return priceData?.price.double.btcFormatted() ?? 0.0.btcFormatted()
         case .eth:
-            return priceData?.price.ethFormatted() ?? 0.0.ethFormatted()
+            return priceData?.price.double.ethFormatted() ?? 0.0.ethFormatted()
         case .fiat(let currency):
-            let value = (priceData?.price ?? 0.0) * currency.rate
+            let value = (priceData?.price ?? 0.0) * Decimal(currency.rate)
             return StringFormatter.localizedValueString(value: value, symbol: currency.symbol)
         }
     }
     
-    func changeInPercents(tf: Timeframe) -> Double {
+    func changeInPercents(tf: Timeframe) -> Decimal {
         switch tf {
-        case .hour:
-            return hourChange
         case .day:
             return dayChange
         case .week:
@@ -47,104 +54,85 @@ struct CoinMarketData {
             return monthChange
         case .year:
             return yearChange
-        case .allTime:
-            return 0.0
         }
     }
     
     func changeString(for timeframe: Timeframe, currrency: Currency) -> String {
         let price = self.price(currency: currrency)
-        let change = self.changeInPercents(tf: timeframe) 
+        let change = changeInPercents(tf: timeframe)
 
         return StringFormatter.changeString(price: price, change: change, currency: currrency)
     }
     
-    var hourChange: Double {
+    var dayChange: Decimal {
         guard
-            let open = hourPoints.first?.open,
-            let close = hourPoints.last?.close
+            let open = dayPoints.first,
+            let close = dayPoints.last
             else { return 0.0 }
-        
-        return percentageChange(open: open, close: close)
+
+        return percentageChange(open: open.price, close: close.price)
     }
-    
-    var dayChange: Double {
+
+    var weekChange: Decimal {
         guard
-            let open = dayPoints.first?.open,
-            let close = dayPoints.last?.close
+            let open = weekPoints.first,
+            let close = weekPoints.last
             else { return 0.0 }
-        
-        return percentageChange(open: open, close: close)
+
+        return percentageChange(open: open.price, close: close.price)
     }
-    
-    var weekChange: Double {
+
+    var monthChange: Decimal {
         guard
-            let open = weekPoints.first?.open,
-            let close = weekPoints.last?.close
+            let open = monthPoints.first,
+            let close = monthPoints.last
             else { return 0.0 }
-        
-        return percentageChange(open: open, close: close)
+
+        return percentageChange(open: open.price, close: close.price)
     }
-    
-    var monthChange: Double {
+
+    var yearChange: Decimal {
         guard
-            let open = monthPoints.first?.open,
-            let close = monthPoints.last?.close
+            let open = yearPoints.first,
+            let close = yearPoints.last
             else { return 0.0 }
-        
-        return percentageChange(open: open, close: close)
+
+        return percentageChange(open: open.price, close: close.price)
     }
     
-    var yearChange: Double {
-        guard
-            let open = yearPoints.first?.open,
-            let close = yearPoints.last?.close
-            else { return 0.0 }
-        
-        return percentageChange(open: open, close: close)
+    var dayHigh: Decimal {
+        dayPoints.sorted(by: { $0.price > $1.price }).first?.price ?? 0.0
+    }
+
+    var dayLow: Decimal {
+        dayPoints.sorted(by: { $0.price < $1.price }).first?.price ?? 0.0
+    }
+
+    var weekHigh: Decimal {
+        weekPoints.sorted(by: { $0.price > $1.price }).first?.price ?? 0.0
+    }
+
+    var weekLow: Decimal {
+        weekPoints.sorted(by: { $0.price < $1.price }).first?.price ?? 0.0
+    }
+
+    var monthHigh: Decimal {
+        monthPoints.sorted(by: { $0.price > $1.price }).first?.price ?? 0.0
+    }
+
+    var monthLow: Decimal {
+        monthPoints.sorted(by: { $0.price < $1.price }).first?.price ?? 0.0
+    }
+
+    var yearHigh: Decimal {
+        yearPoints.sorted(by: { $0.price > $1.price }).first?.price ?? 0.0
+    }
+
+    var yearLow: Decimal {
+        yearPoints.sorted(by: { $0.price < $1.price }).first?.price ?? 0.0
     }
     
-    var hourHigh: Double {
-        hourPoints.sorted(by: { $0.high > $1.high }).first?.high ?? 0.0
-    }
-    
-    var hourLow: Double {
-        hourPoints.sorted(by: { $0.low < $1.low }).first?.low ?? 0.0
-    }
-    
-    var dayHigh: Double {
-        dayPoints.sorted(by: { $0.high > $1.high }).first?.high ?? 0.0
-    }
-    
-    var dayLow: Double {
-        dayPoints.sorted(by: { $0.low < $1.low }).first?.low ?? 0.0
-    }
-    
-    var weekHigh: Double {
-        weekPoints.sorted(by: { $0.high > $1.high }).first?.high ?? 0.0
-    }
-    
-    var weekLow: Double {
-        weekPoints.sorted(by: { $0.low < $1.low }).first?.low ?? 0.0
-    }
-    
-    var monthHigh: Double {
-        monthPoints.sorted(by: { $0.high > $1.high }).first?.high ?? 0.0
-    }
-    
-    var monthLow: Double {
-        monthPoints.sorted(by: { $0.low < $1.low }).first?.low ?? 0.0
-    }
-    
-    var yearHigh: Double {
-        yearPoints.sorted(by: { $0.high > $1.high }).first?.high ?? 0.0
-    }
-    
-    var yearLow: Double {
-        yearPoints.sorted(by: { $0.low < $1.low }).first?.low ?? 0.0
-    }
-    
-    private func percentageChange(open: Double, close: Double) -> Double {
+    private func percentageChange(open: Decimal, close: Decimal) -> Decimal {
         let decrease = close - open
         return (decrease/open) * 100
     }

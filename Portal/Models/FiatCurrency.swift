@@ -8,15 +8,14 @@
 
 import Foundation
 
-struct FiatCurrency {
+struct FiatCurrency: Codable {
     let code: String
     let name: String
+    let rate: Double
     
-    var rate: Double = 1.0
-    
-    var symbol: String? {
+    var symbol: String {
         get {
-            getSymbolForCurrencyCode(code: code)
+            getSymbolForCurrencyCode(code: code) ?? "-"
         }
     }
     

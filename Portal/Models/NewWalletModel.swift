@@ -22,10 +22,10 @@ struct NewWalletModel {
         self.id = UUID()
         self.name = name
         self.addressType = addressType
-        seed = NewWalletModel.mockSeed()
+        seed = NewWalletModel.randomSeed()
     }
     
-    static func mockSeed() -> [String] {
+    static func randomSeed() -> [String] {
         ["merge", "symptom", "old", "tail", "earth", "metal", "identify", "lonely", "bottom", "other", "local", "trophy", "mom", "wide", "multiply", "earn", "embrace", "fly", "tube", "hammer", "pet", "gun", "cake", "laundry"]
     }
 }
