@@ -8,9 +8,73 @@
 
 import Foundation
 
+extension Decimal {
+    var string: String {
+        String("\(self)")
+    }
+    var double: Double {
+        Double(truncating: self as NSNumber)
+    }
+    func rounded(toPlaces places: Int) -> Double {
+        self.double.rounded(toPlaces: places)
+    }
+    
+    func dollarFormatted() -> String {
+        StringFormatter.localizedValueString(value: self, symbol: "$")
+    }
+    
+    func formattedString(_ currency: Currency, decimals: Int = 5) -> String {
+        let formatter = NumberFormatter()
+
+        switch currency {
+        case .btc:
+            formatter.numberStyle = .decimal
+            formatter.maximumFractionDigits = decimals
+            formatter.minimumFractionDigits = 0
+            formatter.minimumIntegerDigits = 1
+            return (formatter.string(from: self as NSDecimalNumber) ?? "-") + " BTC"
+        case .eth:
+            formatter.numberStyle = .decimal
+            formatter.maximumFractionDigits = decimals
+            formatter.minimumFractionDigits = 0
+            formatter.minimumIntegerDigits = 1
+            return (formatter.string(from: self as NSDecimalNumber) ?? "-") + " ETH"
+        case .fiat(let fiatCurrency):
+            formatter.currencySymbol = fiatCurrency.symbol
+            formatter.groupingSize = 3
+            formatter.numberStyle = .currency
+            formatter.maximumFractionDigits = 2
+            formatter.minimumFractionDigits = 0
+            formatter.minimumIntegerDigits = 1
+            return formatter.string(from: self as NSDecimalNumber) ?? "-"
+        }
+    }
+    
+    func formattedDecimalString() -> String {
+        let formatter = NumberFormatter()
+        formatter.groupingSize = 3
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.minimumIntegerDigits = 1
+        return formatter.string(from: self as NSDecimalNumber) ?? "-"
+    }
+}
+
 struct StringFormatter {
-    static func percentFormatted(_ amount: Double) -> String {
-        String(format:" (%.2f", amount) + "%)"
+    static func percentFormatted(_ amount: Decimal) -> String {
+        String(format:" (%.2f", amount.double) + "%)"
+    }
+    
+    static func localizedValueString(value: Decimal, symbol: String? = "$") -> String {
+        let formatter = NumberFormatter()
+        formatter.currencySymbol = symbol
+        formatter.groupingSize = 3
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 2 //value < 1 ? 2 : 0
+        formatter.minimumFractionDigits = 1
+        formatter.minimumIntegerDigits = 1
+        return formatter.string(from: value as NSDecimalNumber) ?? "#"
     }
 
     static func localizedValueString(value: Double, symbol: String? = "$") -> String {
@@ -24,26 +88,26 @@ struct StringFormatter {
         return formatter.string(from: NSNumber(value: value)) ?? "#"
     }
 
-    static func changeString(price: Double, change: Double, currency: Currency) -> String {
+    static func changeString(price: Decimal, change: Decimal, currency: Currency) -> String {
         switch currency {
         case .btc, .eth:
-            return changeString(price: price, change: change, currency: currency.stringValue())
+            return changeString(price: price, change: change, currency: currency.symbol)
         case .fiat(let currency):
-            return changeString(price: price * currency.rate, change: change, currency: currency.symbol ?? "$")
+            return changeString(price: price * Decimal(currency.rate), change: change, currency: currency.symbol)
         }
     }
 
-    static func changeString(price: Double, change: Double, currency: String) -> String {
+    static func changeString(price: Decimal, change: Decimal, currency: String) -> String {
         let changeValue = (price * change)/100
         var outputString = String()
 
         if currency.contains("BTC") || currency.contains("ETH") {
             if changeValue > 0 {
-                outputString = "+" + changeValue.roundToDecimal(3).toString()
+                outputString = "+" + changeValue.double.roundToDecimal(3).toString()
             } else if changeValue == 0 {
-                outputString = changeValue.roundToDecimal(3).toString()
+                outputString = changeValue.double.roundToDecimal(3).toString()
             } else {
-                outputString = "-" + abs(changeValue).roundToDecimal(3).toString()
+                outputString = "-" + abs(changeValue).double.roundToDecimal(3).toString()
             }
             outputString.append(" \(currency)")
         } else {
@@ -51,7 +115,7 @@ struct StringFormatter {
             formatter.currencySymbol = currency
             formatter.numberStyle = .currency
             
-            let value = change < 0 ? NSNumber(value: abs(changeValue)) : NSNumber(value: changeValue)
+            let value = change < 0 ? NSNumber(value: abs(changeValue.double)) : NSNumber(value: changeValue.double)
             
             if let currencyFormattedString = formatter.string(from: value) {
                 if change > 0 {
