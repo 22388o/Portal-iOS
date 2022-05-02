@@ -18,6 +18,24 @@
           "revision": "3d0ea2c0806791abcc5d7f0d9f62f1cfd4a7264d",
           "version": "4.2.0"
         }
+      },
+      {
+        "package": "PromiseKit",
+        "repositoryURL": "https://github.com/mxcl/PromiseKit.git",
+        "state": {
+          "branch": null,
+          "revision": "3fd8c77ded8a4bbee548e3bd6c987ffe8c1e3574",
+          "version": "6.17.0"
+        }
+      },
+      {
+        "package": "swift-crypto",
+        "repositoryURL": "https://github.com/apple/swift-crypto.git",
+        "state": {
+          "branch": null,
+          "revision": "067254c79435de759aeef4a6a03e43d087d61312",
+          "version": "2.0.5"
+        }
       }
     ]
   },
