@@ -11,7 +11,6 @@ import SwiftUI
 import Combine
 
 final class AssetItemViewModel: ObservableObject, IMarketData {
-
     let code: String
     let name: String
     let icon: UIImage
@@ -20,7 +19,7 @@ final class AssetItemViewModel: ObservableObject, IMarketData {
     @Published var totalValue = String()
     @Published var price = String()
     @Published var change = String()
-    @Published var selectedTimeframe: Timeframe = .hour
+    @Published var selectedTimeframe: Timeframe = .day
     
     private let asset: IAsset
     private let queue = DispatchQueue.main
@@ -40,7 +39,7 @@ final class AssetItemViewModel: ObservableObject, IMarketData {
         
         code = asset.coin.code
         name = asset.coin.name
-        icon = asset.coin.icon
+        icon = UIImage(imageLiteralResourceName: "iconBtc")
                         
         updateValues()
         

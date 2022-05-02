@@ -28,7 +28,7 @@ final class AssetViewModel: ObservableObject, IMarketData {
     @Published var showSendToExchangeView = false
     @Published var showWithdrawView = false
     @Published var route: CoinViewRoute = .value
-    @Published var selectedTimeframe: Timeframe = .hour
+    @Published var selectedTimeframe: Timeframe = .day
     
     @Published var chartDataEntries = [ChartDataEntry]()
     @Published var currency: Currency = .fiat(USD)
@@ -50,7 +50,7 @@ final class AssetViewModel: ObservableObject, IMarketData {
         
         code = asset.coin.code
         name = asset.coin.name
-        icon = asset.coin.icon
+        icon = UIImage(imageLiteralResourceName: "iconBtc")
                 
         $selectedTimeframe
             .removeDuplicates()
@@ -88,13 +88,11 @@ final class AssetViewModel: ObservableObject, IMarketData {
     
     private func portfolioChartDataEntries() -> [ChartDataEntry] {
         var chartDataEntries = [ChartDataEntry]()
-        var points = [MarketSnapshot]()
+        var points = [PricePoint]()
         
         let step = 4
         
         switch selectedTimeframe {
-        case .hour:
-            points = marketData.hourPoints
         case .day:
             points = marketData.dayPoints
         case .week:
@@ -107,13 +105,11 @@ final class AssetViewModel: ObservableObject, IMarketData {
             points = marketData.yearPoints.enumerated().compactMap {
                 $0.offset % step == 0 ? $0.element : nil
             }
-        case .allTime:
-            return []
         }
         
         let xIndexes = Array(0..<points.count).map { x in Double(x) }
         for (index, point) in points.enumerated() {
-            let dataEntry = ChartDataEntry(x: xIndexes[index], y: Double(point.close))
+            let dataEntry = ChartDataEntry(x: xIndexes[index], y: point.price.double)
             chartDataEntries.append(dataEntry)
         }
         

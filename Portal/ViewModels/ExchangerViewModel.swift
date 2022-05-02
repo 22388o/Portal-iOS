@@ -28,6 +28,8 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
         marketRate(for: USD)
     }
     
+    @Published var formIsValid: Bool = false
+    
     private var subscriptions = Set<AnyCancellable>()
     
     init(asset: Coin, fiat: FiatCurrency) {
@@ -40,7 +42,10 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
             .removeDuplicates()
             .compactMap { Double($0) }
             .map { [weak self] in "\(($0 * (self?.price ?? 1.0)).rounded(toPlaces: 2))" }
-            .sink { [weak self] in self?.fiatValue = $0 }
+            .sink { [weak self] in
+                self?.fiatValue = $0
+                self?.formIsValid = !$0.isEmpty
+            }
             .store(in: &subscriptions)
         
         $fiatValue

@@ -14,7 +14,7 @@ import Combine
 final class PortfolioViewModel: ObservableObject, IMarketData {
     var assets: [IAsset]
     
-    @Published var selectedTimeframe: Timeframe = .hour
+    @Published var selectedTimeframe: Timeframe = .day
     @Published var totalValue = String()
     @Published var change: String = "-$423 (3.46%)"
     @Published var chartDataEntries = [ChartDataEntry]()
@@ -45,8 +45,8 @@ final class PortfolioViewModel: ObservableObject, IMarketData {
                     self?.totalValue = "$" + String(assets.map {
                         $0.balanceProvider.balance(currency: currency)
                     }
-                        .reduce(0) { $0 + $1 }
-                        .rounded(toPlaces: 2)
+                                                        .reduce(0) { $0 + $1 }
+                                                        .rounded(toPlaces: 2)
                     )
                 case .btc:
                     self?.totalValue = "0.0224 BTC"
@@ -65,12 +65,8 @@ final class PortfolioViewModel: ObservableObject, IMarketData {
         var chartDataEntries = [ChartDataEntry]()
         let step = 8
         var valuesArray: [[Double]]
-
+        
         switch selectedTimeframe {
-        case .hour:
-            valuesArray = assets.map {
-                $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).hourPoints)
-            }
         case .day:
             valuesArray = assets.map {
                 $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).dayPoints)
@@ -87,38 +83,35 @@ final class PortfolioViewModel: ObservableObject, IMarketData {
             valuesArray = assets.map {
                 $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).yearPoints)
             }
-        case .allTime:
-            self.chartDataEntries = [ChartDataEntry]()
-            return
-        }
-
-        guard var count = valuesArray.first?.count else {
-            self.chartDataEntries = [ChartDataEntry]()
-            return
-        }
-
-        if selectedTimeframe == .week || selectedTimeframe == .year { count = count/step + 1 }
-
-        var resultArray: [Double] = Array(0..<count).map { x in 0 }
-
-        for a in valuesArray {
-            var array = a
-            if selectedTimeframe == .week || selectedTimeframe == .year {
-                array = a.enumerated().compactMap { $0.offset % step == 0 ? $0.element : nil }
+            
+            guard var count = valuesArray.first?.count else {
+                self.chartDataEntries = [ChartDataEntry]()
+                return
             }
-            for (index, value) in array.enumerated() {
-                if resultArray.indices.contains(index) {
-                    resultArray[index] = resultArray[index] + value
+            
+            if selectedTimeframe == .week || selectedTimeframe == .year { count = count/step + 1 }
+            
+            var resultArray: [Double] = Array(0..<count).map { x in 0 }
+            
+            for a in valuesArray {
+                var array = a
+                if selectedTimeframe == .week || selectedTimeframe == .year {
+                    array = a.enumerated().compactMap { $0.offset % step == 0 ? $0.element : nil }
+                }
+                for (index, value) in array.enumerated() {
+                    if resultArray.indices.contains(index) {
+                        resultArray[index] = resultArray[index] + value
+                    }
                 }
             }
+            
+            let xIndexes = Array(0..<resultArray.count).map { x in Double(x) }
+            for (index, point) in resultArray.enumerated() {
+                let dataEntry = ChartDataEntry(x: xIndexes[index], y: Double(point))
+                chartDataEntries.append(dataEntry)
+            }
+            
+            self.chartDataEntries = chartDataEntries
         }
-
-        let xIndexes = Array(0..<resultArray.count).map { x in Double(x) }
-        for (index, point) in resultArray.enumerated() {
-            let dataEntry = ChartDataEntry(x: xIndexes[index], y: Double(point))
-            chartDataEntries.append(dataEntry)
-        }
-        
-        self.chartDataEntries = chartDataEntries
     }
 }
