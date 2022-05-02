@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import SwiftUI
 
-protocol IWalletCoordinator {
+protocol IWalletCoordinator: ObservableObject {
     var currentWallet: IWallet? { get }
     var wallets: [IWallet]? { get }
     

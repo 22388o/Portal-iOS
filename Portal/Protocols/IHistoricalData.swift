@@ -10,8 +10,9 @@ import Foundation
 import Combine
 
 typealias HistoricalDataResponse = Dictionary<String, [MarketSnapshot]>
+typealias HistoricalTickerPrice = Dictionary<String, [PricePoint]>
 
 protocol IHistoricalData {
-    var onUpdatePublisher: PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never> { get }
+    var onUpdatePublisher: PassthroughSubject<(MarketDataRange, HistoricalTickerPrice), Never> { get }
     func fetchHistoricalData(assets: String)
 }

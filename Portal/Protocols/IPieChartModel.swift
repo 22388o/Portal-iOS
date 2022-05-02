@@ -36,7 +36,7 @@ extension IPieChartModel {
             if size >= minimumValue {
                 assetAllocationValues.append(size)
                 labels.append(asset.coin.code + " \(size)%")
-                colors.append(asset.coin.color)
+                colors.append(UIColor.blue)
             } else {
                 others.append(size)
             }
