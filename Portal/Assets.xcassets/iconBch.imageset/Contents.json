@@ -1,23 +1,23 @@
 {
   "images" : [
     {
-      "filename" : "iconBch.png",
       "idiom" : "universal",
+      "filename" : "iconBch.png",
       "scale" : "1x"
     },
     {
-      "filename" : "iconBch@2x.png",
       "idiom" : "universal",
+      "filename" : "iconBch@2x.png",
       "scale" : "2x"
     },
     {
-      "filename" : "iconBch@3x.png",
       "idiom" : "universal",
+      "filename" : "iconBch@3x.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "author" : "xcode",
-    "version" : 1
+    "version" : 1,
+    "author" : "xcode"
   }
 }

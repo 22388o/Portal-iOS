@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "btcAssetIcon.pdf",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "filename" : "btcAssetIcon.pdf"
     }
   ],
   "info" : {
-    "author" : "xcode",
-    "version" : 1
+    "version" : 1,
+    "author" : "xcode"
   }
 }
