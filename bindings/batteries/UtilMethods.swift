@@ -23,7 +23,7 @@ public class UtilMethods {
 
         let ret = C2Tuple_BlockHashChannelManagerZ_read(slice.cOpaqueStruct!, args.cOpaqueStruct!)
         // print("ret.is_owned: \(ret.)")
-        print("ret:ChannelManager.is_owned: \(ret.contents.result.pointee.b.is_owned)")
+//        print("ret:ChannelManager.is_owned: \(ret.contents.result.pointee.b.is_owned)")
         return Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ(pointer: ret)
     }
 
