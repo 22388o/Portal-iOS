@@ -10,6 +10,26 @@
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="DBLightningChannel" representedClassName="DBLightningChannel" syncable="YES">
+        <attribute name="channelID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="satValue" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DBLightningNode" inverseName="channels" inverseEntity="DBLightningNode"/>
+    </entity>
+    <entity name="DBLightningNode" representedClassName="DBLightningNode" syncable="YES">
+        <attribute name="alias" attributeType="String"/>
+        <attribute name="host" attributeType="String"/>
+        <attribute name="port" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="publicKey" attributeType="String"/>
+        <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="DBLightningChannel" inverseName="node" inverseEntity="DBLightningChannel"/>
+    </entity>
+    <entity name="DBLightningPayment" representedClassName="DBLightningPayment" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="memo" optional="YES" attributeType="String"/>
+        <attribute name="paymentID" optional="YES" attributeType="String"/>
+        <attribute name="satValue" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <entity name="DBTransaction" representedClassName="DBTransaction" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="walletID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -20,8 +40,11 @@
         <attribute name="name" attributeType="String"/>
     </entity>
     <elements>
+        <element name="AccountRecord" positionX="-63" positionY="18" width="128" height="149"/>
         <element name="DBTransaction" positionX="-63" positionY="9" width="128" height="73"/>
         <element name="DBWallet" positionX="-63" positionY="-18" width="128" height="88"/>
-        <element name="AccountRecord" positionX="-63" positionY="18" width="128" height="149"/>
+        <element name="DBLightningChannel" positionX="-63" positionY="63" width="128" height="89"/>
+        <element name="DBLightningNode" positionX="-54" positionY="72" width="128" height="104"/>
+        <element name="DBLightningPayment" positionX="-63" positionY="72" width="128" height="104"/>
     </elements>
 </model>

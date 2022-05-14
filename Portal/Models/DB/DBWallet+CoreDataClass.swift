@@ -39,9 +39,9 @@ public class DBWallet: NSManagedObject, IWallet {
     
     func setup(data: Data) {
         let sampleCoins = [
-            Coin.bitcoin(),
-            Coin.ethereum(),
-            Coin.portal()
+            Coin.bitcoin()
+//            Coin.ethereum(),
+//            Coin.portal()
         ]
         
         self.assets = sampleCoins.prefix(5).map{ Asset(coin: $0, data: data) }
