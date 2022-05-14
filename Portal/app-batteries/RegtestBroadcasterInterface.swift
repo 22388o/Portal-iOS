@@ -6,32 +6,38 @@
 //
 
 import Foundation
+import Alamofire
 
 class RegtestBroadcasterInterface: BroadcasterInterface {
+    private static let url = "https://blockstream.info/testnet/api/tx"
     
     override func broadcast_transaction(tx: [UInt8]) {
+        print("TX TO BROADCAST: \(Data(tx).hexEncodedString())")
         
-        print("TX TO BROADCAST: \(tx)")
+        var request = try! URLRequest(url: RegtestBroadcasterInterface.url, method: .post, headers: ["Content-Type": "text/plain"])
+        request.httpBody = Data(tx).hexEncodedString().data(using: .utf8)
         
-        let url = URL(string: "http://localhost:3000/api/lab/broadcast")!
-        
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-        
-        components.queryItems = [
-            URLQueryItem(name: "tx", value: "\(tx)")
-        ]
-        
-        let query = components.url!.query
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = Data(query!.utf8)
-        
-        let session = URLSession(configuration: .default)
-        let task = session.dataTask(with: request, completionHandler: { data, response, error in
-            print("transaction broadcast result")
-        })
-        task.resume()
+        AF.request(request).responseString { response in
+            switch (response.result) {
+            case .success(let txId):
+                print("txID: \(txId)")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+
+extension Data {
+    func hexEncodedString(options: HexEncodingOptions = []) -> String {
+        let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
+        return map {
+            String(format: format, $0)
+        }.joined()
     }
     
+    struct HexEncodingOptions: OptionSet {
+        let rawValue: Int
+        static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
+    }
 }
