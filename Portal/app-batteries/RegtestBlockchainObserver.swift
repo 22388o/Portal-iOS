@@ -6,7 +6,7 @@
 import Foundation
 import PromiseKit
 
-struct BlockInfo {
+struct LDKBlockInfo {
     var height: UInt
     var hash: String
     var previousHash: String?
@@ -20,7 +20,7 @@ struct ReorgPath {
 }
 
 class Block {
-    var info: BlockInfo
+    var info: LDKBlockInfo
     var previous: Block?
     var next: Block?
     
@@ -48,7 +48,7 @@ class Block {
         return bytes.map { String(format: format, $0) }.joined()
     }
 
-    init(info: BlockInfo, previous: Block?, next: Block?) {
+    init(info: LDKBlockInfo, previous: Block?, next: Block?) {
         self.info = info
         self.previous = previous
         self.next = next
@@ -203,12 +203,12 @@ class RegtestBlockchainObserver {
 
     
     
-    func getLatestBlockInfo() -> Promise<BlockInfo> {
+    func getLatestBlockInfo() -> Promise<LDKBlockInfo> {
         firstly {
             getChainInfo()
         }.then { chainInfo in
             when(fulfilled: self.getBlockInfo(blockHash: chainInfo.hash), self.getBlockBinary(blockHash: chainInfo.hash))
-        }.map { (blockInfo: BlockInfo, blockData: Data) in
+        }.map { (blockInfo: LDKBlockInfo, blockData: Data) in
             var richBlockInfo = blockInfo
             richBlockInfo.rawData = blockData
             richBlockInfo.header = blockData.subdata(in: 4..<84)
@@ -217,10 +217,9 @@ class RegtestBlockchainObserver {
         }
     }
 
-    func getChainInfo() -> Promise<BlockInfo> {
-        // let url = "http://cloudflare.testnet.deanonymizingseed.com/rest/chaininfo.json"
+    func getChainInfo() -> Promise<LDKBlockInfo> {
         let urlString = "https://test.bitgo.com/api/v2/tbtc/public/block/latest"
-        let infoPromise = Promise { (resolver: Resolver<BlockInfo>) in
+        let infoPromise = Promise { (resolver: Resolver<LDKBlockInfo>) in
             let url = URL(string: urlString)!
             let session = URLSession.shared
             let task = session.dataTask(with: url, completionHandler: { data, response, error in
@@ -240,20 +239,19 @@ class RegtestBlockchainObserver {
                 guard let height = chainInfo["height"] as? UInt else {
                     return resolver.reject(MonitoringError.invalidHeight)
                 }
-                guard let hash = chainInfo["parentHash"] as? String else {
+                guard let hash = chainInfo["id"] as? String else {
                     return resolver.reject(MonitoringError.invalidHash)
                 }
-                resolver.fulfill(BlockInfo(height: height, hash: hash))
+                resolver.fulfill(LDKBlockInfo(height: height, hash: hash))
             })
             task.resume()
         }
         return infoPromise
     }
 
-    func getBlockInfo(blockHash: String) -> Promise<BlockInfo> {
-        // let url = "http://cloudflare.testnet.deanonymizingseed.com/rest/block/\(blockHash).json"
+    func getBlockInfo(blockHash: String) -> Promise<LDKBlockInfo> {
         let urlString = "https://test.bitgo.com/api/v2/tbtc/public/block/\(blockHash)"
-        let infoPromise = Promise { (resolver: Resolver<BlockInfo>) in
+        let infoPromise = Promise { (resolver: Resolver<LDKBlockInfo>) in
             let url = URL(string: urlString)!
             let session = URLSession.shared
             let task = session.dataTask(with: url, completionHandler: { data, response, error in
@@ -276,7 +274,7 @@ class RegtestBlockchainObserver {
                 guard let previousHash = chainInfo["parentHash"] as? String else {
                     return resolver.reject(MonitoringError.invalidHash)
                 }
-                resolver.fulfill(BlockInfo(height: height, hash: blockHash, previousHash: previousHash))
+                resolver.fulfill(LDKBlockInfo(height: height, hash: blockHash, previousHash: previousHash))
             })
             task.resume()
         }
@@ -287,7 +285,7 @@ class RegtestBlockchainObserver {
     func getBlockSequenceUntilKnown(startHash: String, trailingChain: Block?) -> Promise<Block> {
         firstly {
             when(fulfilled: self.getBlockInfo(blockHash: startHash), self.getBlockBinary(blockHash: startHash))
-        }.then { (blockInfo: BlockInfo, blockData: Data) -> Promise<Block> in
+        }.then { (blockInfo: LDKBlockInfo, blockData: Data) -> Promise<Block> in
             if (blockInfo.height < self.earliestBlockHeight! + 1) {
                 // we need to be able to keep the first block we started out with
                 // TODO: fix this such that the first block, too, can be reorged
@@ -310,7 +308,6 @@ class RegtestBlockchainObserver {
     }
 
     func getBlockBinary(blockHash: String) -> Promise<Data> {
-        // let url = "http://cloudflare.testnet.deanonymizingseed.com/rest/block/\(blockHash).bin"
         let urlString = "https://blockstream.info/testnet/api/block/\(blockHash)/raw"
         let binaryPromise = Promise { (resolver: Resolver<Data>) in
             let url = URL(string: urlString)!
@@ -346,9 +343,7 @@ class RegtestBlockchainObserver {
         }
     }
 
-    func reconcileBlock(blockInfo: BlockInfo) -> Promise<Void> {
-        //print(blockInfo.rawData)
-
+    func reconcileBlock(blockInfo: LDKBlockInfo) -> Promise<Void> {
         guard let chainTip = self.chainTip else {
             self.chainTip = Block(info: blockInfo, previous: nil, next: nil)
             self.earliestBlockHeight = self.earliestBlockHeight ?? blockInfo.height
