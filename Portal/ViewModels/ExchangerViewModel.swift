@@ -45,6 +45,7 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
             .sink { [weak self] in
                 self?.fiatValue = $0
                 self?.formIsValid = !$0.isEmpty
+                print("assetValue = \(self?.assetValue)")
             }
             .store(in: &subscriptions)
         
@@ -52,7 +53,10 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
             .removeDuplicates()
             .compactMap { Double($0) }
             .map { [weak self] in "\(($0/(self?.price ?? 1.0)).rounded(toPlaces: 6))" }
-            .sink { [weak self] in self?.assetValue = $0 }
+            .sink { [weak self] in
+                self?.assetValue = $0
+                print("assetValue = \(self?.assetValue)")
+            }
             .store(in: &subscriptions)
     }
     

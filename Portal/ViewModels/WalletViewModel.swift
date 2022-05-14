@@ -27,6 +27,7 @@ final class WalletViewModel: ObservableObject {
     init(assets: [IAsset]) {
         print("WalletViewModel init")
         self.adapters = assets.map{ CoinAdapter(asset: $0) }
+
         experiment.startMonitoring()
     }
 }

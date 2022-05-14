@@ -24,6 +24,7 @@ final class AssetItemViewModel: ObservableObject, IMarketData {
     private let asset: IAsset
     private let queue = DispatchQueue.main
     private var cancellable: Cancellable?
+    private var btcAdapter = PolarConnectionExperiment.shared.btcAdapter
     
     private var marketData: CoinMarketData {
         marketData(for: code)
@@ -57,7 +58,7 @@ final class AssetItemViewModel: ObservableObject, IMarketData {
     }
     
     private func updateValues() {
-        balance = asset.balanceProvider.balanceString
+        balance = btcAdapter.balance.string
         totalValue = asset.balanceProvider.totalValueString + "\(Int.random(in: 1...8))"
         price = asset.balanceProvider.price + "\(Int.random(in: 1...8))"
         change = asset.marketChangeProvider.changeString
