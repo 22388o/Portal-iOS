@@ -8,6 +8,7 @@
 import Foundation
 
 struct LastBlockInfo {
+    let headerHash: String
     let height: Int
     let timestamp: Int?
 }
