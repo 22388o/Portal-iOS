@@ -74,20 +74,20 @@ struct AssetView: View {
                     VStack(spacing: 8) {
                         HStack {
                             Spacer()
-                            Button("Send") {
-                                self.viewModel.showSendView.toggle()
-                            }
-                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-                            .sheet(isPresented: $viewModel.showSendView) {
-                                SendCoinView(asset: self.viewModel.asset)
-                            }
-                            Spacer()
                             Button("Receive") {
                                 self.viewModel.showReceiveView.toggle()
                             }
                             .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                             .sheet(isPresented: $viewModel.showReceiveView) {
                                 ReceiveCoinView(asset: self.viewModel.asset)
+                            }
+                            Spacer()
+                            Button("Send") {
+                                self.viewModel.showSendView.toggle()
+                            }
+                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                            .sheet(isPresented: $viewModel.showSendView) {
+                                SendCoinView(asset: self.viewModel.asset)
                             }
                             Spacer()
                         }
@@ -106,13 +106,13 @@ struct AssetView: View {
                         
                         HStack {
                             Spacer()
-                            Button("Lightning channels") {
+                            Button("Channels") {
                                 self.viewModel.showWithdrawView.toggle()
                             }
                             .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-                            .shadow(color: .white, radius: 2)
+//                            .shadow(color: .white, radius: 2)
                             .sheet(isPresented: $viewModel.showWithdrawView) {
-                                WithdrawCoinView(viewModel: channelsViewModel)
+                                LightningView(viewModel: channelsViewModel)
                             }
                             Spacer()
                         }
