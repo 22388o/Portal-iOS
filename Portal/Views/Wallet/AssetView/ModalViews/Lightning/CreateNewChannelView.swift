@@ -94,6 +94,19 @@ struct CreateNewChannelView: View {
                         }
                         .frame(height: 120)
                         .padding(.horizontal)
+                        .onDisappear {
+                            if let node = selectedNode {
+                                var shouldDisconnect: Bool = true
+                                for channel in node.channels {
+                                    if channel.state != .closed {
+                                        shouldDisconnect = false
+                                        break
+                                    }
+                                }
+                                PolarConnectionExperiment.shared.service.disconnect(node: node)
+                                selectedNode = nil
+                            }
+                        }
                         
                         ExchangerView(viewModel: viewModel.exchangerViewModel)
                             .padding()
@@ -240,7 +253,7 @@ struct CreateNewChannelView: View {
                                 .contentShape(Rectangle())
                                 .onTapGesture {
                                     selectedNode = node
-                                    PolarConnectionExperiment.shared.connectTo(node: node)
+                                    PolarConnectionExperiment.shared.service.connect(node: node)
                                     fundChannel.toggle()
                                 }
                                 .padding(.horizontal)
