@@ -15,6 +15,10 @@ class LightningNode: Identifiable {
     let host: String
     let port: UInt16
     var channels: [LightningChannel]
+    var connected: Bool
+    var nodeId: [UInt8] {
+        Block.hexStringToBytes(hexString: publicKey)!
+    }
     
     init(alias: String, publicKey: String, host: String, port: UInt16) {
         self.alias = alias
@@ -22,6 +26,7 @@ class LightningNode: Identifiable {
         self.host = host
         self.port = port
         self.channels = [LightningChannel]()
+        self.connected = false
     }
     
     init(record: DBLightningNode) {
@@ -31,6 +36,7 @@ class LightningNode: Identifiable {
         self.port = UInt16(record.port)
         let dbChannels = record.channels.sortedArray(using: []) as? [DBLightningChannel]
         self.channels = dbChannels?.map{ LightningChannel(record: $0) } ?? [LightningChannel]()
+        self.connected = false
     }
     
     static var sampleNodes: [LightningNode] {
