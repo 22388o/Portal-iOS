@@ -13,9 +13,7 @@ import Combine
 struct RootView: View {
     @EnvironmentObject var walletCoordinator: WalletCoordinator
     
-    init() {
-        print("RootView init")
-        
+    init() {        
         UITabBar.appearance().barTintColor = UIColor(white: 0, alpha: 0.1)
         UITableView.appearance().backgroundColor = .clear
     }

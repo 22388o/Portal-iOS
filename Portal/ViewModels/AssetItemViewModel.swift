@@ -24,7 +24,7 @@ final class AssetItemViewModel: ObservableObject, IMarketData {
     private let asset: IAsset
     private let queue = DispatchQueue.main
     private var cancellable: Cancellable?
-    private var btcAdapter = PolarConnectionExperiment.shared.btcAdapter
+    private var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
     
     private var marketData: CoinMarketData {
         marketData(for: code)
@@ -35,7 +35,6 @@ final class AssetItemViewModel: ObservableObject, IMarketData {
     }
     
     init(asset: IAsset) {
-        print("Init \(asset.coin.code) item view model")
         self.asset = asset
         
         code = asset.coin.code

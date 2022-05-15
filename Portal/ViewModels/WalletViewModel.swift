@@ -22,12 +22,11 @@ final class WalletViewModel: ObservableObject {
         }
     }
     
-    @ObservedObject var experiment = PolarConnectionExperiment.shared
+//    @ObservedObject var experiment = PolarConnectionExperiment.shared
     
     init(assets: [IAsset]) {
-        print("WalletViewModel init")
         self.adapters = assets.map{ CoinAdapter(asset: $0) }
 
-        experiment.startMonitoring()
+//        experiment.startMonitoring()
     }
 }
