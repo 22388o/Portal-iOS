@@ -13,7 +13,6 @@ struct WalletView: View {
     @StateObject var channelsViewModel: ChannelsViewModel = .init()
     
     init(wallet: IWallet = WalletMock()) {
-        print("WalletView init")
         self.viewModel = .init(assets: wallet.assets)
     }
     
