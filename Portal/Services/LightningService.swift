@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import BitcoinCore
 
 class LightningService: ILightningService {
     var dataService: ILightningDataService
@@ -15,7 +16,6 @@ class LightningService: ILightningService {
     
     private var bitcoinAdapter: BitcoinAdapter
     private var subscriptions = Set<AnyCancellable>()
-    private var blocksQueue = [BLKData]()
     
     init(mnemonic: Data, adapter: BitcoinAdapter, dataService: ILightningDataService) {
         self.bitcoinAdapter = adapter
@@ -62,38 +62,19 @@ class LightningService: ILightningService {
             .store(in: &subscriptions)
         
         bitcoinAdapter.lastBlockUpdated
-            .sink { [weak self] _ in
+            .buffer(size: .max, prefetch: .byRequest, whenFull: .dropOldest)
+            .flatMap(maxPublishers: .max(1)) {
+                Just($0).delay(for: .seconds(2), scheduler: DispatchQueue.global(qos: .background))
+            }
+            .sink { [weak self] newBlock in
                 guard let self = self else { return }
-                
-                if let block = self.bitcoinAdapter.lastBlockInfo {
-                    Task {
-                        do {
-                            try await self.connect(block: block)
-                        } catch {
-                            print(error.localizedDescription)
-                        }
+                Task {
+                    do {
+                        try await self.connect(block: newBlock)
+                    } catch {
+                        print(error.localizedDescription)
                     }
                 }
-            }
-            .store(in: &subscriptions)
-        
-        Timer.publish(every: 30.0, on: RunLoop.main, in: .default)
-            .autoconnect()
-            .sink { _ in
-                let blocksToAdd = self.blocksQueue.sorted { $0.height < $1.height }
-                
-                for block in blocksToAdd {
-                    let blockBinary = block.data.bytes
-                    let blockHeight = UInt32(block.height)
-
-                    let channelManagerListener = self.manager.constructor.channelManager.as_Listen()
-                    channelManagerListener.block_connected(block: blockBinary, height: blockHeight)
-
-                    let chainMonitorListener = self.manager.chainMonitor.as_Listen()
-                    chainMonitorListener.block_connected(block: blockBinary, height: blockHeight)
-                }
-                
-                self.blocksQueue.removeAll()
             }
             .store(in: &subscriptions)
     }
@@ -101,13 +82,10 @@ class LightningService: ILightningService {
     func connect(node: LightningNode) {
         node.connected = manager.peerNetworkHandler.connect(address: node.host, port: node.port, theirNodeId: node.nodeId)
         print("Node: \(node.alias) is \(node.connected ? "connected": "disconnected")")
-        let peers = manager.constructor.peerManager.get_peer_node_ids()
-        for peer in peers {
-            print(Block.bytesToHexString(bytes: peer))
-        }
     }
     
     func disconnect(node: LightningNode) {
+        guard node.connected else { return }
         manager.constructor.peerManager.disconnect_by_node_id(node_id: node.nodeId, no_connection_possible: false)
         node.connected = false
         print("Node: \(node.alias) is \(node.connected ? "connected": "disconnected")")
@@ -155,26 +133,6 @@ class LightningService: ILightningService {
     func createInvoice(amount: String, memo: String) -> String? {
         nil
     }
-    
-    private func connect(block: LastBlockInfo) async throws {
-        print("New Block: \(block)")
-
-        let rawBlockData = try await self.getBlockBinary(hash: block.headerHash)
-        
-        let blkData = BLKData(height: block.height, data: rawBlockData)
-        blocksQueue.append(blkData)
-        
-//        let blockBinary = rawBlockData.bytes
-//        let blockHeight = UInt32(block.height)
-//
-//        let channelManagerListener = self.manager.constructor.channelManager.as_Listen()
-//        channelManagerListener.block_connected(block: blockBinary, height: blockHeight)
-//
-//        let chainMonitorListener = self.manager.chainMonitor.as_Listen()
-//        chainMonitorListener.block_connected(block: blockBinary, height: blockHeight)
-        
-//        print("new block connected")
-    }
 }
 
 extension LightningService {
@@ -201,5 +159,20 @@ extension LightningService {
         }
         
         return blockData
+    }
+    
+    private func connect(block: BlockInfo) async throws {
+        let rawBlockData = try await self.getBlockBinary(hash: block.headerHash)
+        
+        let blockBinary = rawBlockData.bytes
+        let blockHeight = UInt32(block.height)
+
+        let channelManagerListener = self.manager.constructor.channelManager.as_Listen()
+        channelManagerListener.block_connected(block: blockBinary, height: blockHeight)
+
+        let chainMonitorListener = self.manager.chainMonitor.as_Listen()
+        chainMonitorListener.block_connected(block: blockBinary, height: blockHeight)
+        
+        print("Block connected: \(block)")
     }
 }
