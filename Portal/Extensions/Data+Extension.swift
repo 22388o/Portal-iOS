@@ -11,4 +11,7 @@ extension Data {
     var toStringArray: [String]? {
       return (try? JSONSerialization.jsonObject(with: self, options: [])) as? [String]
     }
+    var bytes: [UInt8] {
+        return [UInt8](self)
+    }
 }

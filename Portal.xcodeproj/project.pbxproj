@@ -772,7 +772,7 @@
 		757494542812BA6F00B42EB5 /* DelayedPaymentOutputDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757493032812BA6D00B42EB5 /* DelayedPaymentOutputDescriptor.swift */; };
 		7574945B2812BAEA00B42EB5 /* ldk_net.c in Sources */ = {isa = PBXBuildFile; fileRef = 7574945A2812BAEA00B42EB5 /* ldk_net.c */; };
 		757494632812BBF200B42EB5 /* LNSyncHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574945D2812BBF100B42EB5 /* LNSyncHandler.swift */; };
-		757494642812BBF200B42EB5 /* RegtestChannelManagerPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574945E2812BBF100B42EB5 /* RegtestChannelManagerPersister.swift */; };
+		757494642812BBF200B42EB5 /* ChannelManagerPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574945E2812BBF100B42EB5 /* ChannelManagerPersister.swift */; };
 		757494652812BBF200B42EB5 /* SwiftSocketPeerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574945F2812BBF100B42EB5 /* SwiftSocketPeerHandler.swift */; };
 		757494662812BBF200B42EB5 /* RegtestBlockchainObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757494602812BBF100B42EB5 /* RegtestBlockchainObserver.swift */; };
 		757494672812BBF200B42EB5 /* SwiftSocketEchoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757494612812BBF100B42EB5 /* SwiftSocketEchoHandler.swift */; };
@@ -1324,7 +1324,7 @@
 		757494592812BAEA00B42EB5 /* ldk_net.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ldk_net.h; sourceTree = "<group>"; };
 		7574945A2812BAEA00B42EB5 /* ldk_net.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ldk_net.c; sourceTree = "<group>"; };
 		7574945D2812BBF100B42EB5 /* LNSyncHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNSyncHandler.swift; sourceTree = "<group>"; };
-		7574945E2812BBF100B42EB5 /* RegtestChannelManagerPersister.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegtestChannelManagerPersister.swift; sourceTree = "<group>"; };
+		7574945E2812BBF100B42EB5 /* ChannelManagerPersister.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelManagerPersister.swift; sourceTree = "<group>"; };
 		7574945F2812BBF100B42EB5 /* SwiftSocketPeerHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSocketPeerHandler.swift; sourceTree = "<group>"; };
 		757494602812BBF100B42EB5 /* RegtestBlockchainObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegtestBlockchainObserver.swift; sourceTree = "<group>"; };
 		757494612812BBF100B42EB5 /* SwiftSocketEchoHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSocketEchoHandler.swift; sourceTree = "<group>"; };
@@ -2006,7 +2006,7 @@
 			isa = PBXGroup;
 			children = (
 				7574945D2812BBF100B42EB5 /* LNSyncHandler.swift */,
-				7574945E2812BBF100B42EB5 /* RegtestChannelManagerPersister.swift */,
+				7574945E2812BBF100B42EB5 /* ChannelManagerPersister.swift */,
 				7574945F2812BBF100B42EB5 /* SwiftSocketPeerHandler.swift */,
 				757494602812BBF100B42EB5 /* RegtestBlockchainObserver.swift */,
 				757494612812BBF100B42EB5 /* SwiftSocketEchoHandler.swift */,
@@ -2734,7 +2734,7 @@
 				7548DD2F282CF3A7006053CC /* ManageChannelView.swift in Sources */,
 				757493A72812BA6E00B42EB5 /* Result_CVec_SignatureZNoneZ.swift in Sources */,
 				7548DD2B282CF352006053CC /* ChannelsViewModel.swift in Sources */,
-				757494642812BBF200B42EB5 /* RegtestChannelManagerPersister.swift in Sources */,
+				757494642812BBF200B42EB5 /* ChannelManagerPersister.swift in Sources */,
 				757493EB2812BA6F00B42EB5 /* NetGraphMsgHandler.swift in Sources */,
 				754357042821460A00FD7251 /* LocalStorage.swift in Sources */,
 				757493AF2812BA6E00B42EB5 /* Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ.swift in Sources */,
