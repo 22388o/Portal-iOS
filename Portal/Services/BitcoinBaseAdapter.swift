@@ -19,7 +19,7 @@ class BitcoinBaseAdapter {
     private let abstractKit: AbstractKit
     private let coinRate: Decimal = pow(10, 8)
     
-    private let lastBlockUpdatedSubject = PassthroughSubject<Void, Never>()
+    private let lastBlockUpdatedSubject = PassthroughSubject<BlockInfo, Never>()
     private let stateUpdatedSubject = PassthroughSubject<Void, Never>()
     private let balanceUpdatedSubject = PassthroughSubject<Void, Never>()
     private let transactionRecordsSubject = PassthroughSubject<[TransactionRecord], Never>()
@@ -204,7 +204,7 @@ extension BitcoinBaseAdapter: BitcoinCoreDelegate {
     }
     
     func lastBlockInfoUpdated(lastBlockInfo: BlockInfo) {
-        lastBlockUpdatedSubject.send()
+        lastBlockUpdatedSubject.send(lastBlockInfo)
     }
 
     func kitStateUpdated(state: BitcoinCore.KitState) {
@@ -362,7 +362,7 @@ extension BitcoinBaseAdapter: ITransactionsAdapter {
         stateUpdatedSubject.eraseToAnyPublisher()
     }
     
-    var lastBlockUpdated: AnyPublisher<Void, Never> {
+    var lastBlockUpdated: AnyPublisher<BlockInfo, Never> {
         lastBlockUpdatedSubject.eraseToAnyPublisher()
     }
     
