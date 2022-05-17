@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1B5D4645ED8B867348E63D53 /* Pods_Portal_PortalUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */; };
 		699170B47959AC03046904DC /* Pods_PortalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 208D6013569144022A61A0CB /* Pods_PortalTests.framework */; };
+		7501BBE82833CD7500B3CE1B /* LDKFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7501BBE72833CD7500B3CE1B /* LDKFramework.xcframework */; };
+		7501BBE92833CD7500B3CE1B /* LDKFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7501BBE72833CD7500B3CE1B /* LDKFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		754356DE281C040800FD7251 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356DD281C040800FD7251 /* Wallet.swift */; };
 		754356E0281C043F00FD7251 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356DF281C043F00FD7251 /* Enums.swift */; };
 		754356E2281C04DE00FD7251 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356E1281C04DE00FD7251 /* Account.swift */; };
@@ -47,8 +49,6 @@
 		7548DD2F282CF3A7006053CC /* ManageChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548DD2E282CF3A7006053CC /* ManageChannelView.swift */; };
 		7548DD31282CF3D6006053CC /* CreateInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548DD30282CF3D6006053CC /* CreateInvoiceView.swift */; };
 		7548DD33282CF3FB006053CC /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548DD32282CF3FB006053CC /* ShareSheetView.swift */; };
-		7548DD3628302CE5006053CC /* LDKFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7548DD3528302CE5006053CC /* LDKFramework.xcframework */; };
-		7548DD3728302CE5006053CC /* LDKFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7548DD3528302CE5006053CC /* LDKFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7548DD3828303ED7006053CC /* Bindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757491FB2812BA6A00B42EB5 /* Bindings.swift */; };
 		7548DD3928303EDE006053CC /* C3Tuple_ChannelAnnouncementChannelUpdateChannelUpdateZ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757491F02812BA6900B42EB5 /* C3Tuple_ChannelAnnouncementChannelUpdateChannelUpdateZ.swift */; };
 		7548DD3A28303EDE006053CC /* C2Tuple_TxidCVec_C2Tuple_u32ScriptZZZ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757491F12812BA6900B42EB5 /* C2Tuple_TxidCVec_C2Tuple_u32ScriptZZZ.swift */; };
@@ -884,7 +884,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7548DD3728302CE5006053CC /* LDKFramework.xcframework in Embed Frameworks */,
+				7501BBE92833CD7500B3CE1B /* LDKFramework.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -897,6 +897,7 @@
 		2560AA559CB382BE426B8341 /* Pods-Portal-PortalUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal-PortalUITests.release.xcconfig"; path = "Target Support Files/Pods-Portal-PortalUITests/Pods-Portal-PortalUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2A4759DB4F7D821F4AF0322A /* Pods-PortalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PortalTests.debug.xcconfig"; path = "Target Support Files/Pods-PortalTests/Pods-PortalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6068F2B744BD8F6270795EC0 /* Pods-PortalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PortalTests.release.xcconfig"; path = "Target Support Files/Pods-PortalTests/Pods-PortalTests.release.xcconfig"; sourceTree = "<group>"; };
+		7501BBE72833CD7500B3CE1B /* LDKFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = LDKFramework.xcframework; sourceTree = "<group>"; };
 		754356DD281C040800FD7251 /* Wallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		754356DF281C043F00FD7251 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		754356E1281C04DE00FD7251 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -935,7 +936,6 @@
 		7548DD2E282CF3A7006053CC /* ManageChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageChannelView.swift; sourceTree = "<group>"; };
 		7548DD30282CF3D6006053CC /* CreateInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceView.swift; sourceTree = "<group>"; };
 		7548DD32282CF3FB006053CC /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
-		7548DD3528302CE5006053CC /* LDKFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = LDKFramework.xcframework; path = ../../../../Downloads/LDKFramework.xcframework; sourceTree = "<group>"; };
 		7548DE892831B436006053CC /* ILightningDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILightningDataService.swift; sourceTree = "<group>"; };
 		7548DE8B2831B469006053CC /* ILightningSerivice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILightningSerivice.swift; sourceTree = "<group>"; };
 		7548DE8D2831B4B6006053CC /* ILightningDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILightningDataStorage.swift; sourceTree = "<group>"; };
@@ -1427,7 +1427,7 @@
 			files = (
 				757491A22812AFBB00B42EB5 /* PromiseKit in Frameworks */,
 				7550BD8B2480EA18007FB199 /* CodeScanner in Frameworks */,
-				7548DD3628302CE5006053CC /* LDKFramework.xcframework in Frameworks */,
+				7501BBE82833CD7500B3CE1B /* LDKFramework.xcframework in Frameworks */,
 				757491A52812B27900B42EB5 /* Crypto in Frameworks */,
 				AD093EAC7E32437B9E5B187B /* Pods_Portal.framework in Frameworks */,
 				755158F0246C44A900C9EAF0 /* KeychainAccess in Frameworks */,
@@ -2307,7 +2307,7 @@
 		BD02C9DB3347F314E532AFFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7548DD3528302CE5006053CC /* LDKFramework.xcframework */,
+				7501BBE72833CD7500B3CE1B /* LDKFramework.xcframework */,
 				A724453451E80046E8FED853 /* Pods_Portal.framework */,
 				E7E6B5476585C5A59BE5839D /* Pods_Portal_PortalUITests.framework */,
 				208D6013569144022A61A0CB /* Pods_PortalTests.framework */,
