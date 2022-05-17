@@ -90,6 +90,14 @@ class LightningService: ILightningService {
                 }
             }
             .store(in: &subscriptions)
+        
+        for node in dataService.nodes {
+            for channel in node.channels {
+                if channel.state != .closed && !node.connected {
+                    connect(node: node)
+                }
+            }
+        }
     }
     
     func connect(node: LightningNode) {
@@ -175,32 +183,11 @@ extension LightningService {
         return blockData
     }
     
-    private func getBlockHeader(hash: String) async throws -> [UInt8] {
-        let urlString = "https://blockstream.info/testnet/api/block/\(hash)/header"
-        guard let url = URL(string: urlString) else {
-            throw FetchingDataError.invalidURL
-        }
-        let request = URLRequest(url: url)
-        let (headerData, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            throw FetchingDataError.badHTTPResponseStatus
-        }
-        guard let headerHex = String(data: headerData, encoding: .utf8) else {
-            throw FetchingDataError.dataTransformation
-        }
-        guard let header = LDKBlock.hexStringToBytes(hexString: headerHex) else {
-            throw FetchingDataError.dataTransformation
-        }
-        return header
-    }
-    
     private func connect(block: BlockInfo) async throws {
         let bestBlockHeight = manager.constructor.channelManager.current_best_block().height()
         
         guard block.height == bestBlockHeight + 1 else { return }
         
-        let blockHeader = try await getBlockHeader(hash: block.headerHash)
         let rawBlockData = try await getBlockBinary(hash: block.headerHash)
         
         let blockBinary = rawBlockData.bytes
@@ -211,9 +198,6 @@ extension LightningService {
 
         let chainMonitorListener = manager.chainMonitor.as_Listen()
         chainMonitorListener.block_connected(block: blockBinary, height: blockHeight)
-        
-        let confirmer = manager.constructor.channelManager.as_Confirm()
-        confirmer.best_block_updated(header: blockHeader, height: blockHeight)
                 
         print("Block connected: \(block)")
     }
@@ -231,12 +215,6 @@ extension LightningService {
             let blockHeight = UInt32(block.height)
             channelManagerListener.block_connected(block: blockBytes, height: blockHeight)
             chainMonitorListener.block_connected(block: blockBytes, height: blockHeight)
-        }
-        
-        if let bestBlock = newBlocks.last {
-            let header = try await getBlockHeader(hash: bestBlock.headerHash.reversedHex)
-            let confirmer = manager.constructor.channelManager.as_Confirm()
-            confirmer.best_block_updated(header: header, height: UInt32(bestBlock.height))
         }
         
         manager.constructor.chain_sync_completed(persister: manager.channelManagerPersister, scorer: nil)
