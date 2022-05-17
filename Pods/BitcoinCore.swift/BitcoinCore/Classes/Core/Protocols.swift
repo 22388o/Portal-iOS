@@ -468,6 +468,7 @@ protocol IDataProvider {
     func debugInfo(network: INetwork, scriptType: ScriptType, addressConverter: IAddressConverter) -> String
     func transactions(fromUid: String?, type: TransactionFilterType?, limit: Int?) -> Single<[TransactionInfo]>
     func transaction(hash: String) -> TransactionInfo?
+    func blocks(from height: Int) -> [Block]
 
     func rawTransaction(transactionHash: String) -> String?
 }
