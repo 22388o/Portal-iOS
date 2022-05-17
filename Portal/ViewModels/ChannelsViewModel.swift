@@ -44,30 +44,5 @@ class ChannelsViewModel: ObservableObject {
         } else {
             return nil
         }
-//        if let decimalAmount = Decimal(string: amount) {
-//            let satoshiAmount = btcAdapter.convertToSatoshi(value: decimalAmount)
-//            let amount = Option_u64Z(value: UInt64(satoshiAmount))
-//            let descr = memo
-//            let cm = PolarConnectionExperiment.shared.service.channelManager!
-//            let km = PolarConnectionExperiment.shared.keysManager
-//            let result = Bindings.swift_create_invoice_from_channelmanager(channelmanager: cm, keys_manager: km.as_KeysInterface(), network: LDKCurrency_BitcoinTestnet, amt_msat: amount, description: descr)
-//
-//            if result.isOk(), let invoice = result.getValue() {
-//                let payment = LightningPayment(
-//                    id: UUID().uuidString,
-//                    satAmount: Int64(satoshiAmount),
-//                    date: Date(),
-//                    memo: memo,
-//                    state: .requested
-//                )
-//                PolarConnectionExperiment.shared.lightningDataService.save(payment: payment)
-//
-//                return invoice.to_str()
-//            } else {
-//                return nil
-//            }
-//        } else {
-//            return nil
-//        }
     }
 }

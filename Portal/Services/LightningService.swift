@@ -152,7 +152,31 @@ class LightningService: ILightningService {
     }
     
     func createInvoice(amount: String, memo: String) -> String? {
-        nil
+        if let decimalAmount = Decimal(string: amount) {
+            let satoshiAmount = bitcoinAdapter.convertToSatoshi(value: decimalAmount)
+            let amount = Option_u64Z(value: UInt64(satoshiAmount))
+            let descr = memo
+            
+            let result = Bindings.swift_create_invoice_from_channelmanager(channelmanager: manager.constructor.channelManager, keys_manager: manager.keysManager.as_KeysInterface(), network: LDKCurrency_BitcoinTestnet, amt_msat: amount, description: descr)
+
+            if result.isOk(), let invoice = result.getValue() {
+                let payment = LightningPayment(
+                    id: UUID().uuidString,
+                    satAmount: Int64(satoshiAmount),
+                    date: Date(),
+                    memo: memo,
+                    state: .requested
+                )
+                
+                dataService.save(payment: payment)
+
+                return invoice.to_str()
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
     }
 }
 
