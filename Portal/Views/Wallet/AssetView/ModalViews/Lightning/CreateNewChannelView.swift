@@ -103,7 +103,9 @@ struct CreateNewChannelView: View {
                                         break
                                     }
                                 }
-                                PolarConnectionExperiment.shared.service.disconnect(node: node)
+                                if shouldDisconnect && !node.connected {
+                                    PolarConnectionExperiment.shared.service.disconnect(node: node)
+                                }
                                 selectedNode = nil
                             }
                         }
@@ -253,8 +255,8 @@ struct CreateNewChannelView: View {
                                 .contentShape(Rectangle())
                                 .onTapGesture {
                                     selectedNode = node
-                                    PolarConnectionExperiment.shared.service.connect(node: node)
                                     fundChannel.toggle()
+                                    PolarConnectionExperiment.shared.service.connect(node: node)
                                 }
                                 .padding(.horizontal)
                             }

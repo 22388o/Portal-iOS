@@ -25,13 +25,13 @@ struct CreateInvoiceView: View {
         guard let message = address?.data(using: .utf8) else { return UIImage() }
         
         let parameters: [String : Any] = [
-                    "inputMessage": message,
-                    "inputCorrectionLevel": "L"
-                ]
+            "inputMessage": message,
+            "inputCorrectionLevel": "L"
+        ]
         let filter = CIFilter(name: "CIQRCodeGenerator", parameters: parameters)
         
         guard let outputImage = filter?.outputImage else { return UIImage() }
-               
+        
         let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: 6, y: 6))
         guard let cgImage = CIContext().createCGImage(scaledImage, from: scaledImage.extent) else {
             return UIImage()
@@ -39,7 +39,7 @@ struct CreateInvoiceView: View {
         
         return UIImage(cgImage: cgImage)
     }
-
+    
     var body: some View {
         ZStack(alignment: .top) {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
@@ -55,7 +55,7 @@ struct CreateInvoiceView: View {
                         .resizable()
                         .frame(width: UIScreen.main.bounds.width - 80, height: UIScreen.main.bounds.width - 80)
                         .cornerRadius(10)
-                        
+                    
                     Text("Invoice:")
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightInactiveLabel)
@@ -98,7 +98,7 @@ struct CreateInvoiceView: View {
                                 Text(exchangerViewModel.asset.code)
                                     .foregroundColor(Color.lightActiveLabelNew)//.opacity(0.4)
                             }
-                                .modifier(TextFieldModifier())
+                            .modifier(TextFieldModifier())
                             
                             Text("=").foregroundColor(Color.white)
                             
@@ -123,11 +123,11 @@ struct CreateInvoiceView: View {
                                 
                                 Text(exchangerViewModel.fiat.code).foregroundColor(Color.lightActiveLabelNew)
                             }
-                                .modifier(TextFieldModifier())
+                            .modifier(TextFieldModifier())
                         }
-                            .font(Font.mainFont(size: 16))
+                        .font(Font.mainFont(size: 16))
                     }
-                        .padding()
+                    .padding()
                     
                     TextField("", text: $memo)
                         .modifier(
@@ -154,7 +154,7 @@ struct CreateInvoiceView: View {
             }
             .padding()
             .onDisappear {
-//                viewModel.recentActivity.insert(LightningActivityItem(id: UUID(), amount: "+ \(exchangerViewModel.assetValue) BTC", fiatAmount: "\(exchangerViewModel.fiatValue) USD", date: "04/06/22", status: "Requested payment", memo: memo), at: 0)
+                //                viewModel.recentActivity.insert(LightningActivityItem(id: UUID(), amount: "+ \(exchangerViewModel.assetValue) BTC", fiatAmount: "\(exchangerViewModel.fiatValue) USD", date: "04/06/22", status: "Requested payment", memo: memo), at: 0)
             }
         }
     }
