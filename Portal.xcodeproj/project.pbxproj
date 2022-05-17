@@ -22,7 +22,6 @@
 		754356F2281FDDEF00FD7251 /* IAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356F1281FDDEE00FD7251 /* IAdapter.swift */; };
 		754356F528205DA700FD7251 /* AccountRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356F328205DA700FD7251 /* AccountRecord+CoreDataClass.swift */; };
 		754356F628205DA700FD7251 /* AccountRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356F428205DA700FD7251 /* AccountRecord+CoreDataProperties.swift */; };
-		754356F828205E5D00FD7251 /* LastBlockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356F728205E5D00FD7251 /* LastBlockInfo.swift */; };
 		754357012821460A00FD7251 /* WalletStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356FC2821460A00FD7251 /* WalletStorage.swift */; };
 		754357022821460A00FD7251 /* AccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356FD2821460A00FD7251 /* AccountStorage.swift */; };
 		754357032821460A00FD7251 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754356FE2821460A00FD7251 /* KeychainStorage.swift */; };
@@ -911,7 +910,6 @@
 		754356F1281FDDEE00FD7251 /* IAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAdapter.swift; sourceTree = "<group>"; };
 		754356F328205DA700FD7251 /* AccountRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		754356F428205DA700FD7251 /* AccountRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		754356F728205E5D00FD7251 /* LastBlockInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastBlockInfo.swift; sourceTree = "<group>"; };
 		754356FC2821460A00FD7251 /* WalletStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletStorage.swift; sourceTree = "<group>"; };
 		754356FD2821460A00FD7251 /* AccountStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountStorage.swift; sourceTree = "<group>"; };
 		754356FE2821460A00FD7251 /* KeychainStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
@@ -2217,7 +2215,6 @@
 				7582D40A24167A3F008ECAB0 /* CoinMarketData.swift */,
 				756A75F82445F6EF00C66739 /* NetworkError.swift */,
 				755158FF246D94C000C9EAF0 /* NewWalletModel.swift */,
-				754356F728205E5D00FD7251 /* LastBlockInfo.swift */,
 				7576ED9D2472633200B3222E /* CoinAdapter.swift */,
 				7551CB9A2473E21700ECD2C0 /* Coin.swift */,
 				755158F1246D881300C9EAF0 /* DB */,
@@ -2951,7 +2948,6 @@
 				757493282812BA6E00B42EB5 /* KeysInterface.swift in Sources */,
 				757494282812BA6F00B42EB5 /* CommitmentUpdate.swift in Sources */,
 				757494522812BA6F00B42EB5 /* OutPoint.swift in Sources */,
-				754356F828205E5D00FD7251 /* LastBlockInfo.swift in Sources */,
 				757493392812BA6E00B42EB5 /* BindingsType.swift in Sources */,
 				757494532812BA6F00B42EB5 /* InvoicePayer.swift in Sources */,
 				7574944E2812BA6F00B42EB5 /* ChannelFeatures.swift in Sources */,
