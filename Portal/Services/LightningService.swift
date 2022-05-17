@@ -14,6 +14,8 @@ class LightningService: ILightningService {
     var dataService: ILightningDataService
     var manager: ILightningChannelManager
     
+    var blockChainDataSynced = CurrentValueSubject<Bool, Never>(false)
+    
     private var bitcoinAdapter: BitcoinAdapter
     private var subscriptions = Set<AnyCancellable>()
     
@@ -21,13 +23,13 @@ class LightningService: ILightningService {
         self.bitcoinAdapter = adapter
         self.dataService = dataService
         
-        guard let lastKnownBlock = adapter.lastBlockInfo else {
+        guard let bestBlock = adapter.lastBlockInfo else {
             fatalError("not synced with network")
         }
         
-        print("Latest Block: \(lastKnownBlock)")
+        print("Best block: \(bestBlock)")
         
-        self.manager = LightningChannelManager(lastKnownBlock: lastKnownBlock, mnemonic: mnemonic)
+        manager = LightningChannelManager(bestBlock: bestBlock, mnemonic: mnemonic)
                         
         bitcoinAdapter.transactionRecords
             .sink { [weak self] txs in
@@ -53,10 +55,19 @@ class LightningService: ILightningService {
                 let state = self.bitcoinAdapter.balanceState
                 if case let .syncing(currentProgress, _) = state {
                     print("Syncing... \(currentProgress)%")
+                    
+                    if self.blockChainDataSynced.value != false {
+                        self.blockChainDataSynced.send(false)
+                    }
                 }
                 if case .synced  = state {
-                    print("BTC synced. Balance: \(self.bitcoinAdapter.balance)")
-                    self.manager.constructor.chain_sync_completed(persister: self.manager.channelManagerPersister, scorer: nil)
+                    Task {
+                        do {
+                            try await self.syncBlockchainData()
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }
                 }
             }
             .store(in: &subscriptions)
@@ -68,6 +79,8 @@ class LightningService: ILightningService {
             }
             .sink { [weak self] newBlock in
                 guard let self = self else { return }
+                guard self.blockChainDataSynced.value else { return }
+                
                 Task {
                     do {
                         try await self.connect(block: newBlock)
@@ -140,9 +153,10 @@ extension LightningService {
         case invalidURL
         case badHTTPResponseStatus
         case badHTTPResponseType
+        case dataTransformation
         case missingBinary
     }
-
+    //TODO: - move api calls to network layer
     private func getBlockBinary(hash: String) async throws -> Data {
         let urlString = "https://blockstream.info/testnet/api/block/\(hash)/raw"
         guard let url = URL(string: urlString) else {
@@ -161,18 +175,73 @@ extension LightningService {
         return blockData
     }
     
+    private func getBlockHeader(hash: String) async throws -> [UInt8] {
+        let urlString = "https://blockstream.info/testnet/api/block/\(hash)/header"
+        guard let url = URL(string: urlString) else {
+            throw FetchingDataError.invalidURL
+        }
+        let request = URLRequest(url: url)
+        let (headerData, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw FetchingDataError.badHTTPResponseStatus
+        }
+        guard let headerHex = String(data: headerData, encoding: .utf8) else {
+            throw FetchingDataError.dataTransformation
+        }
+        guard let header = LDKBlock.hexStringToBytes(hexString: headerHex) else {
+            throw FetchingDataError.dataTransformation
+        }
+        return header
+    }
+    
     private func connect(block: BlockInfo) async throws {
-        let rawBlockData = try await self.getBlockBinary(hash: block.headerHash)
+        let bestBlockHeight = manager.constructor.channelManager.current_best_block().height()
+        
+        guard block.height == bestBlockHeight + 1 else { return }
+        
+        let blockHeader = try await getBlockHeader(hash: block.headerHash)
+        let rawBlockData = try await getBlockBinary(hash: block.headerHash)
         
         let blockBinary = rawBlockData.bytes
         let blockHeight = UInt32(block.height)
 
-        let channelManagerListener = self.manager.constructor.channelManager.as_Listen()
+        let channelManagerListener = manager.constructor.channelManager.as_Listen()
         channelManagerListener.block_connected(block: blockBinary, height: blockHeight)
 
-        let chainMonitorListener = self.manager.chainMonitor.as_Listen()
+        let chainMonitorListener = manager.chainMonitor.as_Listen()
         chainMonitorListener.block_connected(block: blockBinary, height: blockHeight)
         
+        let confirmer = manager.constructor.channelManager.as_Confirm()
+        confirmer.best_block_updated(header: blockHeader, height: blockHeight)
+                
         print("Block connected: \(block)")
+    }
+    
+    private func syncBlockchainData() async throws {
+        let bestBlockHeight = manager.constructor.channelManager.current_best_block().height()
+        let newBlocks = bitcoinAdapter.blocks(from: Int(bestBlockHeight)).dropFirst()
+                
+        let channelManagerListener = manager.constructor.channelManager.as_Listen()
+        let chainMonitorListener = manager.chainMonitor.as_Listen()
+        
+        for block in newBlocks {
+            let blockBinary = try await getBlockBinary(hash: block.headerHash.reversedHex)
+            let blockBytes = blockBinary.bytes
+            let blockHeight = UInt32(block.height)
+            channelManagerListener.block_connected(block: blockBytes, height: blockHeight)
+            chainMonitorListener.block_connected(block: blockBytes, height: blockHeight)
+        }
+        
+        if let bestBlock = newBlocks.last {
+            let header = try await getBlockHeader(hash: bestBlock.headerHash.reversedHex)
+            let confirmer = manager.constructor.channelManager.as_Confirm()
+            confirmer.best_block_updated(header: header, height: UInt32(bestBlock.height))
+        }
+        
+        manager.constructor.chain_sync_completed(persister: manager.channelManagerPersister, scorer: nil)
+        blockChainDataSynced.send(true)
+        
+        print("Blockchain data synced. Balance: \(bitcoinAdapter.balance)")
     }
 }
