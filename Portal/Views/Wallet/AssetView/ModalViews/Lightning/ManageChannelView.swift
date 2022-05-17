@@ -137,7 +137,7 @@ struct ChannelItemView: View {
             .font(.mainFont(size: 14))
             .padding()
         }
-        .frame(height: 80)
+        .frame(height: 100)
         .padding(.horizontal)
         .padding(.vertical, 6)
     }
