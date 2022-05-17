@@ -9,7 +9,9 @@
 import Foundation
 
 class LightningNode: Identifiable {
-    let id: UUID = UUID()
+    var id: String {
+        publicKey
+    }
     let alias: String
     let publicKey: String
     let host: String

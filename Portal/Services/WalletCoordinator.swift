@@ -328,7 +328,7 @@ extension WalletCoordinator: ILightningDataStorage {
             do {
                 let records = try context.fetch(request)
                 
-                if let record = records.first(where: { $0.id == node.id }) {
+                if let record = records.first(where: { $0.publicKey == node.publicKey }) {
                     record.alias = node.alias
                     record.publicKey = node.publicKey
                     record.host = node.host
@@ -339,6 +339,8 @@ extension WalletCoordinator: ILightningDataStorage {
                         channelRecord.satValue = Int64(channel.satValue)
                         channelRecord.channelID = Int16(channel.id)
                         channelRecord.state = channel.state.rawValue
+                        
+                        record.addToChannels(channelRecord)
                     }
                     
                     try context.save()
