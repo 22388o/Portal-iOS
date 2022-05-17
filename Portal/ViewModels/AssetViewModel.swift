@@ -35,7 +35,7 @@ final class AssetViewModel: ObservableObject, IMarketData {
     @Published var valueCurrencySwitchState: ValueCurrencySwitchState = .fiat
     
     private var subscriptions = Set<AnyCancellable>()
-    private var btcAdapter = PolarConnectionExperiment.shared.btcAdapter
+    private var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
             
     var marketData: CoinMarketData {
         marketData(for: code)

@@ -15,14 +15,14 @@ struct LDKBlockInfo {
 }
 
 struct ReorgPath {
-    var orphanChain: Block? // 1) disconnect from tail (typically empty)
-    var newChain: Block // 2) connect from head (typically just one block)
+    var orphanChain: LDKBlock? // 1) disconnect from tail (typically empty)
+    var newChain: LDKBlock // 2) connect from head (typically just one block)
 }
 
-class Block {
+class LDKBlock {
     var info: LDKBlockInfo
-    var previous: Block?
-    var next: Block?
+    var previous: LDKBlock?
+    var next: LDKBlock?
     
     class func hexStringToBytes(hexString: String) -> [UInt8]? {
         let hexStr = hexString.dropFirst(hexString.hasPrefix("0x") ? 2 : 0)
@@ -48,7 +48,7 @@ class Block {
         return bytes.map { String(format: format, $0) }.joined()
     }
 
-    init(info: LDKBlockInfo, previous: Block?, next: Block?) {
+    init(info: LDKBlockInfo, previous: LDKBlock?, next: LDKBlock?) {
         self.info = info
         self.previous = previous
         self.next = next
@@ -59,7 +59,7 @@ class Block {
         case prependixHasNext
     }
 
-    func insertAfter(newNext: Block) throws -> Block {
+    func insertAfter(newNext: LDKBlock) throws -> LDKBlock {
         if (newNext.previous != nil) {
             throw SequencingError.appendixHasPrevious
         }
@@ -72,7 +72,7 @@ class Block {
         return newNext
     }
 
-    func insertBefore(newPrevious: Block) throws -> Block {
+    func insertBefore(newPrevious: LDKBlock) throws -> LDKBlock {
         if (newPrevious.next != nil) {
             throw SequencingError.prependixHasNext
         }
@@ -85,14 +85,14 @@ class Block {
         return newPrevious
     }
 
-    func earliestBlock() -> Block {
+    func earliestBlock() -> LDKBlock {
         guard let previous = self.previous else {
             return self
         }
         return previous.earliestBlock()
     }
 
-    func latestBlock() -> Block {
+    func latestBlock() -> LDKBlock {
         guard let next = self.next else {
             return self
         }
@@ -109,7 +109,7 @@ class Block {
         return previous.seekBlockHashBackwards(hash: hash)
     }
 
-    func getOrphanChain(lastKeptHash: String, trailingChain: Block?) -> Block? {
+    func getOrphanChain(lastKeptHash: String, trailingChain: LDKBlock?) -> LDKBlock? {
         if (self.info.hash == lastKeptHash) {
             if let chain = trailingChain {
                 chain.previous = self
@@ -117,7 +117,7 @@ class Block {
             return trailingChain
         }
 
-        let chain = Block(info: self.info, previous: nil, next: trailingChain)
+        let chain = LDKBlock(info: self.info, previous: nil, next: trailingChain)
         trailingChain?.previous = chain // double-link it
 
         return self.previous!.getOrphanChain(lastKeptHash: lastKeptHash, trailingChain: chain)
@@ -135,7 +135,7 @@ class Block {
     };
 
     // Insert
-    func reconcile(newChain: Block) -> ReorgPath {
+    func reconcile(newChain: LDKBlock) -> ReorgPath {
         if (self.next != nil) {
             return self.latestBlock().reconcile(newChain: newChain)
         }
@@ -160,11 +160,11 @@ class RegtestBlockchainObserver {
 
     private var earliestBlockHeight: UInt? = nil
     private var latestBlockHeight: UInt = 0
-    private var chainTip: Block?
+    private var chainTip: LDKBlock?
     public var listeners: [Listen];
     private var syncComplete: (() -> Void)?;
 
-    init(listeners: [Listen], chainTip: Block?, syncComplete: (() -> Void)?) {
+    init(listeners: [Listen], chainTip: LDKBlock?, syncComplete: (() -> Void)?) {
 
         self.listeners = listeners
         
@@ -181,7 +181,7 @@ class RegtestBlockchainObserver {
     
     var chainTipHash: [UInt8] {
         get {
-            return Block.hexStringToBytes(hexString: self.chainTip!.info.hash)!
+            return LDKBlock.hexStringToBytes(hexString: self.chainTip!.info.hash)!
         }
     }
     
@@ -212,7 +212,7 @@ class RegtestBlockchainObserver {
             var richBlockInfo = blockInfo
             richBlockInfo.rawData = blockData
             richBlockInfo.header = blockData.subdata(in: 4..<84)
-            let headerHex = Block.bytesToHexString(bytes: [UInt8](richBlockInfo.header!))
+            let headerHex = LDKBlock.bytesToHexString(bytes: [UInt8](richBlockInfo.header!))
             return richBlockInfo
         }
     }
@@ -282,10 +282,10 @@ class RegtestBlockchainObserver {
     }
 
     // fetches a sequence of blocks starting at the given hash, working its way backwards until a known previous block hash
-    func getBlockSequenceUntilKnown(startHash: String, trailingChain: Block?) -> Promise<Block> {
+    func getBlockSequenceUntilKnown(startHash: String, trailingChain: LDKBlock?) -> Promise<LDKBlock> {
         firstly {
             when(fulfilled: self.getBlockInfo(blockHash: startHash), self.getBlockBinary(blockHash: startHash))
-        }.then { (blockInfo: LDKBlockInfo, blockData: Data) -> Promise<Block> in
+        }.then { (blockInfo: LDKBlockInfo, blockData: Data) -> Promise<LDKBlock> in
             if (blockInfo.height < self.earliestBlockHeight! + 1) {
                 // we need to be able to keep the first block we started out with
                 // TODO: fix this such that the first block, too, can be reorged
@@ -296,7 +296,7 @@ class RegtestBlockchainObserver {
             richBlock.rawData = blockData
             richBlock.header = blockData.subdata(in: 4..<84)
 
-            let chain = Block(info: richBlock, previous: nil, next: trailingChain)
+            let chain = LDKBlock(info: richBlock, previous: nil, next: trailingChain)
             let isPreviousKnown = self.chainTip!.seekBlockHashBackwards(hash: richBlock.previousHash!)
 
             if isPreviousKnown {
@@ -345,7 +345,7 @@ class RegtestBlockchainObserver {
 
     func reconcileBlock(blockInfo: LDKBlockInfo) -> Promise<Void> {
         guard let chainTip = self.chainTip else {
-            self.chainTip = Block(info: blockInfo, previous: nil, next: nil)
+            self.chainTip = LDKBlock(info: blockInfo, previous: nil, next: nil)
             self.earliestBlockHeight = self.earliestBlockHeight ?? blockInfo.height
             self.latestBlockHeight = blockInfo.height
             if self.earliestBlockHeight == self.latestBlockHeight {
@@ -381,14 +381,14 @@ class RegtestBlockchainObserver {
                 print("Orphaned: \(orphans.latestBlock().toChainString(trailingInfo: nil))\n")
             }
             if let orphans = reorgPath.orphanChain {
-                var currentOrphan: Block? = orphans.latestBlock();
+                var currentOrphan: LDKBlock? = orphans.latestBlock();
                 while (currentOrphan != nil) {
                     // listener.disconnectBlock(block: currentOrphan!.info)
                     // listener.block_disconnected(header: currentOrphan!.info.hash, height: <#T##UInt32#>)
                     currentOrphan = currentOrphan!.previous
                 }
             }
-            var currentAddition: Block? = reorgPath.newChain;
+            var currentAddition: LDKBlock? = reorgPath.newChain;
             while (currentAddition != nil) {
                 for listener in self.listeners {
                     // listener.connectBlock(block: currentAddition!.info)

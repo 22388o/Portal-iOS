@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BitcoinCore
 
 class LightningChannelManager: ILightningChannelManager {
     var constructor: ChannelManagerConstructor
@@ -15,7 +16,7 @@ class LightningChannelManager: ILightningChannelManager {
     var keysManager: KeysManager
     var channelManagerPersister: ExtendedChannelManagerPersister
     
-    init(lastKnownBlock: LastBlockInfo, mnemonic: Data) {
+    init(bestBlock: BlockInfo, mnemonic: Data) {
         let userConfig = UserConfig()
         let network = LDKNetwork_Testnet
         
@@ -46,11 +47,13 @@ class LightningChannelManager: ILightningChannelManager {
         if let channelManagerData = defaults.data(forKey: "manager")?.bytes,
             let networkGraphSerialized = defaults.data(forKey: "netGraph")?.bytes {
             // restoring node
-
+            let monitorId = LDKBlock.hexStringToBytes(hexString: "926e1fb251548098af8caccfa834ef73be3d2790fe775545635d6f2b17794cfc0001")!.description
+            let monitor = defaults.value(forKey: monitorId) as! [UInt8]
+            
             do {
                 constructor = try ChannelManagerConstructor(
                     channel_manager_serialized: channelManagerData,
-                    channel_monitors_serialized: [],
+                    channel_monitors_serialized: [monitor],
                     keys_interface: keysManager.as_KeysInterface(),
                     fee_estimator: feeEstimator,
                     chain_monitor: chainMonitor,
@@ -66,13 +69,13 @@ class LightningChannelManager: ILightningChannelManager {
         } else {
             //start new node
         
-            let reversedLastBlockHash = lastKnownBlock.headerHash.reversed
-            let chainTipHash = Block.hexStringToBytes(hexString: reversedLastBlockHash)!
-            let chainTipHeight = UInt32(lastKnownBlock.height)
+            let reversedLastBlockHash = bestBlock.headerHash.reversed
+            let chainTipHash = LDKBlock.hexStringToBytes(hexString: reversedLastBlockHash)!
+            let chainTipHeight = UInt32(bestBlock.height)
             
             //test net genesis block hash
             let reversedGenesisBlockHash = "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943".reversed
-            let genesis_hash = Block.hexStringToBytes(hexString: reversedGenesisBlockHash)!
+            let genesis_hash = LDKBlock.hexStringToBytes(hexString: reversedGenesisBlockHash)!
             let networkGraph = NetworkGraph(genesis_hash: genesis_hash)
             
             constructor = ChannelManagerConstructor(
@@ -91,9 +94,9 @@ class LightningChannelManager: ILightningChannelManager {
         
         let bestBlockHeight = constructor.channelManager.current_best_block().height()
         let bestBlockHash = constructor.channelManager.current_best_block().block_hash()
-        print("Best block height: \(bestBlockHeight), hash: \(Block.bytesToHexString(bytes: bestBlockHash))")
+        print("Best block height: \(bestBlockHeight), hash: \(LDKBlock.bytesToHexString(bytes: bestBlockHash))")
         
-        channelManagerPersister = RegtestChannelManagerPersister(channelManager: constructor.channelManager)
+        channelManagerPersister = ChannelManagerPersister(channelManager: constructor.channelManager)
         peerNetworkHandler = TCPPeerHandler(peerManager: constructor.peerManager)
     }
 }

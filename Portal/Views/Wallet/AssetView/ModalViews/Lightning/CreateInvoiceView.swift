@@ -11,7 +11,7 @@ import SwiftUI
 struct CreateInvoiceView: View {
     @ObservedObject var viewModel: ChannelsViewModel
     @ObservedObject var exchangerViewModel: ExchangerViewModel = .init(asset: Coin.bitcoin(), fiat: USD)
-    private var btcAdapter = PolarConnectionExperiment.shared.btcAdapter
+    private var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
     @State private var memo: String = ""
     @State private var qrCode: UIImage?
     @State private var invoiceString = String()

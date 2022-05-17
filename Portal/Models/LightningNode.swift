@@ -17,7 +17,7 @@ class LightningNode: Identifiable {
     var channels: [LightningChannel]
     var connected: Bool
     var nodeId: [UInt8] {
-        Block.hexStringToBytes(hexString: publicKey)!
+        LDKBlock.hexStringToBytes(hexString: publicKey)!
     }
     
     init(alias: String, publicKey: String, host: String, port: UInt16) {

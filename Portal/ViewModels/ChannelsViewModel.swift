@@ -10,9 +10,9 @@ import Foundation
 import Combine
 
 class ChannelsViewModel: ObservableObject {
-    @Published var recentActivity = PolarConnectionExperiment.shared.lightningDataService.payments
-    @Published var suggestedNodes = PolarConnectionExperiment.shared.lightningDataService.nodes
-    @Published var openChannels = PolarConnectionExperiment.shared.lightningDataService.channels
+    @Published var recentActivity = PolarConnectionExperiment.shared.service.dataService.payments
+    @Published var suggestedNodes = PolarConnectionExperiment.shared.service.dataService.nodes
+    @Published var openChannels = PolarConnectionExperiment.shared.service.dataService.channels
     
     @Published var createNewChannel: Bool = false
     @Published var fundChannel: Bool = false
@@ -23,7 +23,7 @@ class ChannelsViewModel: ObservableObject {
     @Published var showChannelDetails: Bool = false
     var selectedNode: LightningNode?
     
-    var btcAdapter = PolarConnectionExperiment.shared.btcAdapter
+    var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
     
     init() {
         exchangerViewModel = .init(asset: Coin.bitcoin(), fiat: USD)
@@ -33,36 +33,41 @@ class ChannelsViewModel: ObservableObject {
         if let decimalAmount = Decimal(string: exchangerViewModel.assetValue) {
             let satoshiAmount = btcAdapter.convertToSatoshi(value: decimalAmount)
             selectedNode = node
-            PolarConnectionExperiment.shared.openChannelWith(node: node, sat: satoshiAmount)
+            PolarConnectionExperiment.shared.service.openChannelWith(node: node, sat: satoshiAmount)
+            channelIsOpened.toggle()
         }
-        channelIsOpened.toggle()
     }
     
     func createInvoice(amount: String, memo: String) -> String? {
-        if let decimalAmount = Decimal(string: amount) {
-            let satoshiAmount = btcAdapter.convertToSatoshi(value: decimalAmount)
-            let amount = Option_u64Z(value: UInt64(satoshiAmount))
-            let descr = memo
-            let cm = PolarConnectionExperiment.shared.channelManager!
-            let km = PolarConnectionExperiment.shared.keysManager
-            let result = Bindings.swift_create_invoice_from_channelmanager(channelmanager: cm, keys_manager: km.as_KeysInterface(), network: LDKCurrency_BitcoinTestnet, amt_msat: amount, description: descr)
-            
-            if result.isOk(), let invoice = result.getValue() {
-                let payment = LightningPayment(
-                    id: UUID().uuidString,
-                    satAmount: Int64(satoshiAmount),
-                    date: Date(),
-                    memo: memo,
-                    state: .requested
-                )
-                PolarConnectionExperiment.shared.lightningDataService.save(payment: payment)
-                
-                return invoice.to_str()
-            } else {
-                return nil
-            }
+        if let invoice = PolarConnectionExperiment.shared.service.createInvoice(amount: amount, memo: memo) {
+            return nil
         } else {
             return nil
         }
+//        if let decimalAmount = Decimal(string: amount) {
+//            let satoshiAmount = btcAdapter.convertToSatoshi(value: decimalAmount)
+//            let amount = Option_u64Z(value: UInt64(satoshiAmount))
+//            let descr = memo
+//            let cm = PolarConnectionExperiment.shared.service.channelManager!
+//            let km = PolarConnectionExperiment.shared.keysManager
+//            let result = Bindings.swift_create_invoice_from_channelmanager(channelmanager: cm, keys_manager: km.as_KeysInterface(), network: LDKCurrency_BitcoinTestnet, amt_msat: amount, description: descr)
+//
+//            if result.isOk(), let invoice = result.getValue() {
+//                let payment = LightningPayment(
+//                    id: UUID().uuidString,
+//                    satAmount: Int64(satoshiAmount),
+//                    date: Date(),
+//                    memo: memo,
+//                    state: .requested
+//                )
+//                PolarConnectionExperiment.shared.lightningDataService.save(payment: payment)
+//
+//                return invoice.to_str()
+//            } else {
+//                return nil
+//            }
+//        } else {
+//            return nil
+//        }
     }
 }
