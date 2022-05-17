@@ -7,8 +7,11 @@
 //
 
 import Foundation
+import Combine
 
 protocol ILightningService {
+    var blockChainDataSynced: CurrentValueSubject<Bool, Never> { get }
+
     var dataService: ILightningDataService { get }
     var manager: ILightningChannelManager { get }
     
