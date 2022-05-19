@@ -8,13 +8,13 @@
 import Foundation
 import Alamofire
 
-class RegtestBroadcasterInterface: BroadcasterInterface {
+class TestNetBroadcasterInterface: BroadcasterInterface {
     private static let url = "https://blockstream.info/testnet/api/tx"
     
     override func broadcast_transaction(tx: [UInt8]) {
         print("TX TO BROADCAST: \(Data(tx).hexEncodedString())")
         
-        var request = try! URLRequest(url: RegtestBroadcasterInterface.url, method: .post, headers: ["Content-Type": "text/plain"])
+        var request = try! URLRequest(url: TestNetBroadcasterInterface.url, method: .post, headers: ["Content-Type": "text/plain"])
         request.httpBody = Data(tx).hexEncodedString().data(using: .utf8)
         
         AF.request(request).responseString { response in

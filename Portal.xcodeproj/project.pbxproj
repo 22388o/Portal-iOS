@@ -775,7 +775,7 @@
 		757494652812BBF200B42EB5 /* SwiftSocketPeerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574945F2812BBF100B42EB5 /* SwiftSocketPeerHandler.swift */; };
 		757494662812BBF200B42EB5 /* RegtestBlockchainObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757494602812BBF100B42EB5 /* RegtestBlockchainObserver.swift */; };
 		757494672812BBF200B42EB5 /* SwiftSocketEchoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757494612812BBF100B42EB5 /* SwiftSocketEchoHandler.swift */; };
-		757494682812BBF200B42EB5 /* RegtestBroadcasterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757494622812BBF100B42EB5 /* RegtestBroadcasterInterface.swift */; };
+		757494682812BBF200B42EB5 /* TestNetBroadcasterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757494622812BBF100B42EB5 /* TestNetBroadcasterInterface.swift */; };
 		7574946E2812BC1300B42EB5 /* TCPPeerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574946A2812BC1300B42EB5 /* TCPPeerHandler.swift */; };
 		7574946F2812BC1300B42EB5 /* NetGraphMsgHandlerConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574946B2812BC1300B42EB5 /* NetGraphMsgHandlerConstructor.swift */; };
 		757494702812BC1300B42EB5 /* ChannelManagerConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574946C2812BC1300B42EB5 /* ChannelManagerConstructor.swift */; };
@@ -1326,7 +1326,7 @@
 		7574945F2812BBF100B42EB5 /* SwiftSocketPeerHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSocketPeerHandler.swift; sourceTree = "<group>"; };
 		757494602812BBF100B42EB5 /* RegtestBlockchainObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegtestBlockchainObserver.swift; sourceTree = "<group>"; };
 		757494612812BBF100B42EB5 /* SwiftSocketEchoHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSocketEchoHandler.swift; sourceTree = "<group>"; };
-		757494622812BBF100B42EB5 /* RegtestBroadcasterInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegtestBroadcasterInterface.swift; sourceTree = "<group>"; };
+		757494622812BBF100B42EB5 /* TestNetBroadcasterInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestNetBroadcasterInterface.swift; sourceTree = "<group>"; };
 		7574946A2812BC1300B42EB5 /* TCPPeerHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPPeerHandler.swift; sourceTree = "<group>"; };
 		7574946B2812BC1300B42EB5 /* NetGraphMsgHandlerConstructor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetGraphMsgHandlerConstructor.swift; sourceTree = "<group>"; };
 		7574946C2812BC1300B42EB5 /* ChannelManagerConstructor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelManagerConstructor.swift; sourceTree = "<group>"; };
@@ -2008,7 +2008,7 @@
 				7574945F2812BBF100B42EB5 /* SwiftSocketPeerHandler.swift */,
 				757494602812BBF100B42EB5 /* RegtestBlockchainObserver.swift */,
 				757494612812BBF100B42EB5 /* SwiftSocketEchoHandler.swift */,
-				757494622812BBF100B42EB5 /* RegtestBroadcasterInterface.swift */,
+				757494622812BBF100B42EB5 /* TestNetBroadcasterInterface.swift */,
 			);
 			path = "app-batteries";
 			sourceTree = "<group>";
@@ -2701,7 +2701,7 @@
 				7582D4192418C799008ECAB0 /* SendCoinView.swift in Sources */,
 				757493242812BA6E00B42EB5 /* Option_CVec_NetAddressZZ.swift in Sources */,
 				757493BF2812BA6E00B42EB5 /* Result_NodeAnnouncementDecodeErrorZ.swift in Sources */,
-				757494682812BBF200B42EB5 /* RegtestBroadcasterInterface.swift in Sources */,
+				757494682812BBF200B42EB5 /* TestNetBroadcasterInterface.swift in Sources */,
 				7574937F2812BA6E00B42EB5 /* Result_NoneLightningErrorZ.swift in Sources */,
 				757493902812BA6E00B42EB5 /* Result_InvoiceSignOrCreationErrorZ.swift in Sources */,
 				754356F0281FDD6F00FD7251 /* BitcoinCore + Holder.swift in Sources */,
