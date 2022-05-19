@@ -15,7 +15,13 @@ protocol ILightningDataStorage {
     func save(nodes: [LightningNode]) throws
     func save(channel: LightningChannel) throws
     func save(payment: LightningPayment) throws
+    func save(channelManager: Data) throws
+    func save(networkGraph: Data) throws
     func update(node: LightningNode) throws
     func update(channel: LightningChannel) throws
     func update(payment: LightningPayment) throws
+    func fetchNetGraph() throws -> Data?
+    func fetchChannelManager() throws -> Data?
+    func fetchChannelMonitors() throws -> [Data]?
+    func update(channelMonitor: Data, id: String) throws
 }
