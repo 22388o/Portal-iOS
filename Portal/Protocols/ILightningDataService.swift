@@ -9,6 +9,9 @@
 import Foundation
 
 protocol ILightningDataService {
+    var channelManagerData: Data? { get }
+    var networkGraph: Data? { get }
+    var channelMonitors: [Data]? { get }
     var nodes: [LightningNode] { get }
     var channels: [LightningChannel] { get }
     var payments: [LightningPayment] { get }
@@ -17,4 +20,7 @@ protocol ILightningDataService {
     func update(node: LightningNode)
     func update(channel: LightningChannel)
     func update(payment: LightningPayment)
+    func save(channelManager: Data)
+    func save(networkGraph: Data)
+    func update(channelMonitor: Data, id: String)
 }
