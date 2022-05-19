@@ -29,14 +29,14 @@ class LightningChannelManager: ILightningChannelManager {
     var keysManager: KeysManager
     var channelManagerPersister: ExtendedChannelManagerPersister
     
-    init(bestBlock: BlockInfo, mnemonic: Data) {
+    init(bestBlock: BlockInfo, mnemonic: Data, dataService: ILightningDataService) {
         let userConfig = UserConfig()
         let network = LDKNetwork_Testnet
         
         let filter = TestFilter()
         let filterOption = Option_FilterZ(value: filter)
         let feeEstimator = FeesEstimator()
-        let persister = ChannelPersister()
+        let persister = ChannelPersister(dataService: dataService)
         let broadcaster = TestNetBroadcasterInterface()
         let logger = TestLogger()
     
@@ -54,24 +54,21 @@ class LightningChannelManager: ILightningChannelManager {
             persister: persister
         )
         
-        //TODO: - db models needed
-        let defaults = UserDefaults.standard
-        
-        if let channelManagerData = defaults.data(forKey: "manager")?.bytes,
-            let networkGraphSerialized = defaults.data(forKey: "netGraph")?.bytes {
-            // restoring node
-            let monitorId = LDKBlock.hexStringToBytes(hexString: "926e1fb251548098af8caccfa834ef73be3d2790fe775545635d6f2b17794cfc0001")!.description
-            let monitor = defaults.value(forKey: monitorId) as! [UInt8]
+        if let channelManagerSerialized = dataService.channelManagerData?.bytes {
+            
+            let networkGraphSerizlized = dataService.networkGraph?.bytes ?? []
+            let channelMonitorsSeriaziled = dataService.channelMonitors?.map{ $0.bytes } ?? []
+            
             
             do {
                 constructor = try ChannelManagerConstructor(
-                    channel_manager_serialized: channelManagerData,
-                    channel_monitors_serialized: [monitor],
+                    channel_manager_serialized: channelManagerSerialized,
+                    channel_monitors_serialized: channelMonitorsSeriaziled,
                     keys_interface: keysManager.as_KeysInterface(),
                     fee_estimator: feeEstimator,
                     chain_monitor: chainMonitor,
                     filter: filter,
-                    net_graph_serialized: networkGraphSerialized,
+                    net_graph_serialized: networkGraphSerizlized,
                     tx_broadcaster: broadcaster,
                     logger: logger
                 )
@@ -109,7 +106,7 @@ class LightningChannelManager: ILightningChannelManager {
         let bestBlockHash = constructor.channelManager.current_best_block().block_hash()
         print("Best block height: \(bestBlockHeight), hash: \(LDKBlock.bytesToHexString(bytes: bestBlockHash))")
         
-        channelManagerPersister = ChannelManagerPersister(channelManager: constructor.channelManager)
+        channelManagerPersister = ChannelManagerPersister(channelManager: constructor.channelManager, dataService: dataService)
         peerNetworkHandler = TCPPeerHandler(peerManager: constructor.peerManager)
     }
     
