@@ -29,7 +29,7 @@ class LightningService: ILightningService {
         
         print("Best block: \(bestBlock)")
         
-        manager = LightningChannelManager(bestBlock: bestBlock, mnemonic: mnemonic)
+        manager = LightningChannelManager(bestBlock: bestBlock, mnemonic: mnemonic, dataService: dataService)
                         
         bitcoinAdapter.transactionRecords
             .sink { [weak self] txs in
