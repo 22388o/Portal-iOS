@@ -793,7 +793,7 @@
 		757494AE2812F2A800B42EB5 /* TestBroadcasterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574949E2812F21C00B42EB5 /* TestBroadcasterInterface.swift */; };
 		757494AF2812F2A800B42EB5 /* TestFeeEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574949C2812F21C00B42EB5 /* TestFeeEstimator.swift */; };
 		757494B02812F2BA00B42EB5 /* TestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757494922812F21C00B42EB5 /* TestLogger.swift */; };
-		757494B12812F2BA00B42EB5 /* TestPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757494912812F21C00B42EB5 /* TestPersister.swift */; };
+		757494B12812F2BA00B42EB5 /* ChannelPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757494912812F21C00B42EB5 /* ChannelPersister.swift */; };
 		7576ED9A2472541B00B3222E /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7576ED992472541B00B3222E /* RepeatingTimer.swift */; };
 		7576ED9C247262FE00B3222E /* WalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7576ED9B247262FE00B3222E /* WalletViewModel.swift */; };
 		7576ED9E2472633200B3222E /* CoinAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7576ED9D2472633200B3222E /* CoinAdapter.swift */; };
@@ -1332,7 +1332,7 @@
 		7574946C2812BC1300B42EB5 /* ChannelManagerConstructor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelManagerConstructor.swift; sourceTree = "<group>"; };
 		7574946D2812BC1300B42EB5 /* UtilMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilMethods.swift; sourceTree = "<group>"; };
 		757494722812EF4300B42EB5 /* PolarConnectionExperiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolarConnectionExperiment.swift; sourceTree = "<group>"; };
-		757494912812F21C00B42EB5 /* TestPersister.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPersister.swift; sourceTree = "<group>"; };
+		757494912812F21C00B42EB5 /* ChannelPersister.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelPersister.swift; sourceTree = "<group>"; };
 		757494922812F21C00B42EB5 /* TestLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestLogger.swift; sourceTree = "<group>"; };
 		757494932812F21C00B42EB5 /* TestChannelManagerPersister.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestChannelManagerPersister.swift; sourceTree = "<group>"; };
 		757494952812F21C00B42EB5 /* BTCVarInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCVarInt.swift; sourceTree = "<group>"; };
@@ -1474,7 +1474,7 @@
 				7574949C2812F21C00B42EB5 /* TestFeeEstimator.swift */,
 				7574949D2812F21C00B42EB5 /* TestFilter.swift */,
 				7574949E2812F21C00B42EB5 /* TestBroadcasterInterface.swift */,
-				757494912812F21C00B42EB5 /* TestPersister.swift */,
+				757494912812F21C00B42EB5 /* ChannelPersister.swift */,
 				757494922812F21C00B42EB5 /* TestLogger.swift */,
 			);
 			path = "ldk-related";
@@ -2589,7 +2589,7 @@
 				75515900246D94C000C9EAF0 /* NewWalletModel.swift in Sources */,
 				757494202812BA6F00B42EB5 /* ChainParameters.swift in Sources */,
 				757493D32812BA6E00B42EB5 /* Result_ClosingSignedDecodeErrorZ.swift in Sources */,
-				757494B12812F2BA00B42EB5 /* TestPersister.swift in Sources */,
+				757494B12812F2BA00B42EB5 /* ChannelPersister.swift in Sources */,
 				757494512812BA6F00B42EB5 /* Route.swift in Sources */,
 				7574934A2812BA6E00B42EB5 /* C2Tuple_PublicKeyTypeZ.swift in Sources */,
 				755233B324291314001D8CF8 /* Font+Extension.swift in Sources */,

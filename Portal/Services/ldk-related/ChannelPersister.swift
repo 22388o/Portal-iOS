@@ -7,7 +7,7 @@
 
 import Foundation
 
-class TestPersister: Persist {
+class ChannelPersister: Persist {
     
     func readChannelMonitors() {
 
