@@ -9,11 +9,13 @@ import Foundation
 import BitcoinCore
 
 class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
+    private let dataService: ILightningDataService
     private let channelManager: ChannelManager?
     private let keysManager: KeysManager? = nil
     
-    init(channelManager: ChannelManager?) {
+    init(channelManager: ChannelManager?, dataService: ILightningDataService) {
         self.channelManager = channelManager
+        self.dataService = dataService
         super.init()
     }
     
@@ -116,22 +118,18 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
     override func persist_manager(channel_manager: ChannelManager) -> Result_NoneErrorZ {
         print("PERSIST CHANNEL MANAGER")
 
-        DispatchQueue.global(qos: .background).async {
-            let managerBytes = channel_manager.write()
-            let defaults = UserDefaults.standard
-            defaults.setValue(Data(managerBytes), forKey: "manager")
-        }
+        let managerBytes = channel_manager.write()
+        dataService.save(channelManager: Data(managerBytes))
+        
         return Result_NoneErrorZ.ok()
     }
     
     override func persist_graph(network_graph: NetworkGraph) -> Result_NoneErrorZ {
         print("PERSIST NET GRAPH")
 
-        DispatchQueue.global(qos: .background).async {
-            let netGraphBytes = network_graph.write()
-            let defaults = UserDefaults.standard
-            defaults.setValue(Data(netGraphBytes), forKey: "netGraph")
-        }
+        let netGraphBytes = network_graph.write()
+        dataService.save(networkGraph: Data(netGraphBytes))
+        
         return Result_NoneErrorZ.ok()
     }
 }
