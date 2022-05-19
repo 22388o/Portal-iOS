@@ -128,87 +128,88 @@ enum DBError: Error {
     case storingError
 }
 
-class LightningDataService: ILightningDataService {
-    
-    private let storage: ILightningDataStorage
-    
-    init(storage: ILightningDataStorage) {
-        self.storage = storage
-        
-        if nodes.isEmpty {
-            try? storage.save(nodes: LightningNode.sampleNodes)
-        }
-    }
-    
-    var nodes: [LightningNode] {
-        do {
-            return try storage.fetchNodes()
-        } catch {
-            print(error)
-            return []
-        }
-    }
-    
-    var channels: [LightningChannel] {
-        do {
-            return try storage.fetchChannels()
-        } catch {
-            print(error)
-            return []
-        }
-    }
-    
-    var payments: [LightningPayment] {
-        do {
-            return try storage.fetchPayments()
-        } catch {
-            print(error)
-            return []
-        }
-    }
-    
-    func update(node: LightningNode) {
-        do {
-            try storage.update(node: node)
-        } catch {
-            print(error)
-        }
-    }
-    
-    func update(channel: LightningChannel) {
-        do {
-            try storage.update(channel: channel)
-        } catch {
-            print(error)
-        }
-    }
-    
-    func update(payment: LightningPayment) {
-        do {
-            try storage.update(payment: payment)
-        } catch {
-            print(error)
-        }
-    }
-    
-    func save(channel: LightningChannel) {
-        do {
-            try storage.save(channel: channel)
-        } catch {
-            print(error)
-        }
-    }
-    
-    func save(payment: LightningPayment) {
-        do {
-            try storage.save(payment: payment)
-        } catch {
-            print(error)
-        }
-    }
-}
-
 extension WalletCoordinator: ILightningDataStorage {
+    func update(channelMonitor: Data, id: String) throws {
+        guard let context = context else { throw DBError.missingContext }
+        
+        let request = DBChannelMonitors.fetchRequest() as NSFetchRequest<DBChannelMonitors>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                
+                if let record = records.first, var data = record.data {
+                    data[id] = channelMonitor
+                } else {
+                    let dbMonitors = DBChannelMonitors(context: context)
+                    let monitoirs: [String: Data] = [id: channelMonitor]
+                    dbMonitors.data = monitoirs
+                }
+                
+                try context.save()
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    
+    func fetchNetGraph() throws -> Data? {
+        guard let context = context else { throw DBError.missingContext }
+        
+        let request = DBLightningNetGraph.fetchRequest() as NSFetchRequest<DBLightningNetGraph>
+        var netGraphData: Data?
+        
+        try context.performAndWait {
+            do {
+                let record = try context.fetch(request).first
+                netGraphData = record?.data
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return netGraphData
+    }
+    
+    func fetchChannelManager() throws -> Data? {
+        guard let context = context else { throw DBError.missingContext }
+        let request = DBLightningChannelManager.fetchRequest() as NSFetchRequest<DBLightningChannelManager>
+        var channelManagerData: Data?
+        
+        try context.performAndWait {
+            do {
+                let record = try context.fetch(request).first
+                channelManagerData = record?.data
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return channelManagerData
+    }
+    
+    func fetchChannelMonitors() throws -> [Data]? {
+        guard let context = context else { throw DBError.missingContext }
+        
+        let request = DBChannelMonitors.fetchRequest() as NSFetchRequest<DBChannelMonitors>
+        var channelMonitors = [Data]()
+        
+        try context.performAndWait {
+            do {
+                if let record = try context.fetch(request).first, let data = record.data {
+                    for (_, value) in data {
+                        channelMonitors.append(value)
+                    }
+                }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return !channelMonitors.isEmpty ? channelMonitors : nil
+    }
+    
 
     func fetchNodes() throws -> [LightningNode] {
         guard let context = context else { throw DBError.missingContext }
@@ -262,6 +263,52 @@ extension WalletCoordinator: ILightningDataStorage {
         }
         
         return payments
+    }
+    
+    func save(channelManager: Data) throws {
+        guard let context = context else { throw DBError.missingContext }
+        
+        let request = DBLightningChannelManager.fetchRequest() as NSFetchRequest<DBLightningChannelManager>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                
+                if let record = records.first {
+                    record.data = channelManager
+                } else {
+                    let manager = DBLightningChannelManager(context: context)
+                    manager.data = channelManager
+                }
+                
+                try context.save()
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    func save(networkGraph: Data) throws {
+        guard let context = context else { throw DBError.missingContext }
+        
+        let request = DBLightningNetGraph.fetchRequest() as NSFetchRequest<DBLightningNetGraph>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                
+                if let record = records.first {
+                    record.data = networkGraph
+                } else {
+                    let network = DBLightningNetGraph(context: context)
+                    network.data = networkGraph
+                }
+                
+                try context.save()
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
     }
     
     func save(nodes: [LightningNode]) throws {
@@ -398,6 +445,4 @@ extension WalletCoordinator: ILightningDataStorage {
             }
         }
     }
-    
-    
 }
