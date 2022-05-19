@@ -99,7 +99,7 @@ class LightningService: ILightningService {
             }
         }
     }
-    
+        
     func connect(node: LightningNode) {
         node.connected = manager.peerNetworkHandler.connect(address: node.host, port: node.port, theirNodeId: node.nodeId)
         print("Node: \(node.alias) is \(node.connected ? "connected": "disconnected")")
@@ -107,7 +107,7 @@ class LightningService: ILightningService {
     
     func disconnect(node: LightningNode) {
         guard node.connected else { return }
-        manager.constructor.peerManager.disconnect_by_node_id(node_id: node.nodeId, no_connection_possible: false)
+        manager.peerManager.disconnect_by_node_id(node_id: node.nodeId, no_connection_possible: false)
         node.connected = false
         print("Node: \(node.alias) is \(node.connected ? "connected": "disconnected")")
     }
@@ -121,7 +121,7 @@ class LightningService: ILightningService {
         let userChannelId = UInt64.random(in: 10...1000)
         let config = UserConfig()
         
-        let channelOpenResult = manager.constructor.channelManager.create_channel(
+        let channelOpenResult = manager.channelManager.create_channel(
             their_network_key: node.nodeId,
             channel_value_satoshis: UInt64(sat),
             push_msat: 2000000,
@@ -157,7 +157,7 @@ class LightningService: ILightningService {
             let amount = Option_u64Z(value: UInt64(satoshiAmount))
             let descr = memo
             
-            let result = Bindings.swift_create_invoice_from_channelmanager(channelmanager: manager.constructor.channelManager, keys_manager: manager.keysManager.as_KeysInterface(), network: LDKCurrency_BitcoinTestnet, amt_msat: amount, description: descr)
+            let result = Bindings.swift_create_invoice_from_channelmanager(channelmanager: manager.channelManager, keys_manager: manager.keysManager.as_KeysInterface(), network: LDKCurrency_BitcoinTestnet, amt_msat: amount, description: descr)
 
             if result.isOk(), let invoice = result.getValue() {
                 let payment = LightningPayment(
@@ -169,14 +169,35 @@ class LightningService: ILightningService {
                 )
                 
                 dataService.save(payment: payment)
-
-                return invoice.to_str()
+                
+                let invoiceString = invoice.to_str()
+                
+                print("INVOICE: \(invoiceString)")
+                
+                return invoiceString
             } else {
                 return nil
             }
         } else {
             return nil
         }
+    }
+    
+    func pay(invoice: String) throws {
+        guard let payer = manager.payer else { return }
+        let result = Invoice.from_str(s: invoice)
+            
+        guard result.isOk() else { return }
+        
+        let invoiceValue = result.getValue()!
+        let payerResult = payer.pay_invoice(invoice: invoiceValue)
+        
+        guard !payerResult.isOk() else { return }
+        
+        if let error = payerResult.getError() {
+            
+        }
+        
     }
 }
 
@@ -208,7 +229,7 @@ extension LightningService {
     }
     
     private func connect(block: BlockInfo) async throws {
-        let bestBlockHeight = manager.constructor.channelManager.current_best_block().height()
+        let bestBlockHeight = manager.channelManager.current_best_block().height()
         
         guard block.height == bestBlockHeight + 1 else { return }
         
@@ -217,7 +238,7 @@ extension LightningService {
         let blockBinary = rawBlockData.bytes
         let blockHeight = UInt32(block.height)
 
-        let channelManagerListener = manager.constructor.channelManager.as_Listen()
+        let channelManagerListener = manager.channelManager.as_Listen()
         channelManagerListener.block_connected(block: blockBinary, height: blockHeight)
 
         let chainMonitorListener = manager.chainMonitor.as_Listen()
@@ -227,10 +248,10 @@ extension LightningService {
     }
     
     private func syncBlockchainData() async throws {
-        let bestBlockHeight = manager.constructor.channelManager.current_best_block().height()
+        let bestBlockHeight = manager.channelManager.current_best_block().height()
         let newBlocks = bitcoinAdapter.blocks(from: Int(bestBlockHeight)).dropFirst()
                 
-        let channelManagerListener = manager.constructor.channelManager.as_Listen()
+        let channelManagerListener = manager.channelManager.as_Listen()
         let chainMonitorListener = manager.chainMonitor.as_Listen()
         
         for block in newBlocks {
@@ -241,7 +262,7 @@ extension LightningService {
             chainMonitorListener.block_connected(block: blockBytes, height: blockHeight)
         }
         
-        manager.constructor.chain_sync_completed(persister: manager.channelManagerPersister, scorer: nil)
+        manager.chainSyncCompleted()
         blockChainDataSynced.send(true)
         
         print("Blockchain data synced. Balance: \(bitcoinAdapter.balance)")

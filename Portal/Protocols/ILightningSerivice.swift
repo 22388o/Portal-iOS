@@ -19,4 +19,5 @@ protocol ILightningService {
     func disconnect(node: LightningNode)
     func openChannelWith(node: LightningNode, sat: Int)
     func createInvoice(amount: String, memo: String) -> String?
+    func pay(invoice: String) throws
 }
