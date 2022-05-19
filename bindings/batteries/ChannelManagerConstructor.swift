@@ -167,8 +167,6 @@ public class ChannelManagerConstructor: NativeTypeWrapper {
         
 
         super.init(conflictAvoidingVariableName: 0)
-        // try! self.peerManager.addAnchor(anchor: self)
-        // try! self.channelManager.addAnchor(anchor: self)
     }
 
 
