@@ -10,7 +10,20 @@ import Foundation
 import BitcoinCore
 
 class LightningChannelManager: ILightningChannelManager {
-    var constructor: ChannelManagerConstructor
+    private var constructor: ChannelManagerConstructor
+    
+    var channelManager: ChannelManager {
+        constructor.channelManager
+    }
+    
+    var payer: InvoicePayer? {
+        constructor.payer
+    }
+    
+    var peerManager: PeerManager {
+        constructor.peerManager
+    }
+    
     var chainMonitor: ChainMonitor
     var peerNetworkHandler: TCPPeerHandler
     var keysManager: KeysManager
@@ -22,9 +35,9 @@ class LightningChannelManager: ILightningChannelManager {
         
         let filter = TestFilter()
         let filterOption = Option_FilterZ(value: filter)
-        let feeEstimator = TestFeeEstimator()
-        let persister = TestPersister()
-        let broadcaster = RegtestBroadcasterInterface()
+        let feeEstimator = FeesEstimator()
+        let persister = ChannelPersister()
+        let broadcaster = TestNetBroadcasterInterface()
         let logger = TestLogger()
     
         let seed = mnemonic.bytes
@@ -98,6 +111,11 @@ class LightningChannelManager: ILightningChannelManager {
         
         channelManagerPersister = ChannelManagerPersister(channelManager: constructor.channelManager)
         peerNetworkHandler = TCPPeerHandler(peerManager: constructor.peerManager)
+    }
+    
+    func chainSyncCompleted() {
+        let scorer = MultiThreadedLockableScore(score: Scorer().as_Score())
+        constructor.chain_sync_completed(persister: channelManagerPersister, scorer: scorer)
     }
 }
 

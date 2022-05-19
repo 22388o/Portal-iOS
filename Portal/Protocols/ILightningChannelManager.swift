@@ -9,9 +9,13 @@
 import Foundation
 
 protocol ILightningChannelManager {
-    var constructor: ChannelManagerConstructor { get }
+    var payer: InvoicePayer? { get }
+    var channelManager: ChannelManager { get }
+    var peerManager: PeerManager { get }
     var chainMonitor: ChainMonitor { get }
     var channelManagerPersister: ExtendedChannelManagerPersister { get }
     var keysManager: KeysManager { get }
     var peerNetworkHandler: TCPPeerHandler { get }
+    
+    func chainSyncCompleted()
 }
