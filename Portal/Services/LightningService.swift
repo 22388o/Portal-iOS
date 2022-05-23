@@ -65,7 +65,7 @@ class LightningService: ILightningService {
                         do {
                             try await self.syncBlockchainData()
                         } catch {
-                            print(error.localizedDescription)
+                            print(error)
                         }
                     }
                 }
@@ -85,19 +85,11 @@ class LightningService: ILightningService {
                     do {
                         try await self.connect(block: newBlock)
                     } catch {
-                        print(error.localizedDescription)
+                        print(error)
                     }
                 }
             }
             .store(in: &subscriptions)
-        
-        for node in dataService.nodes {
-            for channel in node.channels {
-                if channel.state != .closed && !node.connected {
-                    connect(node: node)
-                }
-            }
-        }
     }
         
     func connect(node: LightningNode) {
@@ -124,7 +116,7 @@ class LightningService: ILightningService {
         let channelOpenResult = manager.channelManager.create_channel(
             their_network_key: node.nodeId,
             channel_value_satoshis: UInt64(sat),
-            push_msat: 2000000,
+            push_msat: 0,
             user_channel_id: userChannelId,
             override_config: config
         )
@@ -192,12 +184,25 @@ class LightningService: ILightningService {
         let invoiceValue = result.getValue()!
         let payerResult = payer.pay_invoice(invoice: invoiceValue)
         
-        guard !payerResult.isOk() else { return }
-        
-        if let error = payerResult.getError() {
-            
+        if payerResult.isOk() {
+            print("Payment sent")
+        } else {
+            if let error = payerResult.getError() {
+                switch error.getValueType() {
+                case .Invoice:
+                    print("invocie error")
+                    print("\(error.getValueAsInvoice()!)")
+                case .Routing:
+                    print("routing error")
+                    print("\(error.getValueAsRouting()!)")
+                case .Sending:
+                    print("sending error")
+                    print("\(error.getValueAsSending()!)")
+                case .none:
+                    print("unknown error")
+                }
+            }
         }
-        
     }
 }
 
@@ -266,5 +271,14 @@ extension LightningService {
         blockChainDataSynced.send(true)
         
         print("Blockchain data synced. Balance: \(bitcoinAdapter.balance)")
+        print("Receiver address: \(bitcoinAdapter.receiveAddress)")
+        
+        for node in dataService.nodes {
+            for channel in node.channels {
+                if channel.state != .closed && !node.connected {
+                    connect(node: node)
+                }
+            }
+        }
     }
 }
