@@ -19,20 +19,12 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
     }
     
     func handle_event(event: Event) {
-        privateHandleEvent(event: event)
-    }
-    
-    
-    func convertRouteHop(path: [LDKRouteHop]) {
-        let wrappedPath = path.map { (h) in RouteHop(pointer: h) }
-    }
-    
-    
-    private func privateHandleEvent(event: Event) {
         switch event.getValueType() {
         case .ChannelClosed:
+            print("==============")
             print("CHANNEL CLOSED")
-            
+            print("==============")
+
             if let value = event.getValueAsChannelClosed() {
                 let channelId = value.getUser_channel_id()
                 dataService.removeChannelWith(id: channelId)
@@ -57,7 +49,9 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 }
             }
         case .DiscardFunding:
+            print("================")
             print("DISCARD FUNDING")
+            print("================")
             
             if let value = event.getValueAsDiscardFunding() {
                 let channelId = LDKBlock.bytesToHexString(bytes: value.getChannel_id())
@@ -66,7 +60,9 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 PolarConnectionExperiment.shared.userMessage = errorMsg
             }
         case .FundingGenerationReady:
+            print("=========================")
             print("FUNDING GENERATION READY")
+            print("=========================")
             
             if let fundingReadyEvent = event.getValueAsFundingGenerationReady() {
                 let outputScript = fundingReadyEvent.getOutput_script()
@@ -128,7 +124,10 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 }
             }
         case .PaymentReceived:
+            print("==================")
             print("PAYMENT RECEIVED")
+            print("==================")
+            
             if let value = event.getValueAsPaymentReceived() {
                 let amount = value.getAmt()
                 print("Amount: \(amount)")
@@ -141,6 +140,7 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 let claimResult = channelManager.claim_funds(payment_preimage: preimage)
                 
                 if claimResult {
+                    print("Claimed")
                     let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), date: Date(), memo: "invoice", state: .recieved)
                     dataService.save(payment: payment)
                     let message = "Payment received: \(amount) sat"
@@ -148,9 +148,14 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 }
             }
         case .PaymentSent:
+            print("==============")
             print("PAYMENT SENT")
+            print("==============")
         case .PaymentPathFailed:
+            print("====================")
             print("PAYMENT PATH FAILED")
+            print("====================")
+            
             if let value = event.getValueAsPaymentPathFailed() {
                 print("Is rejected by destination: \(value.getRejected_by_dest())")
                 print("All paths failed: \(value.getAll_paths_failed())")
@@ -161,26 +166,40 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 PolarConnectionExperiment.shared.userMessage = errorMsg
             }
         case .PaymentFailed:
+            print("================")
             print("PAYMENT FAILED")
+            print("================")
+            
             if let value = event.getValueAsPaymentFailed() {
                 print("Payment id: \(LDKBlock.bytesToHexString(bytes: value.getPayment_id()))")
             }
         case .PendingHTLCsForwardable:
+            print("=========================")
             print("PendingHTLCsForwardable")
+            print("=========================")
+            
             channelManager.process_pending_htlc_forwards()
         case .SpendableOutputs:
+            print("=================")
             print("SpendableOutputs")
+            print("=================")
         case .PaymentForwarded:
+            print("=================")
             print("PaymentForwarded")
+            print("=================")
         case .PaymentPathSuccessful:
+            print("======================")
             print("PaymentPathSuccessful")
+            print("======================")
         case .OpenChannelRequest:
+            print("====================")
             print("OpenChannelRequest")
+            print("====================")
         case .none:
             print("none")
         }
     }
-    
+        
     override func persist_manager(channel_manager: ChannelManager) -> Result_NoneErrorZ {
         print("========================")
         print("PERSIST CHANNEL MANAGER")
@@ -189,7 +208,7 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
         let managerBytes = channel_manager.write()
         dataService.save(channelManager: Data(managerBytes))
         
-        print("Out node id: \(LDKBlock.bytesToHexString(bytes: channel_manager.get_our_node_id()))")
+        print("OUR NODE ID: \(LDKBlock.bytesToHexString(bytes: channel_manager.get_our_node_id()))")
         print("Avaliable channels: \(channel_manager.list_channels().count)")
         
         DispatchQueue.global(qos: .background).async {
@@ -197,12 +216,12 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 let userChannelID = channel.get_user_channel_id()
                 let balance = channel.get_balance_msat()/1000
                 
-                print("channel id: \(LDKBlock.bytesToHexString(bytes: channel.get_channel_id()))")
-                print("channel user id: \(userChannelID)")
-                print("channel balance: \(balance) sat")
+                print("CHANNEL ID: \(LDKBlock.bytesToHexString(bytes: channel.get_channel_id()))")
+                print("CHANNEL USER ID \(userChannelID)")
+                print("CHANNEL BALANCE: \(balance) sat")
                 
                 if channel.get_is_usable() {
-                    print("channel is usable")
+                    print("CHANNEL IS USABLE")
                     
                     if let fetchedChannel = self.dataService.channelWith(id: userChannelID),
                         fetchedChannel.state != .open,
@@ -214,7 +233,7 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                         self.dataService.update(channel: fetchedChannel)
                     }
                 } else {
-                    print("channel is unusable")
+                    print("CHANNEL IS UNUSABLE")
                     print("confirmation required: \(String(describing: channel.get_confirmations_required().getValue()))")
                     
                     if let fetchedChannel = self.dataService.channelWith(id: userChannelID),
