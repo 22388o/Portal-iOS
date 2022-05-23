@@ -8,11 +8,13 @@
 import Foundation
 import Combine
 import HdWalletKit
+import BitcoinCore
 
 class PolarConnectionExperiment: ObservableObject {
     static let shared = PolarConnectionExperiment()
     var bitcoinAdapter: BitcoinAdapter
     var service: ILightningService
+    @Published var errorMessage: String?
     
     init() {
         let btcCoin = Coin.bitcoin()
@@ -39,5 +41,19 @@ class PolarConnectionExperiment: ObservableObject {
             
         let lightningDataService = LightningDataService(storage: WalletCoordinator.shared)
         service = LightningService(mnemonic: mnemonicSeed, adapter: bitcoinAdapter, dataService: lightningDataService)
+    }
+    
+    func createRawTransaction(outputScript: [UInt8], amount: UInt64) throws -> Data? {
+        let scriptConverter = ScriptConverter()
+        let addressConverter = SegWitBech32AddressConverter(prefix: "tb", scriptConverter: scriptConverter)
+        
+        let receiverAddress = try addressConverter.convert(keyHash: Data(outputScript), type: .p2wsh)
+        let address = receiverAddress.stringValue
+        
+        let txData = try bitcoinAdapter.createRawTransaction(amountSat: amount, address: address, feeRate: 80, sortMode: .shuffle)
+        
+        print("TX DATA: \(txData.hex)")
+        
+        return txData
     }
 }
