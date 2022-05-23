@@ -134,10 +134,18 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 print("Amount: \(amount)")
                 let paymentId = LDKBlock.bytesToHexString(bytes: value.getPayment_hash())
                 print("Payment id: \(paymentId)")
-                let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), date: Date(), memo: "invoice", state: .recieved)
-                dataService.save(payment: payment)
-                let message = "Payment received: \(amount) sat"
-                PolarConnectionExperiment.shared.userMessage = message
+                
+                let paymentPurpose = value.getPurpose()
+                let invoicePayment = paymentPurpose.getValueAsInvoicePayment()!
+                let preimage = invoicePayment.getPayment_preimage()
+                let claimResult = channelManager.claim_funds(payment_preimage: preimage)
+                
+                if claimResult {
+                    let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), date: Date(), memo: "invoice", state: .recieved)
+                    dataService.save(payment: payment)
+                    let message = "Payment received: \(amount) sat"
+                    PolarConnectionExperiment.shared.userMessage = message
+                }
             }
         case .PaymentSent:
             print("PAYMENT SENT")
@@ -155,10 +163,11 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
         case .PaymentFailed:
             print("PAYMENT FAILED")
             if let value = event.getValueAsPaymentFailed() {
-                print("Payment id: \(value.getPayment_id())")
+                print("Payment id: \(LDKBlock.bytesToHexString(bytes: value.getPayment_id()))")
             }
         case .PendingHTLCsForwardable:
             print("PendingHTLCsForwardable")
+            channelManager.process_pending_htlc_forwards()
         case .SpendableOutputs:
             print("SpendableOutputs")
         case .PaymentForwarded:
@@ -180,6 +189,7 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
         let managerBytes = channel_manager.write()
         dataService.save(channelManager: Data(managerBytes))
         
+        print("Out node id: \(LDKBlock.bytesToHexString(bytes: channel_manager.get_our_node_id()))")
         print("Avaliable channels: \(channel_manager.list_channels().count)")
         
         DispatchQueue.global(qos: .background).async {
