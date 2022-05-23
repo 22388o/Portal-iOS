@@ -128,7 +128,38 @@ struct ChannelItemView: View {
                 
                 if channel.state == .open {
                     Button {
-                        
+                        let cm = PolarConnectionExperiment.shared.service.manager.channelManager
+                        if let channelID = cm.list_channels().first(where: { $0.get_user_channel_id() == channel.id })?.get_channel_id() {
+                            let result = cm.close_channel(channel_id: channelID)
+                            if result.isOk() {
+                                print("Channel cosed")
+                                channel.state = .closed
+                                PolarConnectionExperiment.shared.service.dataService.update(channel: channel)
+                            } else {
+                                print("Channel closing error:")
+                                let error = result.getError()
+                                switch error?.getValueType() {
+                                case .some(.ChannelUnavailable):
+                                    print("Channel unavaliable")
+                                case .some(.APIMisuseError):
+                                    if let e = error?.getValueAsAPIMisuseError() {
+                                        print("Api misuse error \(e.getErr())")
+                                    }
+                                case .some(.FeeRateTooHigh):
+                                    if let e = error?.getValueAsFeeRateTooHigh() {
+                                        print("Fee rate too high error \(e.getErr())")
+                                    }
+                                case .some(.RouteError):
+                                    if let e = error?.getValueAsRouteError() {
+                                        print("Router error \(e.getErr())")
+                                    }
+                                case .some(.IncompatibleShutdownScript):
+                                    print("IncompatibleShutdownScript")
+                                case .none:
+                                    print("Unknown")
+                                }
+                            }
+                        }
                     } label: {
                         Text("Close")
                     }
