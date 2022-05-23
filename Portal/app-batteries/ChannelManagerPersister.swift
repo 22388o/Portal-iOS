@@ -32,8 +32,13 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
     private func privateHandleEvent(event: Event) {
         switch event.getValueType() {
         case .ChannelClosed:
-            print("channel closed")
+            print("CHANNEL CLOSED")
+            
             if let value = event.getValueAsChannelClosed() {
+                
+                let channelId = value.getUser_channel_id()
+                dataService.removeChannelWith(id: channelId)
+                
                 let reason = value.getReason()
                 switch reason.getValueType() {
                 case .ProcessingError:
@@ -45,9 +50,14 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 }
             }
         case .DiscardFunding:
-            print("Discard funding")
+            print("DISCARD FUNDING")
+            
+            if let value = event.getValueAsDiscardFunding() {
+                let channelId = value.getChannel_id()
+                print("Channel id: \(channelId)")
+            }
         case .FundingGenerationReady:
-            print("FundingGenerationReady")
+            print("FUNDING GENERATION READY")
             
             if let fundingReadyEvent = event.getValueAsFundingGenerationReady() {
                 let outputScript = fundingReadyEvent.getOutput_script()
@@ -61,7 +71,9 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 print(addк)
                 print(addк.stringValue)
                 
-                if let rawTx = PolarConnectionExperiment.shared.bitcoinAdapter.createRawTransaction(amountSat: amount, address: addк.stringValue, feeRate: 10, sortMode: .shuffle) {
+                let channelId = fundingReadyEvent.getUser_channel_id()
+                
+                if let rawTx = PolarConnectionExperiment.shared.bitcoinAdapter.createRawTransaction(amountSat: amount, address: addк.stringValue, feeRate: 80, sortMode: .shuffle) {
                  
                     let rawTxBytes = rawTx.bytes
                     let tcid = fundingReadyEvent.getTemporary_channel_id()
@@ -71,6 +83,8 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                             print("funding tx sent")
                         } else if let errorDetails = sendingFundingTx.getError() {
                             print("sending failed!")
+                            
+                            dataService.removeChannelWith(id: channelId)
                             
                             switch errorDetails {
                             case .channel_unavailable(err: "channel unavalibale"):
@@ -90,16 +104,26 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                         
                     }
                 }
-                
             }
         case .PaymentReceived:
-            print("PaymentReceived")
+            print("PAYMENT RECEIVED")
+            if let value = event.getValueAsPaymentReceived() {
+                print("Amount: \(value.getAmt())")
+                print("Payment id: \(LDKBlock.bytesToHexString(bytes: value.getPayment_hash()))")
+            }
         case .PaymentSent:
-            print("PaymentSent")
+            print("PAYMENT SENT")
         case .PaymentPathFailed:
-            print("PaymentPathFailed")
+            print("PAYMENT PATH FAILED")
+            if let value = event.getValueAsPaymentPathFailed() {
+                print("Is rejected by destination: \(value.getRejected_by_dest())")
+                print("All paths failed: \(value.getAll_paths_failed())")
+            }
         case .PaymentFailed:
-            print("PaymentFailed")
+            print("PAYMENT FAILED")
+            if let value = event.getValueAsPaymentFailed() {
+                print("Payment id: \(value.getPayment_id())")
+            }
         case .PendingHTLCsForwardable:
             print("PendingHTLCsForwardable")
         case .SpendableOutputs:
@@ -112,11 +136,21 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
             print("OpenChannelRequest")
         case .none:
             print("none")
-        }        
+        }
     }
     
     override func persist_manager(channel_manager: ChannelManager) -> Result_NoneErrorZ {
         print("PERSIST CHANNEL MANAGER")
+        
+        print("All channels count: \(channel_manager.list_channels().count)")
+        for channel in channel_manager.list_channels() {
+            print("channel balance: \(channel.get_balance_msat()/1000) sat")
+            print("channel confirmation required: \(channel.get_confirmations_required().getValue())")
+        }
+        print("Open channels count: \(channel_manager.list_usable_channels().count)")
+        for channel in channel_manager.list_usable_channels() {
+            print("channel balance: \(channel.get_balance_msat()/1000) sat")
+        }
 
         let managerBytes = channel_manager.write()
         dataService.save(channelManager: Data(managerBytes))
