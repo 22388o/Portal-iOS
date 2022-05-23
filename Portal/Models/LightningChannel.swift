@@ -25,7 +25,7 @@ class LightningChannel: Identifiable {
     }
     let id: UInt16
     let nodeAlias: String
-    let satValue: UInt64
+    var satValue: UInt64
     var state: State
     
     init(id: Int16, satValue: Int64, state: State, nodeAlias: String) {
@@ -39,6 +39,6 @@ class LightningChannel: Identifiable {
         self.id = UInt16(record.channelID)
         self.nodeAlias = record.node.alias
         self.satValue = UInt64(record.satValue)
-        self.state = State.init(rawValue: record.state)!
+        self.state = State.init(rawValue: 1)!
     }
 }
