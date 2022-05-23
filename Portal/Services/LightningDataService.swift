@@ -24,7 +24,7 @@ class LightningDataService: ILightningDataService {
         do {
             return try storage.fetchChannelManager()
         } catch {
-            print(error)
+            print("Error fetching channel manager data: \(error)")
             return nil
         }
     }
@@ -33,7 +33,7 @@ class LightningDataService: ILightningDataService {
         do {
             return try storage.fetchNetGraph()
         } catch {
-            print(error)
+            print("Error fetching net graph data: \(error)")
             return nil
         }
     }
@@ -42,7 +42,7 @@ class LightningDataService: ILightningDataService {
         do {
             return try storage.fetchChannelMonitors()
         } catch {
-            print(error)
+            print("Error fetching channel monitor data: \(error)")
             return nil
         }
     }
@@ -51,7 +51,7 @@ class LightningDataService: ILightningDataService {
         do {
             return try storage.fetchNodes()
         } catch {
-            print(error)
+            print("Error nodes data: \(error)")
             return []
         }
     }
@@ -60,7 +60,7 @@ class LightningDataService: ILightningDataService {
         do {
             return try storage.fetchChannels()
         } catch {
-            print(error)
+            print("Error fetching channles data: \(error)")
             return []
         }
     }
@@ -69,7 +69,7 @@ class LightningDataService: ILightningDataService {
         do {
             return try storage.fetchPayments()
         } catch {
-            print(error)
+            print("Error fetching payments data: \(error)")
             return []
         }
     }
@@ -78,7 +78,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.update(node: node)
         } catch {
-            print(error)
+            print("Error updating node data: \(error)")
         }
     }
     
@@ -86,7 +86,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.update(channel: channel)
         } catch {
-            print(error)
+            print("Error updating channel data: \(error)")
         }
     }
     
@@ -94,7 +94,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.update(payment: payment)
         } catch {
-            print(error)
+            print("Error updating payment data: \(error)")
         }
     }
     
@@ -102,7 +102,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.save(channel: channel)
         } catch {
-            print(error)
+            print("Error saving channle data: \(error)")
         }
     }
     
@@ -110,7 +110,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.save(payment: payment)
         } catch {
-            print(error)
+            print("Error saving payment data: \(error)")
         }
     }
     
@@ -118,7 +118,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.save(channelManager: channelManager)
         } catch {
-            print(error)
+            print("Error saving channel manager data: \(error)")
         }
     }
     
@@ -126,7 +126,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.save(networkGraph: networkGraph)
         } catch {
-            print(error)
+            print("Error saving network graph data: \(error)")
         }
     }
     
@@ -134,7 +134,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.update(channelMonitor: channelMonitor, id: id)
         } catch {
-            print(error)
+            print("Error updating channle monitor data: \(error)")
         }
     }
     
@@ -143,7 +143,7 @@ class LightningDataService: ILightningDataService {
         do {
             channel = try storage.channelWith(id: id)
         } catch {
-            print(error)
+            print("Fetching channel with id: \(id) error: \(error)")
         }
         return channel
     }
@@ -152,7 +152,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.removeChannelWith(id: id)
         } catch {
-            print(error)
+            print("Removing channel with id: \(id) error: \(error)")
         }
     }
 }
