@@ -55,10 +55,10 @@ class LightningNode: Identifiable {
             port: 9735
         ),
         LightningNode(
-            alias: "02a98ece18a03baecd02",
-            publicKey: "023ac04112507e939eebb8dba569cbc33761516325adb435206a22d5bea11c1678",
-            host: "47.254.43.49",
-            port: 9735
+            alias: "OGLE-TR-122",
+            publicKey: "030bac1d62b6838a57c301d7e0244729b9699a8dacffcfbde359abc2cc20701a3a",
+            host: "5.196.73.52",
+            port: 9737
         ),
         LightningNode(
             alias: "SANDBOX_LN_Oracle_Network",
