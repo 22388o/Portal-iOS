@@ -323,24 +323,15 @@ extension BitcoinBaseAdapter {
         }
     }
     
-    func createRawTransaction(amountSat: UInt64, address: String, feeRate: Int, sortMode: TransactionDataSortMode) -> Data? {
+    func createRawTransaction(amountSat: UInt64, address: String, feeRate: Int, sortMode: TransactionDataSortMode) throws -> Data {
         let sortType = convertToKitSortMode(sort: sortMode)
         
-        do {
-            let rawTransaction = try self.abstractKit.createRawTransaction(
-                to: address,
-                value: Int(amountSat),
-                feeRate: feeRate,
-                sortType: sortType
-            )
-            print("Raw tx:")
-            print(rawTransaction.hex)
-            
-            return rawTransaction
-        } catch {
-            print(error)
-            return nil
-        }
+        return try self.abstractKit.createRawTransaction(
+            to: address,
+            value: Int(amountSat),
+            feeRate: feeRate,
+            sortType: sortType
+        )
     }
 
     var statusInfo: [(String, Any)] {
