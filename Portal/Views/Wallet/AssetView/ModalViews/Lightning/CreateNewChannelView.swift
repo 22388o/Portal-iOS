@@ -13,6 +13,8 @@ struct CreateNewChannelView: View {
     @Environment(\.presentationMode) private var presentationMode
     @State var fundChannel: Bool = false
     @State var selectedNode: LightningNode?
+    @State var showAlert: Bool = false
+    @State var errorMessage = String()
     
     var body: some View {
         if #available(iOS 15.0, *) {
@@ -254,15 +256,30 @@ struct CreateNewChannelView: View {
                                 }
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    selectedNode = node
-                                    fundChannel.toggle()
-                                    PolarConnectionExperiment.shared.service.connect(node: node)
+                                    if PolarConnectionExperiment.shared.service.connect(node: node) {
+                                        selectedNode = node
+                                        fundChannel.toggle()
+                                    } else {
+                                        errorMessage = "Unable connect to \(node.alias)"
+                                        showAlert = true
+                                    }
                                 }
                                 .padding(.horizontal)
                             }
                         }
                     }
                 }
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Something went wrong:"),
+                    message: Text("\(errorMessage)"),
+                    dismissButton: Alert.Button.default(
+                        Text("Dismiss"), action: {
+                            showAlert = false
+                        }
+                    )
+                )
             }
         }
     }
