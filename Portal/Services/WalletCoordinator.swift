@@ -143,7 +143,6 @@ extension WalletCoordinator: ILightningDataStorage {
                     throw DBError.fetchingError
                 }
             } catch {
-                print(error)
                 throw DBError.fetchingError
             }
         }
@@ -165,7 +164,6 @@ extension WalletCoordinator: ILightningDataStorage {
                     throw DBError.fetchingError
                 }
             } catch {
-                print(error)
                 throw DBError.fetchingError
             }
         }
@@ -319,7 +317,6 @@ extension WalletCoordinator: ILightningDataStorage {
                     let manager = DBLightningChannelManager(context: context)
                     manager.data = channelManager
                 }
-                
                 try context.save()
             } catch {
                 throw DBError.fetchingError
@@ -446,13 +443,11 @@ extension WalletCoordinator: ILightningDataStorage {
         
         try context.performAndWait {
             do {
-                let records = try context.fetch(request)
-                
-                if let record = records.first(where: { $0.id == channel.id }) {
+                if let record = try context.fetch(request).first(where: { $0.channelID == channel.id }) {
                     record.state = channel.state.rawValue
                     try context.save()
                 } else {
-                    throw DBError.storingError
+                    throw DBError.fetchingError
                 }
             } catch {
                 throw DBError.fetchingError
