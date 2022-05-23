@@ -14,7 +14,7 @@ class PolarConnectionExperiment: ObservableObject {
     static let shared = PolarConnectionExperiment()
     var bitcoinAdapter: BitcoinAdapter
     var service: ILightningService
-    @Published var errorMessage: String?
+    @Published var userMessage: String?
     
     init() {
         let btcCoin = Coin.bitcoin()
