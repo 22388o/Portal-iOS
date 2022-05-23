@@ -15,7 +15,7 @@ protocol ILightningService {
     var dataService: ILightningDataService { get }
     var manager: ILightningChannelManager { get }
     
-    func connect(node: LightningNode)
+    func connect(node: LightningNode) -> Bool
     func disconnect(node: LightningNode)
     func openChannelWith(node: LightningNode, sat: Int)
     func createInvoice(amount: String, memo: String) -> String?

@@ -92,9 +92,10 @@ class LightningService: ILightningService {
             .store(in: &subscriptions)
     }
         
-    func connect(node: LightningNode) {
+    func connect(node: LightningNode) -> Bool {
         node.connected = manager.peerNetworkHandler.connect(address: node.host, port: node.port, theirNodeId: node.nodeId)
         print("Node: \(node.alias) is \(node.connected ? "connected": "disconnected")")
+        return node.connected
     }
     
     func disconnect(node: LightningNode) {
@@ -269,16 +270,21 @@ extension LightningService {
         
         manager.chainSyncCompleted()
         blockChainDataSynced.send(true)
-        
-        print("Blockchain data synced. Balance: \(bitcoinAdapter.balance)")
-        print("Receiver address: \(bitcoinAdapter.receiveAddress)")
-        
+                
         for node in dataService.nodes {
             for channel in node.channels {
                 if channel.state != .closed && !node.connected {
-                    connect(node: node)
+                    guard !node.connected else { return }
+                    guard connect(node: node) else {
+                        print("Unable connect to \(node.alias)")
+                        continue
+                    }
                 }
             }
         }
+        
+        print("=========================")
+        print("Blockchain data synced:\nOn-chain balance: \(bitcoinAdapter.balance) BTC")
+        print("=========================")
     }
 }
