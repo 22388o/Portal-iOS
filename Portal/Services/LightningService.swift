@@ -274,7 +274,6 @@ extension LightningService {
         for node in dataService.nodes {
             for channel in node.channels {
                 if channel.state != .closed && !node.connected {
-                    guard !node.connected else { return }
                     guard connect(node: node) else {
                         print("Unable connect to \(node.alias)")
                         continue
