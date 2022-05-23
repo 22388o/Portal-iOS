@@ -137,4 +137,22 @@ class LightningDataService: ILightningDataService {
             print(error)
         }
     }
+    
+    func channelWith(id: UInt64) -> LightningChannel? {
+        var channel: LightningChannel?
+        do {
+            channel = try storage.channelWith(id: id)
+        } catch {
+            print(error)
+        }
+        return channel
+    }
+    
+    func removeChannelWith(id: UInt64) {
+        do {
+            try storage.removeChannelWith(id: id)
+        } catch {
+            print(error)
+        }
+    }
 }

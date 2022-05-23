@@ -129,21 +129,61 @@ enum DBError: Error {
 }
 
 extension WalletCoordinator: ILightningDataStorage {
-    func update(channelMonitor: Data, id: String) throws {
+    func channelWith(id: UInt64) throws -> LightningChannel? {
         guard let context = context else { throw DBError.missingContext }
         
-        let request = DBChannelMonitors.fetchRequest() as NSFetchRequest<DBChannelMonitors>
+        let request = DBLightningChannel.fetchRequest() as NSFetchRequest<DBLightningChannel>
+        var channel: LightningChannel?
         
         try context.performAndWait {
             do {
-                let records = try context.fetch(request)
-                
-                if let record = records.first, var data = record.data {
-                    data[id] = channelMonitor
+                if let record = try context.fetch(request).first(where: { $0.channelID == id }) {
+                    channel = LightningChannel(record: record)
                 } else {
-                    let dbMonitors = DBChannelMonitors(context: context)
-                    let monitoirs: [String: Data] = [id: channelMonitor]
-                    dbMonitors.data = monitoirs
+                    throw DBError.fetchingError
+                }
+            } catch {
+                print(error)
+                throw DBError.fetchingError
+            }
+        }
+        
+        return channel
+    }
+    
+    func removeChannelWith(id: UInt64) throws {
+        guard let context = context else { throw DBError.missingContext }
+
+        let request = DBLightningChannel.fetchRequest() as NSFetchRequest<DBLightningChannel>
+        
+        try context.performAndWait {
+            do {
+                if let record = try context.fetch(request).first(where: { $0.channelID == id }) {
+                    context.delete(record)
+                    try context.save()
+                } else {
+                    throw DBError.fetchingError
+                }
+            } catch {
+                print(error)
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    func update(channelMonitor: Data, id: String) throws {
+        guard let context = context else { throw DBError.missingContext }
+        
+        let request = DBChannelMonitor.fetchRequest() as NSFetchRequest<DBChannelMonitor>
+        
+        try context.performAndWait {
+            do {
+                if let record = try context.fetch(request).first(where: { $0.channelId == id }) {
+                    record.data = channelMonitor
+                } else {
+                    let dbMonitor = DBChannelMonitor(context: context)
+                    dbMonitor.channelId = id
+                    dbMonitor.data = channelMonitor
                 }
                 
                 try context.save()
@@ -192,15 +232,14 @@ extension WalletCoordinator: ILightningDataStorage {
     func fetchChannelMonitors() throws -> [Data]? {
         guard let context = context else { throw DBError.missingContext }
         
-        let request = DBChannelMonitors.fetchRequest() as NSFetchRequest<DBChannelMonitors>
+        let request = DBChannelMonitor.fetchRequest() as NSFetchRequest<DBChannelMonitor>
         var channelMonitors = [Data]()
         
         try context.performAndWait {
             do {
-                if let record = try context.fetch(request).first, let data = record.data {
-                    for (_, value) in data {
-                        channelMonitors.append(value)
-                    }
+                let records = try context.fetch(request)
+                for record in records {
+                    channelMonitors.append(record.data!)
                 }
             } catch {
                 throw DBError.fetchingError
