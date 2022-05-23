@@ -24,6 +24,13 @@ class ChannelsViewModel: ObservableObject {
     var selectedNode: LightningNode?
     
     var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
+    var channelBalance: UInt64 {
+        var bal: UInt64 = 0
+        for channel in PolarConnectionExperiment.shared.service.manager.channelManager.list_usable_channels() {
+            bal+=channel.get_balance_msat()/1000
+        }
+        return bal
+    }
     
     init() {
         exchangerViewModel = .init(asset: Coin.bitcoin(), fiat: USD)
@@ -39,10 +46,10 @@ class ChannelsViewModel: ObservableObject {
     }
     
     func createInvoice(amount: String, memo: String) -> String? {
-        if let invoice = PolarConnectionExperiment.shared.service.createInvoice(amount: amount, memo: memo) {
-            return nil
-        } else {
-            return nil
-        }
+        PolarConnectionExperiment.shared.service.createInvoice(amount: amount, memo: memo)
+    }
+    
+    func sendPayment() {
+        try? PolarConnectionExperiment.shared.service.pay(invoice: "")
     }
 }
