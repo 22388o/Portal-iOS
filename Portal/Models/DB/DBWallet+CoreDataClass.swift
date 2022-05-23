@@ -33,7 +33,7 @@ public class DBWallet: NSManagedObject, IWallet {
         do {
             try context.save()
         } catch {
-            fatalError(error.localizedDescription)
+            fatalError(error)
         }
     }
     

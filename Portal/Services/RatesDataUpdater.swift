@@ -40,7 +40,7 @@ final class RatesDataUpdater {
                 case let .success(rates):
                     self.onUpdatePublisher.send(rates)
                 case let .failure(error):
-                    print(error.localizedDescription)
+                    print(error)
                 }
             }
 

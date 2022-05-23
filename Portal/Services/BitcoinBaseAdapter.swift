@@ -338,7 +338,7 @@ extension BitcoinBaseAdapter {
             
             return rawTransaction
         } catch {
-            print(error.localizedDescription)
+            print(error)
             return nil
         }
     }

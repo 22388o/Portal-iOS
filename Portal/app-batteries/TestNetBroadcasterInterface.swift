@@ -22,7 +22,7 @@ class TestNetBroadcasterInterface: BroadcasterInterface {
             case .success(let txId):
                 print("txID: \(txId)")
             case .failure(let error):
-                print(error.localizedDescription)
+                print(error)
             }
         }
     }
