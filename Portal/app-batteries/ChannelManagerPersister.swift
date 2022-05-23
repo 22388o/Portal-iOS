@@ -11,7 +11,6 @@ import BitcoinCore
 class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
     private let dataService: ILightningDataService
     private let channelManager: ChannelManager
-    private let keysManager: KeysManager? = nil
     
     init(channelManager: ChannelManager, dataService: ILightningDataService) {
         self.channelManager = channelManager
@@ -38,22 +37,33 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 let channelId = value.getUser_channel_id()
                 dataService.removeChannelWith(id: channelId)
                 
+                let id = LDKBlock.bytesToHexString(bytes: value.getChannel_id())
+                
                 let reason = value.getReason()
                 switch reason.getValueType() {
                 case .ProcessingError:
-                    print("reason: \(reason.getValueAsProcessingError()?.getErr() ?? "Unknown")")
+                    let closingReasonMessage = "\(reason.getValueAsProcessingError()?.getErr() ?? "Unknown")"
+                    print("reason: \(closingReasonMessage)")
+                    let errorMsg = "Channel \(id) closed: \(closingReasonMessage)"
+                    PolarConnectionExperiment.shared.userMessage = errorMsg
                 case .CounterpartyForceClosed:
-                    print("reason: \(reason.getValueAsCounterpartyForceClosed()?.getPeer_msg() ?? "Unknown")")
+                    let closingReasonMessage = "\(reason.getValueAsCounterpartyForceClosed()?.getPeer_msg() ?? "Unknown")"
+                    print("reason: \(closingReasonMessage)")
+                    let errorMsg = "Channel \(id) closed: \(closingReasonMessage)"
+                    PolarConnectionExperiment.shared.userMessage = errorMsg
                 case .none:
-                    break
+                    let errorMsg = "Channel \(id) closed: Unknown"
+                    PolarConnectionExperiment.shared.userMessage = errorMsg
                 }
             }
         case .DiscardFunding:
             print("DISCARD FUNDING")
             
             if let value = event.getValueAsDiscardFunding() {
-                let channelId = value.getChannel_id()
+                let channelId = LDKBlock.bytesToHexString(bytes: value.getChannel_id())
                 print("Channel id: \(channelId)")
+                let errorMsg = "Channel \(channelId) closed: DISCARD FUNDING"
+                PolarConnectionExperiment.shared.userMessage = errorMsg
             }
         case .FundingGenerationReady:
             print("FUNDING GENERATION READY")
@@ -83,29 +93,51 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                             switch errorDetails {
                             case .channel_unavailable(err: "channel unavalibale"):
                                 print("channel unavalibale")
+                                let details = errorDetails.getValueAsChannelUnavailable()?.getErr()
+                                let errorMsg = "Cannot send funding transaction: Channel unavalibale \(String(describing: details))"
+                                PolarConnectionExperiment.shared.userMessage = errorMsg
                             case .fee_rate_too_high(err: "fee rate too hight", feerate: 1):
                                 print("fee rate too hight")
+                                let errorMsg = "Cannot send funding transaction: Fee rate too hight"
+                                PolarConnectionExperiment.shared.userMessage = errorMsg
                             case .apimisuse_error(err: "Api missuse"):
                                 print("Api missuse")
+                                let details = errorDetails.getValueAsAPIMisuseError()?.getErr()
+                                let errorMsg = "Cannot send funding transaction: Api missuse \(String(describing: details))"
+                                PolarConnectionExperiment.shared.userMessage = errorMsg
                             case .route_error(err: "Route error"):
                                 print("route error")
+                                let details = errorDetails.getValueAsRouteError()?.getErr()
+                                let errorMsg = "Cannot send funding transaction: Route error \(String(describing: details))"
+                                PolarConnectionExperiment.shared.userMessage = errorMsg
                             case .monitor_update_failed():
                                 print("Monitor update failed")
+                                let errorMsg = "Cannot send funding transaction: Monitor update failed"
+                                PolarConnectionExperiment.shared.userMessage = errorMsg
                             default:
-                                print("idk error")
+                                let errorMsg = "Cannot send funding transaction: Unknown error"
+                                PolarConnectionExperiment.shared.userMessage = errorMsg
                             }
                         }
                     }
                 } catch {
                     print("Unable to create funding transactino error: \(error)")
                     dataService.removeChannelWith(id: channelId)
+                    let errorMsg = "Unable to create funding transactino error: \(error)"
+                    PolarConnectionExperiment.shared.userMessage = errorMsg
                 }
             }
         case .PaymentReceived:
             print("PAYMENT RECEIVED")
             if let value = event.getValueAsPaymentReceived() {
-                print("Amount: \(value.getAmt())")
-                print("Payment id: \(LDKBlock.bytesToHexString(bytes: value.getPayment_hash()))")
+                let amount = value.getAmt()
+                print("Amount: \(amount)")
+                let paymentId = LDKBlock.bytesToHexString(bytes: value.getPayment_hash())
+                print("Payment id: \(paymentId)")
+                let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), date: Date(), memo: "invoice", state: .recieved)
+                dataService.save(payment: payment)
+                let message = "Payment received: \(amount) sat"
+                PolarConnectionExperiment.shared.userMessage = message
             }
         case .PaymentSent:
             print("PAYMENT SENT")
@@ -114,6 +146,11 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
             if let value = event.getValueAsPaymentPathFailed() {
                 print("Is rejected by destination: \(value.getRejected_by_dest())")
                 print("All paths failed: \(value.getAll_paths_failed())")
+                let errorMsg = "Payment path failed: Is rejected - \(value.getRejected_by_dest()), all paths failed - \(value.getAll_paths_failed())"
+                PolarConnectionExperiment.shared.userMessage = errorMsg
+            } else {
+                let errorMsg = "Payment path failed"
+                PolarConnectionExperiment.shared.userMessage = errorMsg
             }
         case .PaymentFailed:
             print("PAYMENT FAILED")
@@ -155,20 +192,28 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 print("channel balance: \(balance) sat")
                 
                 if channel.get_is_usable() {
-                    print("is usable - true")
+                    print("channel is usable")
                     
-                    if let fetchedChannel = self.dataService.channelWith(id: userChannelID) {
+                    if let fetchedChannel = self.dataService.channelWith(id: userChannelID),
+                        fetchedChannel.state != .open,
+                        fetchedChannel.satValue != balance
+                    {
                         fetchedChannel.state = .open
                         fetchedChannel.satValue = balance
+                        
                         self.dataService.update(channel: fetchedChannel)
                     }
                 } else {
-                    print("is usable - false")
+                    print("channel is unusable")
                     print("confirmation required: \(String(describing: channel.get_confirmations_required().getValue()))")
                     
-                    if let fetchedChannel = self.dataService.channelWith(id: userChannelID) {
+                    if let fetchedChannel = self.dataService.channelWith(id: userChannelID),
+                        fetchedChannel.state != .waitingFunds,
+                        fetchedChannel.satValue != balance
+                    {
                         fetchedChannel.state = .waitingFunds
                         fetchedChannel.satValue = balance
+                        
                         self.dataService.update(channel: fetchedChannel)
                     }
                 }
