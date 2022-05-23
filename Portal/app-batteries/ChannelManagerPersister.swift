@@ -10,10 +10,10 @@ import BitcoinCore
 
 class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
     private let dataService: ILightningDataService
-    private let channelManager: ChannelManager?
+    private let channelManager: ChannelManager
     private let keysManager: KeysManager? = nil
     
-    init(channelManager: ChannelManager?, dataService: ILightningDataService) {
+    init(channelManager: ChannelManager, dataService: ILightningDataService) {
         self.channelManager = channelManager
         self.dataService = dataService
         super.init()
@@ -35,16 +35,15 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
             print("CHANNEL CLOSED")
             
             if let value = event.getValueAsChannelClosed() {
-                
                 let channelId = value.getUser_channel_id()
                 dataService.removeChannelWith(id: channelId)
                 
                 let reason = value.getReason()
                 switch reason.getValueType() {
                 case .ProcessingError:
-                    print(reason.getValueAsProcessingError()?.getErr() ?? "Unknown")
+                    print("reason: \(reason.getValueAsProcessingError()?.getErr() ?? "Unknown")")
                 case .CounterpartyForceClosed:
-                    print(reason.getValueAsCounterpartyForceClosed()?.getPeer_msg() ?? "Unknown")
+                    print("reason: \(reason.getValueAsCounterpartyForceClosed()?.getPeer_msg() ?? "Unknown")")
                 case .none:
                     break
                 }
@@ -61,28 +60,23 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
             
             if let fundingReadyEvent = event.getValueAsFundingGenerationReady() {
                 let outputScript = fundingReadyEvent.getOutput_script()
-                
                 let amount = fundingReadyEvent.getChannel_value_satoshis()
-                
-                let scriptConverter = ScriptConverter()
-                let addressConverter = SegWitBech32AddressConverter(prefix: "tb", scriptConverter: scriptConverter)
-                
-                let addк = try! addressConverter.convert(keyHash: Data(outputScript), type: .p2wsh)
-                print(addк)
-                print(addк.stringValue)
-                
                 let channelId = fundingReadyEvent.getUser_channel_id()
-                
-                if let rawTx = PolarConnectionExperiment.shared.bitcoinAdapter.createRawTransaction(amountSat: amount, address: addк.stringValue, feeRate: 80, sortMode: .shuffle) {
-                 
-                    let rawTxBytes = rawTx.bytes
-                    let tcid = fundingReadyEvent.getTemporary_channel_id()
 
-                    if let sendingFundingTx = channelManager?.funding_transaction_generated(temporary_channel_id: tcid, funding_transaction: rawTxBytes) {
+                do {
+                    if let rawTx = try PolarConnectionExperiment.shared.createRawTransaction(outputScript: outputScript, amount: amount) {
+                        let rawTxBytes = rawTx.bytes
+                        let tcid = fundingReadyEvent.getTemporary_channel_id()
+                        
+                        let sendingFundingTx = channelManager.funding_transaction_generated(
+                            temporary_channel_id: tcid,
+                            funding_transaction: rawTxBytes
+                        )
+                        
                         if sendingFundingTx.isOk() {
                             print("funding tx sent")
                         } else if let errorDetails = sendingFundingTx.getError() {
-                            print("sending failed!")
+                            print("sending failed")
                             
                             dataService.removeChannelWith(id: channelId)
                             
@@ -101,8 +95,10 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                                 print("idk error")
                             }
                         }
-                        
                     }
+                } catch {
+                    print("Unable to create funding transactino error: \(error)")
+                    dataService.removeChannelWith(id: channelId)
                 }
             }
         case .PaymentReceived:
@@ -140,20 +136,44 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
     }
     
     override func persist_manager(channel_manager: ChannelManager) -> Result_NoneErrorZ {
+        print("========================")
         print("PERSIST CHANNEL MANAGER")
+        print("========================")
         
-        print("All channels count: \(channel_manager.list_channels().count)")
-        for channel in channel_manager.list_channels() {
-            print("channel balance: \(channel.get_balance_msat()/1000) sat")
-            print("channel confirmation required: \(channel.get_confirmations_required().getValue())")
-        }
-        print("Open channels count: \(channel_manager.list_usable_channels().count)")
-        for channel in channel_manager.list_usable_channels() {
-            print("channel balance: \(channel.get_balance_msat()/1000) sat")
-        }
-
         let managerBytes = channel_manager.write()
         dataService.save(channelManager: Data(managerBytes))
+        
+        print("Avaliable channels: \(channel_manager.list_channels().count)")
+        
+        DispatchQueue.global(qos: .background).async {
+            for channel in channel_manager.list_channels() {
+                let userChannelID = channel.get_user_channel_id()
+                let balance = channel.get_balance_msat()/1000
+                
+                print("channel id: \(LDKBlock.bytesToHexString(bytes: channel.get_channel_id()))")
+                print("channel user id: \(userChannelID)")
+                print("channel balance: \(balance) sat")
+                
+                if channel.get_is_usable() {
+                    print("is usable - true")
+                    
+                    if let fetchedChannel = self.dataService.channelWith(id: userChannelID) {
+                        fetchedChannel.state = .open
+                        fetchedChannel.satValue = balance
+                        self.dataService.update(channel: fetchedChannel)
+                    }
+                } else {
+                    print("is usable - false")
+                    print("confirmation required: \(String(describing: channel.get_confirmations_required().getValue()))")
+                    
+                    if let fetchedChannel = self.dataService.channelWith(id: userChannelID) {
+                        fetchedChannel.state = .waitingFunds
+                        fetchedChannel.satValue = balance
+                        self.dataService.update(channel: fetchedChannel)
+                    }
+                }
+            }
+        }
         
         return Result_NoneErrorZ.ok()
     }
