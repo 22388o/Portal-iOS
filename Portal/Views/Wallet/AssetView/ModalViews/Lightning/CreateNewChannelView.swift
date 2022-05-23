@@ -103,7 +103,7 @@ struct CreateNewChannelView: View {
                                         break
                                     }
                                 }
-                                if shouldDisconnect && !node.connected {
+                                if shouldDisconnect && node.connected {
                                     PolarConnectionExperiment.shared.service.disconnect(node: node)
                                 }
                                 selectedNode = nil
