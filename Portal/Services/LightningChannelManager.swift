@@ -115,25 +115,6 @@ class LightningChannelManager: ILightningChannelManager {
     func chainSyncCompleted() {
         let scorer = MultiThreadedLockableScore(score: Scorer().as_Score())
         constructor.chain_sync_completed(persister: channelManagerPersister, scorer: scorer)
-        
-        for channel in channelManager.list_channels() {
-            let id = channel.get_user_channel_id()
-            let amount = channel.get_channel_value_satoshis()
-            
-            if channel.get_is_usable() {
-                if let _channel = dataService.channelWith(id: id) {
-                    _channel.state = .open
-                    _channel.satValue = amount
-                    dataService.update(channel: _channel)
-                }
-            } else {
-                if let _channel = dataService.channelWith(id: id) {
-                    _channel.state = .waitingFunds
-                    _channel.satValue = amount
-                    dataService.update(channel: _channel)
-                }
-            }
-        }
     }
 }
 
