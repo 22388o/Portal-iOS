@@ -28,8 +28,11 @@ class LightningChannelManager: ILightningChannelManager {
     var peerNetworkHandler: TCPPeerHandler
     var keysManager: KeysManager
     var channelManagerPersister: ExtendedChannelManagerPersister
+    var dataService: ILightningDataService
     
     init(bestBlock: BlockInfo, mnemonic: Data, dataService: ILightningDataService) {
+        self.dataService = dataService
+        
         let userConfig = UserConfig()
         let network = LDKNetwork_Testnet
         
@@ -55,11 +58,10 @@ class LightningChannelManager: ILightningChannelManager {
         )
         
         if let channelManagerSerialized = dataService.channelManagerData?.bytes {
-            
+
             let networkGraphSerizlized = dataService.networkGraph?.bytes ?? []
             let channelMonitorsSeriaziled = dataService.channelMonitors?.map{ $0.bytes } ?? []
-            
-            
+
             do {
                 constructor = try ChannelManagerConstructor(
                     channel_manager_serialized: channelManagerSerialized,
@@ -73,7 +75,7 @@ class LightningChannelManager: ILightningChannelManager {
                     logger: logger
                 )
             } catch {
-                fatalError("\(error.localizedDescription)")
+                fatalError("\(error)")
             }
 
         } else {
@@ -113,6 +115,25 @@ class LightningChannelManager: ILightningChannelManager {
     func chainSyncCompleted() {
         let scorer = MultiThreadedLockableScore(score: Scorer().as_Score())
         constructor.chain_sync_completed(persister: channelManagerPersister, scorer: scorer)
+        
+        for channel in channelManager.list_channels() {
+            let id = channel.get_user_channel_id()
+            let amount = channel.get_channel_value_satoshis()
+            
+            if channel.get_is_usable() {
+                if let _channel = dataService.channelWith(id: id) {
+                    _channel.state = .open
+                    _channel.satValue = amount
+                    dataService.update(channel: _channel)
+                }
+            } else {
+                if let _channel = dataService.channelWith(id: id) {
+                    _channel.state = .waitingFunds
+                    _channel.satValue = amount
+                    dataService.update(channel: _channel)
+                }
+            }
+        }
     }
 }
 
