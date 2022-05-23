@@ -23,4 +23,6 @@ protocol ILightningDataService {
     func save(channelManager: Data)
     func save(networkGraph: Data)
     func update(channelMonitor: Data, id: String)
+    func channelWith(id: UInt64) -> LightningChannel?
+    func removeChannelWith(id: UInt64)
 }
