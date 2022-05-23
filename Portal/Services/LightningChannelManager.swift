@@ -113,8 +113,13 @@ class LightningChannelManager: ILightningChannelManager {
     }
     
     func chainSyncCompleted() {
-        let scorer = MultiThreadedLockableScore(score: Scorer().as_Score())
-        constructor.chain_sync_completed(persister: channelManagerPersister, scorer: scorer)
+        let scoringParams = ProbabilisticScoringParameters()
+        if let networkGraph = constructor.net_graph {
+            let probabalisticScorer = ProbabilisticScorer(params: scoringParams, network_graph: networkGraph)
+            let score = probabalisticScorer.as_Score()
+            let multiThreadedScorer = MultiThreadedLockableScore(score: score)
+            constructor.chain_sync_completed(persister: channelManagerPersister, scorer: multiThreadedScorer)
+        }
     }
 }
 
