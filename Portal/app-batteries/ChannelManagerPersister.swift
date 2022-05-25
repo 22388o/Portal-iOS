@@ -30,23 +30,23 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 dataService.removeChannelWith(id: channelId)
                 
                 let id = LDKBlock.bytesToHexString(bytes: value.getChannel_id())
+                let errorMessage: String
                 
                 let reason = value.getReason()
                 switch reason.getValueType() {
                 case .ProcessingError:
                     let closingReasonMessage = "\(reason.getValueAsProcessingError()?.getErr() ?? "Unknown")"
                     print("reason: \(closingReasonMessage)")
-                    let errorMsg = "Channel \(id) closed: \(closingReasonMessage)"
-                    PolarConnectionExperiment.shared.userMessage = errorMsg
+                    errorMessage = "Channel \(id) closed: \(closingReasonMessage)"
                 case .CounterpartyForceClosed:
                     let closingReasonMessage = "\(reason.getValueAsCounterpartyForceClosed()?.getPeer_msg() ?? "Unknown")"
                     print("reason: \(closingReasonMessage)")
-                    let errorMsg = "Channel \(id) closed: \(closingReasonMessage)"
-                    PolarConnectionExperiment.shared.userMessage = errorMsg
+                    errorMessage = "Channel \(id) closed: \(closingReasonMessage)"
                 case .none:
-                    let errorMsg = "Channel \(id) closed: Unknown"
-                    PolarConnectionExperiment.shared.userMessage = errorMsg
+                    errorMessage = "Channel \(id) closed: Unknown"
                 }
+                
+                PolarConnectionExperiment.shared.userMessage = errorMessage
             }
         case .DiscardFunding:
             print("================")
@@ -86,34 +86,32 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                             
                             dataService.removeChannelWith(id: channelId)
                             
+                            let errorMessage: String
+                            
                             switch errorDetails {
                             case .channel_unavailable(err: "channel unavalibale"):
                                 print("channel unavalibale")
                                 let details = errorDetails.getValueAsChannelUnavailable()?.getErr()
-                                let errorMsg = "Cannot send funding transaction: Channel unavalibale \(String(describing: details))"
-                                PolarConnectionExperiment.shared.userMessage = errorMsg
+                                errorMessage = "Cannot send funding transaction: Channel unavalibale \(String(describing: details))"
                             case .fee_rate_too_high(err: "fee rate too hight", feerate: 1):
                                 print("fee rate too hight")
-                                let errorMsg = "Cannot send funding transaction: Fee rate too hight"
-                                PolarConnectionExperiment.shared.userMessage = errorMsg
+                                errorMessage = "Cannot send funding transaction: Fee rate too hight"
                             case .apimisuse_error(err: "Api missuse"):
                                 print("Api missuse")
                                 let details = errorDetails.getValueAsAPIMisuseError()?.getErr()
-                                let errorMsg = "Cannot send funding transaction: Api missuse \(String(describing: details))"
-                                PolarConnectionExperiment.shared.userMessage = errorMsg
+                                errorMessage = "Cannot send funding transaction: Api missuse \(String(describing: details))"
                             case .route_error(err: "Route error"):
                                 print("route error")
                                 let details = errorDetails.getValueAsRouteError()?.getErr()
-                                let errorMsg = "Cannot send funding transaction: Route error \(String(describing: details))"
-                                PolarConnectionExperiment.shared.userMessage = errorMsg
+                                errorMessage = "Cannot send funding transaction: Route error \(String(describing: details))"
                             case .monitor_update_failed():
                                 print("Monitor update failed")
-                                let errorMsg = "Cannot send funding transaction: Monitor update failed"
-                                PolarConnectionExperiment.shared.userMessage = errorMsg
+                                errorMessage = "Cannot send funding transaction: Monitor update failed"
                             default:
-                                let errorMsg = "Cannot send funding transaction: Unknown error"
-                                PolarConnectionExperiment.shared.userMessage = errorMsg
+                                errorMessage = "Cannot send funding transaction: Unknown error"
                             }
+                            
+                            PolarConnectionExperiment.shared.userMessage = errorMessage
                         }
                     }
                 } catch {
@@ -139,36 +137,46 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 let preimage = invoicePayment.getPayment_preimage()
                 let claimResult = channelManager.claim_funds(payment_preimage: preimage)
                 
+                let userMessage: String
+                
                 if claimResult {
                     print("Claimed")
                     let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), date: Date(), memo: "invoice", state: .recieved)
                     dataService.save(payment: payment)
-                    let message = "Payment received: \(amount) sat"
-                    PolarConnectionExperiment.shared.userMessage = message
+                    userMessage = "Payment received: \(amount) sat"
                 } else {
                     print("CLAIMING ERROR")
-                    let message = "Claming funds error: \(amount) sat"
-                    PolarConnectionExperiment.shared.userMessage = message
+                    userMessage = "Claming funds error: \(amount) sat"
                 }
+                
+                PolarConnectionExperiment.shared.userMessage = userMessage
             }
         case .PaymentSent:
             print("==============")
             print("PAYMENT SENT")
             print("==============")
+            
+            if let value = event.getValueAsPaymentSent() {
+                let paymentID = value.getPayment_id()
+                let paymentHash = value.getPayment_hash()
+            }
         case .PaymentPathFailed:
             print("====================")
             print("PAYMENT PATH FAILED")
             print("====================")
             
+            let errorMessage: String
+            
             if let value = event.getValueAsPaymentPathFailed() {
                 print("Is rejected by destination: \(value.getRejected_by_dest())")
                 print("All paths failed: \(value.getAll_paths_failed())")
-                let errorMsg = "Payment path failed: Is rejected - \(value.getRejected_by_dest()), all paths failed - \(value.getAll_paths_failed())"
-                PolarConnectionExperiment.shared.userMessage = errorMsg
+                errorMessage = "Payment path failed: Is rejected - \(value.getRejected_by_dest()), all paths failed - \(value.getAll_paths_failed())"
             } else {
-                let errorMsg = "Payment path failed"
-                PolarConnectionExperiment.shared.userMessage = errorMsg
+                errorMessage = "Payment path failed"
             }
+            
+            PolarConnectionExperiment.shared.userMessage = errorMessage
+            
         case .PaymentFailed:
             print("================")
             print("PAYMENT FAILED")
