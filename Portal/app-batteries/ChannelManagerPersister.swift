@@ -145,6 +145,10 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                     dataService.save(payment: payment)
                     let message = "Payment received: \(amount) sat"
                     PolarConnectionExperiment.shared.userMessage = message
+                } else {
+                    print("CLAIMING ERROR")
+                    let message = "Claming funds error: \(amount) sat"
+                    PolarConnectionExperiment.shared.userMessage = message
                 }
             }
         case .PaymentSent:
