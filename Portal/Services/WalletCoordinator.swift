@@ -391,6 +391,7 @@ extension WalletCoordinator: ILightningDataStorage {
         record.satValue = Int64(payment.satAmount)
         record.memo = payment.memo
         record.date = payment.date
+        record.state = payment.state.rawValue
         
         try context.performAndWait {
             do {
