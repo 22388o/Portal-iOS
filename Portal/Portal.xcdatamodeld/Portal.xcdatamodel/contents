@@ -34,7 +34,9 @@
         <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="DBLightningChannel" inverseName="node" inverseEntity="DBLightningChannel"/>
     </entity>
     <entity name="DBLightningPayment" representedClassName="DBLightningPayment" syncable="YES">
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expires" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="invoice" optional="YES" attributeType="String"/>
         <attribute name="memo" optional="YES" attributeType="String"/>
         <attribute name="paymentID" optional="YES" attributeType="String"/>
         <attribute name="satValue" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -56,7 +58,7 @@
         <element name="DBLightningChannelManager" positionX="-63" positionY="72" width="128" height="44"/>
         <element name="DBLightningNetGraph" positionX="-54" positionY="81" width="128" height="44"/>
         <element name="DBLightningNode" positionX="-54" positionY="72" width="128" height="104"/>
-        <element name="DBLightningPayment" positionX="-63" positionY="72" width="128" height="104"/>
+        <element name="DBLightningPayment" positionX="-63" positionY="72" width="128" height="134"/>
         <element name="DBTransaction" positionX="-63" positionY="9" width="128" height="73"/>
         <element name="DBWallet" positionX="-63" positionY="-18" width="128" height="74"/>
     </elements>

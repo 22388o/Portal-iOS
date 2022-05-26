@@ -20,8 +20,10 @@ extension DBLightningPayment {
     @NSManaged public var paymentID: String
     @NSManaged public var satValue: Int64
     @NSManaged public var memo: String
-    @NSManaged public var date: Date
+    @NSManaged public var created: Date
+    @NSManaged public var expires: Date?
     @NSManaged public var state: Int16
+    @NSManaged public var invoice: String?
 
 }
 
