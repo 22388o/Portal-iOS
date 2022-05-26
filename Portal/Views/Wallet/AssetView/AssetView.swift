@@ -16,11 +16,9 @@ enum CoinViewRoute {
 struct AssetView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
     @ObservedObject var viewModel: AssetViewModel
-    @ObservedObject var channelsViewModel: ChannelsViewModel
     
-    init(asset: IAsset, channelsVM: ChannelsViewModel) {
+    init(asset: IAsset) {
         viewModel = .init(asset: asset)
-        self.channelsViewModel = channelsVM
     }
     
     var body: some View {
@@ -112,7 +110,7 @@ struct AssetView: View {
                             .modifier(PButtonEnabledStyle(enabled: .constant(true)))
 //                            .shadow(color: .white, radius: 2)
                             .sheet(isPresented: $viewModel.showWithdrawView) {
-                                LightningView(viewModel: channelsViewModel)
+                                LightningView()
                             }
                             Spacer()
                         }
@@ -185,7 +183,7 @@ struct AssetView_Previews: PreviewProvider {
             AssetView(
                 asset: Asset(
                     coin: Coin.bitcoin()
-                ), channelsVM: .init()
+                )
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
             .previewDisplayName("iPhone SE")
@@ -193,7 +191,7 @@ struct AssetView_Previews: PreviewProvider {
             AssetView(
                 asset: Asset(
                     coin: Coin.ethereum()
-                ), channelsVM: .init()
+                )
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro"))
             .previewDisplayName("iPhone 11 Pro")
@@ -201,7 +199,7 @@ struct AssetView_Previews: PreviewProvider {
             AssetView(
                 asset: Asset(
                     coin: Coin.portal()
-                ), channelsVM: .init()
+                )
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
             .previewDisplayName("iPhone 11 Pro Max")
