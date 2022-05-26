@@ -79,8 +79,11 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                             funding_transaction: rawTxBytes
                         )
                         
+                        
                         if sendingFundingTx.isOk() {
                             print("funding tx sent")
+                            let userMessage = "Chanel is open. Waiting funding tx to be confirmed"
+                            PolarConnectionExperiment.shared.userMessage = userMessage
                         } else if let errorDetails = sendingFundingTx.getError() {
                             print("sending failed")
                             
@@ -236,7 +239,7 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                     print("CHANNEL IS USABLE")
                     
                     if let fetchedChannel = self.dataService.channelWith(id: userChannelID),
-                        fetchedChannel.state != .open,
+                        fetchedChannel.state != .open ||
                         fetchedChannel.satValue != balance
                     {
                         fetchedChannel.state = .open
@@ -249,7 +252,7 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                     print("confirmation required: \(String(describing: channel.get_confirmations_required().getValue()))")
                     
                     if let fetchedChannel = self.dataService.channelWith(id: userChannelID),
-                        fetchedChannel.state != .waitingFunds,
+                        fetchedChannel.state != .waitingFunds ||
                         fetchedChannel.satValue != balance
                     {
                         fetchedChannel.state = .waitingFunds
