@@ -145,8 +145,7 @@ class LightningService: ILightningService {
     }
     
     func createInvoice(amount: String, memo: String) -> String? {
-        if let decimalAmount = Decimal(string: amount) {
-            let satoshiAmount = bitcoinAdapter.convertToSatoshi(value: decimalAmount)
+        if let satoshiAmount = Int(amount) {
             let amount = Option_u64Z(value: UInt64(satoshiAmount * 1000))
             let descr = memo
             
