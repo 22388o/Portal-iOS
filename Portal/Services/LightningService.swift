@@ -147,10 +147,16 @@ class LightningService: ILightningService {
     func createInvoice(amount: String, memo: String) -> String? {
         if let decimalAmount = Decimal(string: amount) {
             let satoshiAmount = bitcoinAdapter.convertToSatoshi(value: decimalAmount)
-            let amount = Option_u64Z(value: UInt64(satoshiAmount))
+            let amount = Option_u64Z(value: UInt64(satoshiAmount * 1000))
             let descr = memo
             
-            let result = Bindings.swift_create_invoice_from_channelmanager(channelmanager: manager.channelManager, keys_manager: manager.keysManager.as_KeysInterface(), network: LDKCurrency_BitcoinTestnet, amt_msat: amount, description: descr)
+            let result = Bindings.swift_create_invoice_from_channelmanager(
+                channelmanager: manager.channelManager,
+                keys_manager: manager.keysManager.as_KeysInterface(),
+                network: LDKCurrency_BitcoinTestnet,
+                amt_msat: amount,
+                description: descr
+            )
 
             if result.isOk(), let invoice = result.getValue() {
                 let invoiceString = invoice.to_str()
@@ -247,7 +253,8 @@ extension LightningService {
     
     private func syncBlockchainData() async throws {
         let bestBlockHeight = manager.channelManager.current_best_block().height()
-        let newBlocks = bitcoinAdapter.blocks(from: Int(bestBlockHeight)).dropFirst()
+        let adapterBestBlockHeight = bitcoinAdapter.lastBlockInfo?.height ?? 0
+        let newBlocks = bitcoinAdapter.blocks(from: Int(bestBlockHeight + 1), to: adapterBestBlockHeight)
                 
         let channelManagerListener = manager.channelManager.as_Listen()
         let chainMonitorListener = manager.chainMonitor.as_Listen()
