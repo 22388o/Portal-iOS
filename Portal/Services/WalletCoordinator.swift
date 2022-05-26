@@ -38,16 +38,10 @@ final class WalletCoordinator: ObservableObject {
     init(context: NSManagedObjectContext? = nil) {
         //context is optional for tests
         self.keychainStorage = KeychainStorage(keychain: Keychain(service: "com.portal.keychain.service"))
-//
-//        guard context != nil else { return }
-//
-//        self.context = context
-//
-//        fetchWallets()
-//        setupCurrentWallet()
     }
     
     func load() {
+//        clearLightningDataStorage()
         fetchWallets()
         setupCurrentWallet()
     }
@@ -82,6 +76,57 @@ final class WalletCoordinator: ObservableObject {
             context?.delete(wallet)
         }
         try? context?.save()
+    }
+    
+    private func clearLightningDataStorage() {
+        guard let context = context else { return }
+        
+        let channelsRequest = DBLightningChannel.fetchRequest() as NSFetchRequest<DBLightningChannel>
+        
+        context.performAndWait {
+            let records = try! context.fetch(channelsRequest)
+            for record in records {
+                context.delete(record)
+            }
+        }
+        
+        let channelManagerRequest = DBLightningChannelManager.fetchRequest() as NSFetchRequest<DBLightningChannelManager>
+        
+        context.performAndWait {
+            let records = try! context.fetch(channelManagerRequest)
+            for record in records {
+                context.delete(record)
+            }
+        }
+        
+        let channelMonitorRequest = DBChannelMonitor.fetchRequest() as NSFetchRequest<DBChannelMonitor>
+        
+        context.performAndWait {
+            let records = try! context.fetch(channelMonitorRequest)
+            for record in records {
+                context.delete(record)
+            }
+        }
+        
+        let netGraphRequest = DBLightningNetGraph.fetchRequest() as NSFetchRequest<DBLightningNetGraph>
+
+        context.performAndWait {
+            let records = try! context.fetch(netGraphRequest)
+            for record in records {
+                context.delete(record)
+            }
+        }
+                
+        let nodeRequest = DBLightningNode.fetchRequest() as NSFetchRequest<DBLightningNode>
+
+        context.performAndWait {
+            let records = try! context.fetch(nodeRequest)
+            for record in records {
+                context.delete(record)
+            }
+        }
+    
+        try! context.save()
     }
 }
 
@@ -390,8 +435,10 @@ extension WalletCoordinator: ILightningDataStorage {
         record.paymentID = payment.id
         record.satValue = Int64(payment.satAmount)
         record.memo = payment.memo
-        record.date = payment.date
+        record.created = payment.created
+        record.expires = payment.expires
         record.state = payment.state.rawValue
+        record.invoice = payment.invoice
         
         try context.performAndWait {
             do {
@@ -469,7 +516,9 @@ extension WalletCoordinator: ILightningDataStorage {
                     record.state = payment.state.rawValue
                     record.satValue = Int64(payment.satAmount)
                     record.memo = payment.memo
-                    record.date = payment.date
+                    record.created = payment.created
+                    record.expires = payment.expires
+                    record.invoice = payment.invoice
                     
                     try context.save()
                 } else {
