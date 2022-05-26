@@ -10,7 +10,6 @@ import Foundation
 import Combine
 
 class ChannelsViewModel: ObservableObject {
-    @Published var recentActivity = PolarConnectionExperiment.shared.service.dataService.payments
     @Published var suggestedNodes = PolarConnectionExperiment.shared.service.dataService.nodes
     @Published var openChannels = PolarConnectionExperiment.shared.service.dataService.channels
     
@@ -21,6 +20,7 @@ class ChannelsViewModel: ObservableObject {
     @Published var txFee = String()
     @Published var selctionIndex = 1
     @Published var showChannelDetails: Bool = false
+
     var selectedNode: LightningNode?
     
     var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
@@ -43,10 +43,6 @@ class ChannelsViewModel: ObservableObject {
             PolarConnectionExperiment.shared.service.openChannelWith(node: node, sat: satoshiAmount)
             channelIsOpened.toggle()
         }
-    }
-    
-    func createInvoice(amount: String, memo: String) -> String? {
-        PolarConnectionExperiment.shared.service.createInvoice(amount: amount, memo: memo)
     }
     
     func sendPayment() {
