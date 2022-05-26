@@ -23,16 +23,37 @@ class LightningPayment: Identifiable {
             }
         }
     }
+    
     let id: String
     let satAmount: UInt64
-    let date: Date
+    let created: Date
+    var expires: Date?
     let memo: String
     var state: State
+    var invoice: String?
     
-    init(id: String, satAmount: Int64, date: Date, memo: String, state: State) {
+    var isExpired: Bool {
+        guard let expireDate = expires else {
+            return false
+        }
+        return Date() > expireDate
+    }
+    
+    init(invoice: Invoice, memo: String) {
+        self.id = UUID().uuidString
+        self.satAmount = invoice.amount_milli_satoshis().getValue()!/1000
+        self.created = Date()
+        let expiteTime = TimeInterval(invoice.expiry_time())
+        self.expires = Date(timeIntervalSince1970: expiteTime)
+        self.state = .requested
+        self.invoice = invoice.to_str()
+        self.memo = memo
+    }
+    
+    init(id: String, satAmount: Int64, created: Date, memo: String, state: State) {
         self.id = id
         self.satAmount = UInt64(satAmount)
-        self.date = date
+        self.created = created
         self.memo = memo
         self.state = state
     }
@@ -40,9 +61,11 @@ class LightningPayment: Identifiable {
     init(record: DBLightningPayment) {
         self.id = record.paymentID
         self.satAmount = UInt64(record.satValue)
-        self.date = record.date
+        self.created = record.created
+        self.expires = record.expires
         self.memo = record.memo
         self.state = State(rawValue: record.state)!
+        self.invoice = record.invoice
     }
 }
 

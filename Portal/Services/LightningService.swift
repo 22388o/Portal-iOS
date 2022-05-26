@@ -153,20 +153,12 @@ class LightningService: ILightningService {
             let result = Bindings.swift_create_invoice_from_channelmanager(channelmanager: manager.channelManager, keys_manager: manager.keysManager.as_KeysInterface(), network: LDKCurrency_BitcoinTestnet, amt_msat: amount, description: descr)
 
             if result.isOk(), let invoice = result.getValue() {
-                let payment = LightningPayment(
-                    id: UUID().uuidString,
-                    satAmount: Int64(satoshiAmount),
-                    date: Date(),
-                    memo: memo,
-                    state: .requested
-                )
-                
-                dataService.save(payment: payment)
-                
                 let invoiceString = invoice.to_str()
-                
                 print("INVOICE: \(invoiceString)")
                 
+                let payment = LightningPayment(invoice: invoice, memo: memo)
+                dataService.save(payment: payment)
+                                                
                 return invoiceString
             } else {
                 return nil

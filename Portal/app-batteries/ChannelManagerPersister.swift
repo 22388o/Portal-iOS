@@ -141,7 +141,7 @@ class ChannelManagerPersister : Persister, ExtendedChannelManagerPersister {
                 
                 if claimResult {
                     print("Claimed")
-                    let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), date: Date(), memo: "invoice", state: .recieved)
+                    let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), created: Date(), memo: "incoming payment", state: .recieved)
                     dataService.save(payment: payment)
                     userMessage = "Payment received: \(amount) sat"
                 } else {
