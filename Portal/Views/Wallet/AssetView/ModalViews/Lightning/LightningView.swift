@@ -9,19 +9,47 @@
 import SwiftUI
 import Combine
 
+class LightningViewViewModel: ObservableObject {
+    @Published var createInvoice: Bool = false
+    @Published var payInvoice: Bool = false
+    @Published var manageChannels: Bool = false
+    @Published var showActivityDetails: Bool = false
+    @Published var payments: [LightningPayment] = []
+    
+    var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
+    var channelManager = PolarConnectionExperiment.shared.service.manager.channelManager
+    var selectedPayment: LightningPayment?
+    
+    var onChainBalanceString: String {
+        btcAdapter.balance.string + " BTC"
+    }
+    
+    var channelsBalanceString: String {
+        var balaance: UInt64 = 0
+        for channel in channelManager.list_usable_channels() {
+            balaance+=channel.get_balance_msat()/1000
+        }
+        return "\(balaance) sat"
+    }
+    
+    init() {
+        
+    }
+    
+    func refreshPayments() {
+        payments = PolarConnectionExperiment.shared.service.dataService.payments.sorted(by: {$0.created > $1.created})
+    }
+}
+
 struct LightningView: View {
-    
-    @ObservedObject var viewModel: ChannelsViewModel
-    @State private var createInvoice: Bool = false
-    @State private var payInvoice: Bool = false
-    @State var manageChannels: Bool = false
-    
+    @StateObject var vm = LightningViewViewModel()
     
     var body: some View {
-        print(Self._printChanges())
-        
-        return ZStack(alignment: .top) {
+        ZStack(alignment: .top) {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
+                .onAppear {
+                    vm.refreshPayments()
+                }
             
             
             VStack {
@@ -36,12 +64,12 @@ struct LightningView: View {
                         .foregroundColor(Color.lightActiveLabel)
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            manageChannels.toggle()
+                            vm.manageChannels.toggle()
                         }
                 }
                 .padding()
-                .sheet(isPresented: $manageChannels) {
-                    ManageChannelsView(viewModel: viewModel)
+                .sheet(isPresented: $vm.manageChannels) {
+                    ManageChannelsView()
                 }
                 
                 VStack {
@@ -52,7 +80,7 @@ struct LightningView: View {
                         
                         Spacer()
                         
-                        Text(viewModel.btcAdapter.balance.string + " BTC")
+                        Text(vm.onChainBalanceString)
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.lightActiveLabel)
                     }
@@ -64,25 +92,29 @@ struct LightningView: View {
                         
                         Spacer()
                         
-                        Text("\(viewModel.channelBalance) sat")
+                        Text(vm.channelsBalanceString)
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.lightActiveLabel)
                     }
                     
                     HStack {
                         Button("Receive") {
-                            createInvoice.toggle()
+                            vm.createInvoice.toggle()
                         }
                         .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                         Button("Send") {
-                            payInvoice.toggle()
+                            vm.payInvoice.toggle()
                         }
                         .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                     }
-                    .sheet(isPresented: $createInvoice) {
-                        CreateInvoiceView(viewModel: viewModel)
-                    }
-                    .sheet(isPresented: $payInvoice) {
+                    .sheet(isPresented: $vm.createInvoice, onDismiss: {
+                        vm.refreshPayments()
+                    }, content: {
+                        CreateInvoiceView()
+                    })
+                    .sheet(isPresented: $vm.payInvoice) {
+                        vm.refreshPayments()
+                    } content: {
                         PayInvoiceView()
                     }
                 }
@@ -102,15 +134,23 @@ struct LightningView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal)
                 
-                if !viewModel.recentActivity.isEmpty {
+                if !vm.payments.isEmpty {
                     ScrollView {
                         VStack(spacing: 0) {
-                            ForEach(viewModel.recentActivity) { activity in
-                                LightningActivityItemView(activity: activity)
+                            ForEach(vm.payments) { payment in
+                                LightningActivityItemView(activity: payment)
+                                    .onTapGesture {
+                                        guard payment.state == .requested else { return }
+                                        vm.selectedPayment = payment
+                                        vm.showActivityDetails.toggle()
+                                    }
                             }
                             .frame(height: 80)
                             .padding(.horizontal)
                             .padding(.vertical, 6)
+                            .sheet(isPresented: $vm.showActivityDetails) {
+                                ActivityDetailsView(activity: vm.selectedPayment!)
+                            }
                         }
                     }
                 } else {
@@ -119,6 +159,150 @@ struct LightningView: View {
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                     Spacer()
+                }
+            }
+        }
+    }
+}
+
+struct ActivityDetailsView: View {
+    let activity: LightningPayment
+    @State var qrCode: UIImage?
+    @State var showShareSheet: Bool = false
+    
+    func qrCode(address: String?) -> UIImage {
+        guard let message = address?.data(using: .utf8) else { return UIImage() }
+        
+        let parameters: [String : Any] = [
+            "inputMessage": message,
+            "inputCorrectionLevel": "L"
+        ]
+        let filter = CIFilter(name: "CIQRCodeGenerator", parameters: parameters)
+        
+        guard let outputImage = filter?.outputImage else { return UIImage() }
+        
+        let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: 6, y: 6))
+        guard let cgImage = CIContext().createCGImage(scaledImage, from: scaledImage.extent) else {
+            return UIImage()
+        }
+        
+        return UIImage(cgImage: cgImage)
+    }
+    
+    var body: some View {
+        ZStack(alignment: .top) {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Text("Invoice")
+                    .font(.mainFont(size: 18))
+                    .foregroundColor(Color.white)
+                
+                if let code = qrCode {
+                    Image(uiImage: code)
+                        .resizable()
+                        .frame(width: UIScreen.main.bounds.width - 80, height: UIScreen.main.bounds.width - 80)
+                        .cornerRadius(10)
+                        .padding()
+                } else {
+                    Spacer().frame(width: UIScreen.main.bounds.width - 80, height: UIScreen.main.bounds.width - 80)
+                        .padding()
+                }
+                
+                HStack {
+                    Text("Amount:")
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightInactiveLabel)
+                    
+                    Spacer()
+                    
+                    Text("\(activity.satAmount) sat")
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Description:")
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightInactiveLabel)
+                    
+                    Spacer()
+                    
+                    Text("\(activity.memo)")
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Created:")
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightInactiveLabel)
+                           
+                    Spacer()
+                    
+                    Text("\(activity.created)")
+                        .lineLimit(1)
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                }
+                .padding(.horizontal)
+                
+                if !activity.isExpired {
+                    HStack {
+                        Text("Expires:")
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.lightInactiveLabel)
+                               
+                        Spacer()
+                        
+                        Text("\(activity.expires!)")
+                            .lineLimit(1)
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.lightActiveLabel)
+                    }
+                    .padding(.horizontal)
+                } else {
+                    HStack {
+                        Text("Status:")
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.lightInactiveLabel)
+                        
+                        Spacer()
+                        
+                        Text("Expired")
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.lightActiveLabel)
+                    }
+                    .padding(.horizontal)
+                }
+                
+                Text("Invoice:")
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.lightInactiveLabel)
+                    .padding(.vertical)
+
+                Text("\(activity.invoice!)")
+                    .font(.mainFont(size: 12))
+                    .foregroundColor(Color.white)
+                    .padding(.horizontal)
+                
+                Spacer()
+                
+                Button("Share") {
+                    showShareSheet.toggle()
+                }
+                .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                .padding()
+                .sheet(isPresented: $showShareSheet) {
+                    ShareSheet(activityItems: [activity.invoice!])
+                }
+            }
+            .padding()
+            .onAppear {
+                DispatchQueue.main.async {
+                    qrCode = qrCode(address: activity.invoice!)
                 }
             }
         }
@@ -153,7 +337,7 @@ class PayInvoiceViewModel: ObservableObject {
     }
     
     func send() {
-        var invoice = "lntb14n1p3gh89zdq22dskgumpvsnp4qvl9aj3srrztegzcs7envyvn5jvxeselx2m6tmjwxjr5rr24hleekpp5dz4naqx6kq8llk7nz66whh8r9amx8vf4w5ww9h5we5jtgx4t3r4qsp5gvrzkatasv3hxhvtqxcqyvqkk3u6yykzex7gczu0vkhu5qf488ms9qyysgqcqpcrzjqv96c8tzk6pc547rq8t7qfz89xuknx5d4nlul00rtx4u9npqwqdr5g0m7cqqqqgqqqqqqqlgqqqqqqgq9qq7sxae0vg7dasgh0f8vwuvlpnmhp82sj9actyaxfgya04r7lnlc97yus4n022anwltfdqn45v7crpd735vk7wzx8se5pfj2vj4vlw3gpdp7fwx"
+        var invoice = "lntb13300n1p3ghj9app53re3dfzjygjww8u3xrvzm5c3a4uggl0cfzj0ruc894q82erllrsqdqqcqzpgxqyz5vqsp536yel9mu42pn9ahkywkjfnn9552svza32tcmx0emdhenwa476lvq9qyyssqqe0v5gt34fjzj2x97l83ye2egmws9zp3j7xgjmv4y4xdx0lf6pmhhhh42n5uutpk9nzkl8d6fyptaszknvu7z54c3gyzszuev96npkcp28xese"
         
         let result = Invoice.from_str(s: invoice)
         if result.isOk() {
@@ -167,11 +351,14 @@ class PayInvoiceViewModel: ObservableObject {
             }
             
             let amount = invoice.amount_milli_satoshis().getValue()!
-            print("amount \(amount) sat")
+            print("amount \(amount/1000) sat")
             
             let payee_pub_key = LDKBlock.bytesToHexString(bytes: invoice.payee_pub_key())
             print(payee_pub_key)
             
+            let network = invoice.currency()
+            print(network)
+                                    
             let payer = PolarConnectionExperiment.shared.service.manager.payer!
             
             let payerResult = payer.pay_invoice(invoice: invoice)
@@ -291,7 +478,7 @@ struct LightningActivityItemView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
-                .background(Color.black.opacity(0.25))
+                .foregroundColor(activity.isExpired ? Color.white.opacity(0.25) : Color.black.opacity(0.25))
             
             VStack {
                 HStack {
@@ -305,7 +492,7 @@ struct LightningActivityItemView: View {
                 }
                 
                 HStack {
-                    Text("\(activity.date.timeAgoSinceDate(shortFormat: false))")
+                    Text("\(activity.created.timeAgoSinceDate(shortFormat: false))")
                         .foregroundColor(Color.lightInactiveLabel)
                     
                     Spacer()
@@ -333,7 +520,7 @@ struct LightningActivityItemView: View {
 #if DEBUG
 struct WithdrawCoinView_Previews: PreviewProvider {
     static var previews: some View {
-        LightningView(viewModel: .init())
+        LightningView()
     }
 }
 #endif
