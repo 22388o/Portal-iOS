@@ -44,10 +44,10 @@ class LightningPayment: Identifiable {
         self.satAmount = invoice.amount_milli_satoshis().getValue()!/1000
         self.created = Date()
         let expiteTime = TimeInterval(invoice.expiry_time())
-        self.expires = Date(timeIntervalSince1970: expiteTime)
+        self.expires = Date(timeInterval: expiteTime, since: created)
         self.state = .requested
         self.invoice = invoice.to_str()
-        self.memo = memo
+        self.memo = memo//invoice.into_signed_raw().raw_invoice().description().into_inner()
     }
     
     init(id: String, satAmount: Int64, created: Date, memo: String, state: State) {
