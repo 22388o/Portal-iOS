@@ -38,8 +38,8 @@ open class AbstractKit {
         bitcoinCore.transaction(hash: hash)
     }
     
-    open func blocks(from height: Int) -> [Block] {
-        bitcoinCore.blocks(from: height)
+    open func blocks(from startHeight: Int, to endHeight: Int) -> [Block] {
+        bitcoinCore.blocks(from: startHeight, to: endHeight)
     }
 
     open func send(to address: String, value: Int, feeRate: Int, sortType: TransactionDataSortType, pluginData: [UInt8: IPluginData] = [:]) throws -> FullTransaction {

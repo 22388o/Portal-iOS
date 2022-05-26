@@ -151,8 +151,8 @@ extension BitcoinCore {
         dataProvider.transaction(hash: hash)
     }
     
-    public func blocks(from height: Int) -> [Block] {
-        dataProvider.blocks(from: height)
+    public func blocks(from startHeight: Int, to endHeight: Int) -> [Block] {
+        dataProvider.blocks(from: startHeight, to: endHeight)
     }
 
     public func send(to address: String, value: Int, feeRate: Int, sortType: TransactionDataSortType, pluginData: [UInt8: IPluginData] = [:]) throws -> FullTransaction {

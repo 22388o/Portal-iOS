@@ -106,8 +106,8 @@ extension DataProvider: IDataProvider {
         return transactionInfoConverter.transactionInfo(fromTransaction: transactionFullInfo)
     }
 
-    func blocks(from height: Int) -> [Block] {
-        storage.blocks(heightGreaterThanOrEqualTo: height, stale: false)
+    func blocks(from startHeight: Int, to endHeight: Int) -> [Block] {
+        storage.blocks(from: startHeight, to: endHeight, ascending: true)
     }
     
     func debugInfo(network: INetwork, scriptType: ScriptType, addressConverter: IAddressConverter) -> String {

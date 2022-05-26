@@ -338,8 +338,8 @@ extension BitcoinBaseAdapter {
         abstractKit.statusInfo
     }
     
-    func blocks(from height: Int) -> [Block] {
-        abstractKit.blocks(from: height)
+    func blocks(from startHeight: Int, to endHeight: Int) -> [Block] {
+        abstractKit.blocks(from: startHeight, to: endHeight)
     }
 
 }
