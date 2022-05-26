@@ -21,7 +21,7 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
     }
     
     private var price: Double {
-        9320.24//marketData.priceData?.price ?? 9320.24
+        29320.24/1000000 //marketData.priceData?.price ?? 9320.24
     }
     
     private var rate: Double {
@@ -45,7 +45,6 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
             .sink { [weak self] in
                 self?.fiatValue = $0
                 self?.formIsValid = !$0.isEmpty
-                print("assetValue = \(self?.assetValue)")
             }
             .store(in: &subscriptions)
         
@@ -55,7 +54,6 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
             .map { [weak self] in "\(($0/(self?.price ?? 1.0)).rounded(toPlaces: 6))" }
             .sink { [weak self] in
                 self?.assetValue = $0
-                print("assetValue = \(self?.assetValue)")
             }
             .store(in: &subscriptions)
     }
