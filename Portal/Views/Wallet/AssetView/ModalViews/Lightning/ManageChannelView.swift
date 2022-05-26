@@ -9,13 +9,9 @@
 import SwiftUI
 
 struct ManageChannelsView: View {
-    @ObservedObject var viewModel: ChannelsViewModel
+    @ObservedObject var viewModel: ChannelsViewModel = ChannelsViewModel()
     @State var channelIsOpened: Bool = false
     @State var openNewChannel: Bool = false
-    
-    init(viewModel: ChannelsViewModel) {
-        self.viewModel = viewModel
-    }
     
     var body: some View {
         ZStack(alignment: .top) {
