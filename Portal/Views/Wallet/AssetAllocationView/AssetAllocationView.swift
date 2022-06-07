@@ -16,7 +16,6 @@ struct AssetAllocationView: View {
         assets: [IAsset],
         showTotalValue: Bool = true
     ) {
-        print("Asset allocation view init")
         self.viewModel = AssetAllocationViewModel(assets: assets)
         self.showTotalValue = showTotalValue
     }

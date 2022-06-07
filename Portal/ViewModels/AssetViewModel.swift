@@ -35,6 +35,7 @@ final class AssetViewModel: ObservableObject, IMarketData {
     @Published var valueCurrencySwitchState: ValueCurrencySwitchState = .fiat
     
     private var subscriptions = Set<AnyCancellable>()
+    private var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
             
     var marketData: CoinMarketData {
         marketData(for: code)
@@ -79,7 +80,7 @@ final class AssetViewModel: ObservableObject, IMarketData {
     
     private func updateValues() {
         print("Value updated")
-        balance = asset.balanceProvider.balanceString
+        balance = btcAdapter.balance.string
         totalValue = asset.balanceProvider.totalValueString
         price = asset.balanceProvider.price
         change = asset.marketChangeProvider.changeString

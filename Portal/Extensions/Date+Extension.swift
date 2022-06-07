@@ -9,6 +9,10 @@
 import Foundation
 
 extension Date {
+    public func isSameDay(as date: Date) -> Bool {
+        Calendar.current.compare(self, to: date, toGranularity: .day) == .orderedSame
+    }
+    
     func timeAgoSinceDate(shortFormat: Bool) -> String {
         
         // From Time

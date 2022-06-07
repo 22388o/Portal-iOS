@@ -4,12 +4,12 @@
 //
 //  Created by Arik Sosman on 5/19/21.
 //
-
 import Foundation
 
 enum InvalidSerializedDataError: Error {
     case invalidSerializedChannelMonitor
     case invalidSerializedChannelManager
+    case invalidSerializedNetworkGraph
     case duplicateSerializedChannelMonitor
     case badNodeSecret
 }
@@ -30,11 +30,11 @@ public class ChannelManagerConstructor: NativeTypeWrapper {
     let logger: Logger
     fileprivate var customPersister: CustomChannelManagerPersister?
     fileprivate var customEventHandler: EventHandler?
-    fileprivate var net_graph: NetworkGraph?
+    public private(set) var net_graph: NetworkGraph?
     fileprivate var graph_msg_handler: NetGraphMsgHandler?
     fileprivate var scorer: MultiThreadedLockableScore?
     fileprivate let keysInterface: KeysInterface!
-    public var payer: InvoicePayer?
+    public private(set) var payer: InvoicePayer?
     public let peerManager: PeerManager
 
 
@@ -49,7 +49,7 @@ public class ChannelManagerConstructor: NativeTypeWrapper {
     private let chain_monitor: ChainMonitor
 
 
-    public init(channel_manager_serialized: [UInt8], channel_monitors_serialized: [[UInt8]], keys_interface: KeysInterface, fee_estimator: FeeEstimator, chain_monitor: ChainMonitor, filter: Filter?, net_graph: NetworkGraph?, tx_broadcaster: BroadcasterInterface, logger: Logger) throws {
+    public init(channel_manager_serialized: [UInt8], channel_monitors_serialized: [[UInt8]], keys_interface: KeysInterface, fee_estimator: FeeEstimator, chain_monitor: ChainMonitor, filter: Filter?, net_graph_serialized: [UInt8]?, tx_broadcaster: BroadcasterInterface, logger: Logger) throws {
 
         var monitors: [LDKChannelMonitor] = []
         self.channel_monitors = []
@@ -62,7 +62,6 @@ public class ChannelManagerConstructor: NativeTypeWrapper {
                 throw InvalidSerializedDataError.invalidSerializedChannelMonitor
             }
             // res
-
             let value: LDKCResult_C2Tuple_BlockHashChannelMonitorZDecodeErrorZPtr = channelMonitorResult.cOpaqueStruct!.contents
             let a: LDKThirtyTwoBytes = value.result!.pointee.a
             let b: LDKChannelMonitor = value.result!.pointee.b
@@ -76,7 +75,6 @@ public class ChannelManagerConstructor: NativeTypeWrapper {
             let clonedChannelMonitor = ChannelMonitor(pointer: b).dangle().clone()
             // var clonedChannelMonitor = currentChannelMonitor.clone(orig: currentChannelMonitor)
             clonedChannelMonitor.cOpaqueStruct?.is_owned = false // is_owned should never have to be modified
-
             monitors.append(clonedChannelMonitor.cOpaqueStruct!)
             self.channel_monitors.append((clonedChannelMonitor, nativeA))
         }
@@ -104,7 +102,14 @@ public class ChannelManagerConstructor: NativeTypeWrapper {
 
         let random_data = keys_interface.get_secure_random_bytes();
         
-        self.net_graph = net_graph
+        if let serializedNetworkGraph = net_graph_serialized {
+            let netGraphResult = NetworkGraph.read(ser: serializedNetworkGraph)
+            if !netGraphResult.isOk(){
+                throw InvalidSerializedDataError.invalidSerializedNetworkGraph
+            }
+            self.net_graph = netGraphResult.getValue()
+        }
+        
         let noCustomMessages = IgnoringMessageHandler()
         var messageHandler: MessageHandler!
         if let netGraph = net_graph {
@@ -162,8 +167,6 @@ public class ChannelManagerConstructor: NativeTypeWrapper {
         
 
         super.init(conflictAvoidingVariableName: 0)
-        // try! self.peerManager.addAnchor(anchor: self)
-        // try! self.channelManager.addAnchor(anchor: self)
     }
 
 
@@ -263,6 +266,10 @@ fileprivate class CustomChannelManagerPersister: Persister {
     override func persist_manager(channel_manager: ChannelManager) -> Result_NoneErrorZ {
         return self.handler.persist_manager(channel_manager: channel_manager)
     }
+    
+    override func persist_graph(network_graph: NetworkGraph) -> Result_NoneErrorZ {
+        return self.handler.persist_graph(network_graph: network_graph)
+    }
 }
 
 fileprivate class CustomEventHandler: EventHandler {
@@ -275,9 +282,8 @@ fileprivate class CustomEventHandler: EventHandler {
     }
 
     override func handle_event(event: Event) {
-        self.handler.handle_event(event: event)
+        self.handler.handle_event(event: event.clone())
     }
-
 
 }
 

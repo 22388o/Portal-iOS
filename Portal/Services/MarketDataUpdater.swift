@@ -34,7 +34,7 @@ final class MarketDataUpdater: IHistoricalData {
                 case let .success(data):
                 self?.onUpdateHistoricalData.send((.day, data))
                 case let .failure(error):
-                    print(error.localizedDescription)
+                    print(error)
                 }
             }
             self?.fetchWeekData(assets: assets) { result in
@@ -42,7 +42,7 @@ final class MarketDataUpdater: IHistoricalData {
                 case let .success(data):
                 self?.onUpdateHistoricalData.send((.week, data))
                 case let .failure(error):
-                    print(error.localizedDescription)
+                    print(error)
                 }
             }
             self?.fetchMonthData(assets: assets) { result in
@@ -50,7 +50,7 @@ final class MarketDataUpdater: IHistoricalData {
                 case let .success(data):
                 self?.onUpdateHistoricalData.send((.month, data))
                 case let .failure(error):
-                    print(error.localizedDescription)
+                    print(error)
                 }
             }
             self?.fetchYearData(assets: assets) { result in
@@ -58,7 +58,7 @@ final class MarketDataUpdater: IHistoricalData {
                 case let .success(data):
                 self?.onUpdateHistoricalData.send((.year, data))
                 case let .failure(error):
-                    print(error.localizedDescription)
+                    print(error)
                 }
             }
         }

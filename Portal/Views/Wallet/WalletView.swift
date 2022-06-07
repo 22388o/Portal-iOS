@@ -10,10 +10,8 @@ import SwiftUI
 
 struct WalletView: View {
     @ObservedObject var viewModel: WalletViewModel
-    @StateObject var channelsViewModel: ChannelsViewModel = .init()
     
     init(wallet: IWallet = WalletMock()) {
-        print("WalletView init")
         self.viewModel = .init(assets: wallet.assets)
     }
     
@@ -42,7 +40,7 @@ struct WalletView: View {
                     
                 }
                 .sheet(isPresented: self.$viewModel.showCoinView) {
-                    AssetView(asset: self.viewModel.selectedAdapter.asset, channelsVM: channelsViewModel)
+                    AssetView(asset: self.viewModel.selectedAdapter.asset)
                 }
             }
         }

@@ -34,7 +34,7 @@ final class PricesDataUpdater: IPricesData {
                 case let .success(prices):
                     self.onUpdatePublisher.send(prices)
                 case let .failure(error):
-                    print(error.localizedDescription)
+                    print(error)
                 }
             }
         }
